@@ -64,13 +64,19 @@ export default function HistoryPage() {
 
   const hospitalName = (id) => HOSPITALS.find((h) => h.id === id)?.name || id;
 
+  const isFieldInRange = (f, val) => {
+    const n = parseFloat(val);
+    if (isNaN(n)) return null;
+    if (f.targetZero) return n === 0;
+    return n >= f.min && n <= f.max;
+  };
+
   const countOOR = (entry) => {
     const fields = entry.system === 'boiler' ? BOILER_FIELDS : CHILLED_FIELDS;
     return fields.filter((f) => {
-      const v = parseFloat(entry.values?.[f.key]);
-      if (isNaN(v)) return false;
-      if (f.targetZero) return v !== 0;
-      return v < f.min || v > f.max;
+      const v = entry.values?.[f.key];
+      if (v === undefined || v === null || v === '') return false;
+      return isFieldInRange(f, v) === false;
     }).length;
   };
 
@@ -229,15 +235,15 @@ export default function HistoryPage() {
                               <div className="grid grid-cols-4 gap-3 mb-3">
                                 {fields.map((f) => {
                                   const val = e.values?.[f.key];
-                                  const n = parseFloat(val);
-                                  const inRange = !isNaN(n) && n >= f.min && n <= f.max;
+                                  const inRange = val !== undefined && val !== null && val !== '' ? isFieldInRange(f, val) : null;
+                                  const rangeStr = f.targetZero ? 'Target: 0' : `${f.min}–${f.max}`;
                                   return (
-                                    <div key={f.key} className={`p-2 rounded-lg text-xs ${inRange ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+                                    <div key={f.key} className={`p-2 rounded-lg text-xs ${inRange === null ? 'bg-gray-50 border border-gray-200' : inRange ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
                                       <div className="text-gray-500">{f.label}</div>
-                                      <div className={`font-bold text-sm mt-0.5 ${inRange ? 'text-green-700' : 'text-red-700'}`}>
-                                        {val ?? '—'} {inRange ? '🟢' : '🔴'}
+                                      <div className={`font-bold text-sm mt-0.5 ${inRange === null ? 'text-gray-400' : inRange ? 'text-green-700' : 'text-red-700'}`}>
+                                        {val ?? '—'} {inRange === null ? '' : inRange ? '🟢' : '🔴'}
                                       </div>
-                                      <div className="text-gray-400">{f.min}–{f.max}</div>
+                                      <div className="text-gray-400">{rangeStr}</div>
                                     </div>
                                   );
                                 })}

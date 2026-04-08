@@ -42,9 +42,11 @@ function getUser() {
 }
 
 function isInRange(value, min, max, targetZero) {
+  if (value === '' || value === undefined || value === null) return null;
   const n = parseFloat(value);
   if (isNaN(n)) return null;
-  if (targetZero) return n === 0;
+  if (targetZero) return n === 0; // boiler hardness: 0 is green, anything else is red
+  if (min === 0 && max === 0 && !targetZero) return null; // undefined range, don't color
   return n >= min && n <= max;
 }
 
@@ -345,7 +347,7 @@ function EntryForm() {
                       <label className="flex items-center justify-between text-xs font-medium text-gray-600 mb-1">
                         <span>{f.label}{f.unit ? ` (${f.unit})` : ''}</span>
                         <span className="text-gray-400">
-                          {f.targetZero ? 'Target: 0' : `${f.min}–${f.max}`}
+                          {f.targetZero ? 'Target: 0' : (f.min === 0 && f.max === 0) ? '' : `${f.min}–${f.max}`}
                         </span>
                       </label>
                       <div className="flex items-center gap-2">
