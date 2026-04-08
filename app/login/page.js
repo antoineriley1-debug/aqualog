@@ -21,7 +21,7 @@ export default function LoginPage() {
         body: JSON.stringify({ username, password }),
       });
       const data = await res.json();
-      if (data.success) router.push('/dashboard');
+      if (data.ok) router.push('/dashboard');
       else setError(data.error || 'Invalid credentials');
     } catch {
       setError('Connection error. Please try again.');
