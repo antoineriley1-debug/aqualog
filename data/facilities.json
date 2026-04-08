@@ -1,20 +1,11 @@
 [
-  {
-    "id": "fac_main",
-    "orgId": "org_demo",
-    "name": "Main Campus",
-    "address": "100 Hospital Drive, Washington DC 20010",
-    "code": "MAIN",
-    "active": true,
-    "createdAt": "2026-03-02T00:00:00Z"
-  },
-  {
-    "id": "fac_east",
-    "orgId": "org_demo",
-    "name": "East Wing",
-    "address": "200 Hospital Drive, Washington DC 20010",
-    "code": "EAST",
-    "active": true,
-    "createdAt": "2026-03-02T00:00:00Z"
-  }
+  { "id": "fac_washington", "orgId": "org_demo", "name": "Washington Medical Center", "address": "1600 Pennsylvania Ave, Washington DC 20001", "code": "WSH", "active": true, "createdAt": "2026-03-02T00:00:00Z" },
+  { "id": "fac_lincoln",    "orgId": "org_demo", "name": "Lincoln Health Pavilion",   "address": "1 Lincoln Square, Springfield IL 62701",       "code": "LNC", "active": true, "createdAt": "2026-03-02T00:00:00Z" },
+  { "id": "fac_jefferson",  "orgId": "org_demo", "name": "Jefferson Memorial Hospital","address": "400 Jefferson Dr, Charlottesville VA 22902",    "code": "JEF", "active": true, "createdAt": "2026-03-02T00:00:00Z" },
+  { "id": "fac_madison",    "orgId": "org_demo", "name": "Madison Community Hospital", "address": "200 Madison Blvd, Madison WI 53703",            "code": "MAD", "active": true, "createdAt": "2026-03-02T00:00:00Z" },
+  { "id": "fac_adams",      "orgId": "org_demo", "name": "Adams Regional Medical",    "address": "55 Adams Street, Quincy MA 02169",              "code": "ADM", "active": true, "createdAt": "2026-03-02T00:00:00Z" },
+  { "id": "fac_monroe",     "orgId": "org_demo", "name": "Monroe General Hospital",   "address": "825 Monroe Ave, Rochester NY 14607",            "code": "MNR", "active": true, "createdAt": "2026-03-02T00:00:00Z" },
+  { "id": "fac_jackson",    "orgId": "org_demo", "name": "Jackson Memorial Center",   "address": "1611 Jackson Ave, Nashville TN 37203",          "code": "JCK", "active": true, "createdAt": "2026-03-02T00:00:00Z" },
+  { "id": "fac_polk",       "orgId": "org_demo", "name": "Polk Health System",        "address": "301 Polk Street, Nashville TN 37208",           "code": "PLK", "active": true, "createdAt": "2026-03-02T00:00:00Z" },
+  { "id": "fac_tyler",      "orgId": "org_demo", "name": "Tyler Medical Institute",   "address": "700 Tyler Rd, Richmond VA 23220",               "code": "TYL", "active": true, "createdAt": "2026-03-02T00:00:00Z" }
 ]
