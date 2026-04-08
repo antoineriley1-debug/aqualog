@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 /**
  * FacilityH2O — Notification Rules (Admin Overview + Config)
  * Author & Owner: Antoine Riley
@@ -53,7 +53,7 @@ export default function NotificationsPage() {
     const u = getUser();
     if (!u || u.role !== 'admin') { router.push('/dashboard'); return; }
     setUser(u);
-    setIsOwner(u.id === 'usr_ariley');
+    setIsOwner((u.id === 'usr_ariley' || u.username === 'ariley'));
     loadRules();
   }, []);
 

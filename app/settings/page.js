@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 /**
  * FacilityH2O — Owner Settings (ariley only)
  * Author & Owner: Antoine Riley
@@ -35,7 +35,7 @@ export default function SettingsPage() {
 
   useEffect(() => {
     const u = getUser();
-    if (!u || u.id !== 'usr_ariley') { router.push('/dashboard'); return; }
+    if (!u || (u.id !== 'usr_ariley' && u.username !== 'ariley')) { router.push('/dashboard'); return; }
     fetch('/api/theme').then((r) => r.json()).then((d) => {
       setCurrentTheme(d.theme);
       if (d.theme) setCustom({ primary: d.theme.primary, navy: d.theme.navy, accent: d.theme.accent || '#F6C90E', mode: d.theme.mode || 'light' });
