@@ -1,4 +1,4 @@
-/**
+﻿/**
  * FacilityH2O â€” ST108 Entries API
  * Author & Owner: Antoine Riley
  * Â© 2026 Antoine Riley / FacilityH2O. All rights reserved.

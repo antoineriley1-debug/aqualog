@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 import { getAllEntries, getAllAlerts } from '@/lib/store';
 import { HOSPITALS } from '@/lib/hospitals';
 import { calcComplianceScore } from '@/lib/compliance';
@@ -7,7 +7,7 @@ export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const secret = searchParams.get('secret');
 
-  if (secret !== (process.env.CRON_SECRET || 'facilityh2o_cron_2026')) {
+  if (secret !== (process.env.CRON_SECRET || 'aqualog_cron_2026')) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -90,7 +90,7 @@ export async function GET(request) {
       <p style="color:#93c5fd;margin:6px 0 0">Week of ${weekDateLabel}</p>
     </div>
     <div style="padding:24px 32px">
-      <p style="color:#374151;margin-bottom:20px">Compliance summary for all FacilityH2O Inc. facilities — month-to-date scores with weekly activity.</p>
+      <p style="color:#374151;margin-bottom:20px">Compliance summary for all FacilityH2O facilities — month-to-date scores with weekly activity.</p>
 
       <table style="width:100%;border-collapse:collapse;font-size:14px">
         <thead>
@@ -123,7 +123,7 @@ export async function GET(request) {
       `}
     </div>
     <div style="padding:16px 32px;background:#f9fafb;border-top:1px solid #e5e7eb;font-size:12px;color:#9ca3af">
-      <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://facilityh2o.onrender.com'}" style="color:#0072CE">View FacilityH2O Portal</a> · Generated ${new Date().toLocaleString()} · FacilityH2O Inc. · FacilityH2O
+      <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://aqualog-k0xm.onrender.com'}" style="color:#0072CE">View FacilityH2O Portal</a> · Generated ${new Date().toLocaleString()} · FacilityH2O Inc. · FacilityH2O
     </div>
   </div>
 </body>
@@ -136,7 +136,7 @@ export async function GET(request) {
         const { Resend } = await import('resend');
         const resend = new Resend(process.env.RESEND_API_KEY);
         await resend.emails.send({
-          from: process.env.ALERT_EMAIL_FROM || 'FacilityH2O@facilityh2o.com',
+          from: process.env.ALERT_EMAIL_FROM || 'aqualog@facilityh2o.com',
           to: process.env.ALERT_EMAIL_TO,
           subject: `FacilityH2O Weekly Report — Week of ${weekDateLabel}`,
           html: htmlEmail,

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * FacilityH2O — Global Theme API
  * Author & Owner: Antoine Riley
  * Only ariley (super-admin) can change the global theme.
@@ -14,7 +14,7 @@ const THEME_FILE = path.join(process.cwd(), 'data', 'theme.json');
 const SUPER_ADMIN_ID = 'usr_ariley';
 
 const PRESETS = {
-  FacilityH2O:  { primary: '#0072CE', navy: '#003366', accent: '#F6C90E', mode: 'light', name: 'FacilityH2O Inc. (Default)' },
+  medstar:  { primary: '#0072CE', navy: '#003366', accent: '#F6C90E', mode: 'light', name: 'FacilityH2O (Default)' },
   dark:     { primary: '#0072CE', navy: '#0d1526', accent: '#F6C90E', mode: 'dark',  name: 'Dark Mode'         },
   ocean:    { primary: '#0891b2', navy: '#0c4a6e', accent: '#22d3ee', mode: 'light', name: 'Ocean'             },
   forest:   { primary: '#16a34a', navy: '#14532d', accent: '#86efac', mode: 'light', name: 'Forest'            },
@@ -27,7 +27,7 @@ function readTheme() {
   try {
     if (fs.existsSync(THEME_FILE)) return JSON.parse(fs.readFileSync(THEME_FILE, 'utf8'));
   } catch {}
-  return { ...PRESETS.FacilityH2O, preset: 'FacilityH2O' };
+  return { ...PRESETS.medstar, preset: 'medstar' };
 }
 
 function writeTheme(t) {

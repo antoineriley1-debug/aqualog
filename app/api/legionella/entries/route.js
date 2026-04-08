@@ -1,4 +1,4 @@
-/**
+﻿/**
  * FacilityH2O â€” Legionella / WMP Entries API
  * Author & Owner: Antoine Riley
  * Â© 2026 Antoine Riley / FacilityH2O. All rights reserved.

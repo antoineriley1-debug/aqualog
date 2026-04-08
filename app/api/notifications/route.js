@@ -1,4 +1,4 @@
-/**
+﻿/**
  * FacilityH2O — Notification Rules API (per-hospital + global)
  * Author & Owner: Antoine Riley
  * © 2026 Antoine Riley / FacilityH2O. All rights reserved.

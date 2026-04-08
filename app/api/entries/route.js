@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 import { getUserFromRequest } from '@/lib/auth';
 import { getAllEntries, getEntriesForHospital, addEntry, logAudit, addAlert } from '@/lib/store';
 import { getOutOfRangeParams, CHEMISTRY_RANGES } from '@/lib/chemistryRanges';

@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { getAllEntries } from '@/lib/store';
 import { HOSPITALS } from '@/lib/hospitals';
@@ -12,7 +12,7 @@ export async function GET(request) {
   // Allow internal calls with secret key OR admin session
   const { searchParams } = new URL(request.url);
   const secret = searchParams.get('secret');
-  const isInternal = secret === (process.env.CRON_SECRET || 'facilityh2o_cron_2026');
+  const isInternal = secret === (process.env.CRON_SECRET || 'aqualog_cron_2026');
 
   if (!isInternal) {
     const session = await getSession();
@@ -84,7 +84,7 @@ export async function GET(request) {
           name: director.name,
           office: director.office,
           mobile: director.mobile,
-          email: director.FacilityH2OEmail,
+          email: director.medstarEmail,
         } : null,
       });
     }

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * FacilityH2O — Password Reset API
  * Author & Owner: Antoine Riley
  * © 2026 Antoine Riley / FacilityH2O. All rights reserved.
@@ -48,7 +48,7 @@ export async function POST(request) {
     };
     writeTokens(tokens);
 
-    const baseUrl  = process.env.NEXT_PUBLIC_APP_URL || 'https://www.facilityh2o.com';
+    const baseUrl  = process.env.NEXT_PUBLIC_APP_URL || 'https://www.medstarh20log.com';
     const resetUrl = `${baseUrl}/reset-password?token=${resetToken}`;
 
     // Try email via Resend
@@ -58,7 +58,7 @@ export async function POST(request) {
         const { Resend } = await import('resend');
         const resend = new Resend(process.env.RESEND_API_KEY);
         await resend.emails.send({
-          from: process.env.ALERT_EMAIL_FROM || 'FacilityH2O@facilityh2o.com',
+          from: process.env.ALERT_EMAIL_FROM || 'aqualog@medstarh20log.com',
           to: userEmail,
           subject: 'FacilityH2O — Password Reset Request',
           text: `You requested a password reset for your FacilityH2O account.\n\nClick this link to reset your password (valid for 1 hour):\n${resetUrl}\n\nIf you did not request this, ignore this email.\n\nFacilityH2O · FacilityH2O Inc. Water Chemistry Portal`,
