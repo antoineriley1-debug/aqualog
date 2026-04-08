@@ -32,6 +32,8 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(null);
   const [msg, setMsg] = useState(null);
   const [custom, setCustom] = useState({ primary: '#0072CE', navy: '#003366', accent: '#F6C90E', mode: 'light' });
+  const [testingAlert, setTestingAlert] = useState(false);
+  const [testResult, setTestResult] = useState(null);
 
   useEffect(() => {
     const u = getUser();
@@ -74,6 +76,20 @@ export default function SettingsPage() {
       applyThemeLocally(data.theme);
     } else {
       setMsg({ type: 'error', text: data.error });
+    }
+  };
+
+  const fireTestAlert = async () => {
+    setTestingAlert(true);
+    setTestResult(null);
+    try {
+      const res = await fetch('/api/test-alert', { method: 'POST' });
+      const data = await res.json();
+      setTestResult(data);
+    } catch (err) {
+      setTestResult({ success: false, error: err.message });
+    } finally {
+      setTestingAlert(false);
     }
   };
 
@@ -207,6 +223,85 @@ export default function SettingsPage() {
           >
             {saving === 'custom' ? 'Applying...' : '💾 Apply Custom Theme'}
           </button>
+        </div>
+
+        {/* ── TEST ALERT SYSTEM ── */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mt-6">
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-xl flex-shrink-0">🔔</div>
+            <div className="flex-1">
+              <h2 className="text-base font-bold text-gray-800">Test Alert Notifications</h2>
+              <p className="text-sm text-gray-500 mt-1">
+                Fires a real test email and SMS to every configured recipient to verify your notification system is working. This is logged to the audit trail.
+              </p>
+
+              <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-600 bg-gray-50 rounded-lg p-4">
+                <div>
+                  <span className="font-semibold text-gray-700">📧 Email:</span> Sends to <code className="bg-gray-100 px-1 rounded text-xs">ALERT_EMAIL_TO</code> env var + notification rules
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-700">📱 SMS:</span> Sends to all phone numbers in notification rules (Twilio)
+                </div>
+              </div>
+
+              <button
+                onClick={fireTestAlert}
+                disabled={testingAlert}
+                className="mt-4 flex items-center gap-2 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition"
+              >
+                {testingAlert ? (
+                  <><span className="animate-spin">⟳</span> Sending test alert...</>
+                ) : (
+                  <>🔔 Send Test Alert</>
+                )}
+              </button>
+
+              {/* Results */}
+              {testResult && (
+                <div className="mt-4 rounded-xl border overflow-hidden">
+                  {/* Email result */}
+                  <div className={`flex items-start gap-3 p-4 border-b ${testResult.email?.ok ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'}`}>
+                    <span className="text-lg">{testResult.email?.ok ? '✅' : '❌'}</span>
+                    <div>
+                      <div className="font-semibold text-sm text-gray-800">
+                        Email — {testResult.email?.ok ? 'Sent Successfully' : 'Failed'}
+                      </div>
+                      {testResult.email?.ok ? (
+                        <div className="text-xs text-gray-500 mt-0.5">
+                          Delivered to: {testResult.email?.recipients?.join(', ') || 'configured recipients'}
+                          {testResult.email?.messageId && <span className="ml-2 text-gray-400">ID: {testResult.email.messageId}</span>}
+                        </div>
+                      ) : (
+                        <div className="text-xs text-red-600 mt-0.5">{testResult.email?.error}</div>
+                      )}
+                    </div>
+                  </div>
+                  {/* SMS result */}
+                  <div className={`flex items-start gap-3 p-4 ${testResult.sms?.ok ? 'bg-green-50' : 'bg-red-50'}`}>
+                    <span className="text-lg">{testResult.sms?.ok ? '✅' : '❌'}</span>
+                    <div>
+                      <div className="font-semibold text-sm text-gray-800">
+                        SMS — {testResult.sms?.ok ? 'Sent Successfully' : 'Failed / Not Configured'}
+                      </div>
+                      {testResult.sms?.ok ? (
+                        <div className="text-xs text-gray-500 mt-0.5">
+                          Sent to: {testResult.sms?.recipients?.join(', ') || 'configured numbers'}
+                        </div>
+                      ) : (
+                        <div className="text-xs text-red-600 mt-0.5">{testResult.sms?.error}</div>
+                      )}
+                    </div>
+                  </div>
+                  {/* Timestamp */}
+                  {testResult.timestamp && (
+                    <div className="bg-gray-50 px-4 py-2 text-xs text-gray-400 border-t border-gray-100">
+                      Test fired at: {testResult.timestamp}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
       </main>
