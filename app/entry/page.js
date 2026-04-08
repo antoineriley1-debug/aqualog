@@ -109,9 +109,26 @@ function EntryForm() {
 
   const allFilled = hospital && operatorName && testerName && time && fields.every((f) => values[f.key] !== undefined && values[f.key] !== '');
 
+  const getMissingFields = () => {
+    const missing = [];
+    if (!hospital) missing.push('Hospital');
+    if (!testerName) missing.push('Tester Name');
+    if (!operatorName) missing.push('Logged By');
+    if (!time) missing.push('Time of Reading');
+    fields.forEach((f) => {
+      if (values[f.key] === undefined || values[f.key] === '') missing.push(f.label);
+    });
+    return missing;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!allFilled) return;
+    if (!allFilled) {
+      const missing = getMissingFields();
+      setError(`Please fill in: ${missing.join(', ')}`);
+      return;
+    }
+    setError('');
     setSubmitting(true);
     setError('');
     setDriftWarnings([]);
@@ -436,8 +453,8 @@ function EntryForm() {
             <div className="sticky bottom-4 sm:relative sm:bottom-auto">
               <button
                 type="submit"
-                disabled={!allFilled || submitting}
-                className="w-full bg-[#0072CE] hover:bg-[#005fa3] text-white font-semibold py-4 sm:py-3 rounded-xl text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed shadow-lg sm:shadow-none"
+                disabled={submitting}
+                className="w-full bg-[#0072CE] hover:bg-[#005fa3] text-white font-semibold py-4 sm:py-3 rounded-xl text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed shadow-lg sm:shadow-none"
               >
                 {submitting ? 'Saving...' : 'Submit Entry'}
               </button>
