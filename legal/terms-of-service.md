@@ -39,7 +39,7 @@ The Service is intended for use by facility managers, water treatment profession
 | Professional | $149/month  | Up to 10 facilities, 25 users, advanced reporting, email alerts         |
 | Enterprise   | $299/month  | Unlimited facilities and users, API access, 99% SLA, priority support   |
 
-Custom enterprise pricing is available for large multi-site organizations. Contact antoine.riley@crothall.com for details.
+Custom enterprise pricing is available for large multi-site organizations. Contact antoine.riley@facilityh2o.com for details.
 
 ### 3.2 Billing
 
@@ -73,7 +73,7 @@ New customers are eligible for a **14-day free trial** of the Professional plan.
 
 ### 5.1 Cancellation
 
-- You may cancel your subscription at any time by providing **30 days' written notice** to antoine.riley@crothall.com or via the account settings portal.
+- You may cancel your subscription at any time by providing **30 days' written notice** to antoine.riley@facilityh2o.com or via the account settings portal.
 - Cancellation takes effect at the end of the current billing period following the 30-day notice.
 
 ### 5.2 Refunds
@@ -241,7 +241,7 @@ We may update these Terms from time to time. We will notify you by email or in-a
 
 **FacilityH2O**
 Antoine Riley
-Email: antoine.riley@crothall.com
+Email: antoine.riley@facilityh2o.com
 Website: https://facilityh2o.com
 
 ---

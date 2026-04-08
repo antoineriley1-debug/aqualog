@@ -1,85 +1,268 @@
 'use client';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
 
-const NAV_ITEMS = [
-  { href: '/dashboard', label: 'Dashboard', icon: '🏠' },
-  { href: '/entry', label: 'New Entry', icon: '✏️' },
-  { href: '/history', label: 'History', icon: '📋' },
-  { href: '/trends', label: 'Trends', icon: '📈' },
-  { href: '/alerts', label: 'Alerts', icon: '🔔', adminOnly: false },
-  { href: '/reports', label: 'Reports', icon: '📊', adminOnly: true },
-  { href: '/settings', label: 'Settings', icon: '⚙️' },
-];
-
-export default function Sidebar({ user, alertCount = 0 }) {
+export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [loggingOut, setLoggingOut] = useState(false);
+  const [user, setUser] = useState(null);
+  const [alertCount, setAlertCount] = useState(0);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isDark, setIsDark] = useState(false);
 
-  const isAdmin = user?.role === 'admin' || user?.role === 'superadmin';
+  useEffect(() => {
+    // Sync toggle state with current theme
+    setIsDark(document.documentElement.classList.contains('dark'));
+  }, []);
 
-  async function handleLogout() {
-    setLoggingOut(true);
+  const toggleTheme = () => {
+    const html = document.documentElement;
+    if (html.classList.contains('dark')) {
+      html.classList.remove('dark');
+      localStorage.setItem('facilityh2o-theme', 'light');
+      setIsDark(false);
+    } else {
+      html.classList.add('dark');
+      localStorage.setItem('facilityh2o-theme', 'dark');
+      setIsDark(true);
+    }
+  };
+
+  useEffect(() => {
+    const raw = document.cookie
+      .split(';')
+      .find((c) => c.trim().startsWith('facilityh2o_user='));
+    if (raw) {
+      try {
+        const val = decodeURIComponent(raw.split('=')[1]);
+        setUser(JSON.parse(val));
+      } catch {}
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user?.role === 'admin') {
+      fetch('/api/alerts')
+        .then((r) => r.json())
+        .then((data) => {
+          const unread = (data.alerts || []).filter((a) => !a.acknowledged).length;
+          setAlertCount(unread);
+        })
+        .catch(() => {});
+    }
+  }, [user]);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  const handleLogout = async () => {
     await fetch('/api/logout', { method: 'POST' });
     router.push('/login');
-  }
+  };
+
+  const navItems = [
+    { href: '/dashboard', label: '🏠 Dashboard', shortLabel: 'Home' },
+    { href: '/entry', label: '➕ New Entry', shortLabel: 'Entry' },
+    { href: '/history', label: '📋 History', shortLabel: 'History' },
+    { href: '/trends', label: '📈 Trends', shortLabel: 'Trends' },
+    ...(user?.role === 'admin'
+      ? [
+          { href: '/alerts', label: '🔔 Alerts', shortLabel: 'Alerts', badge: alertCount },
+          ...(user?.id === 'usr_ariley' ? [{ href: '/settings', label: '🎨 Site Settings', shortLabel: 'Settings' }] : []),
+          { href: '/reports', label: '📊 Reports', shortLabel: 'Reports' },
+          { href: '/compliance', label: '📈 Compliance', shortLabel: 'Compliance' },
+          { href: '/audit', label: '🔍 Audit Log', shortLabel: 'Audit' },
+          { href: '/notifications', label: '🔔 Alert Rules', shortLabel: 'Alerts' },
+          { href: '/users', label: '👥 Users', shortLabel: 'Users' },
+          { href: '/directory', label: '📞 Directory', shortLabel: 'Directory' },
+          // ── AAMI ST108 Section ──
+          { href: '/st108', label: '💧 ST108 Water Log', shortLabel: 'ST108' },
+          { href: '/st108/report', label: '📋 ST108 Report', shortLabel: 'ST108 Report' },
+          { href: '/st108/audit', label: '✅ ST108 Self-Audit', shortLabel: 'ST108 Audit' },
+          // ── Legionella / WMP ──
+          { href: '/legionella', label: '🦠 Legionella / WMP', shortLabel: 'Legionella' },
+          // ── Lab Chain of Custody ──
+          { href: '/coc', label: '🧪 Chain of Custody', shortLabel: 'COC' },
+        ]
+      : []),
+    { href: '/legal', label: '📋 Legal & Policies', shortLabel: 'Legal' },
+  ];
+
+  const hospitalNames = {
+    whc: 'Washington Hospital Center',
+    somd: 'Southern Maryland',
+    harbor: 'Harbor Hospital',
+    mont: 'Montgomery Medical',
+    geo: 'Georgetown University',
+    frank: 'Franklin Square',
+    gs: 'Good Samaritan',
+    union: 'Union Memorial',
+    stm: "St. Mary's Hospital",
+    nrh: 'National Rehab',
+  };
+
+  const NavLink = ({ href, label, badge, onClick }) => {
+    const active = pathname === href;
+    return (
+      <Link
+        href={href}
+        onClick={onClick}
+        className={`flex items-center justify-between px-3 py-3 rounded-lg text-sm font-medium transition-colors ${
+          active
+            ? 'bg-[#0072CE] text-white'
+            : 'text-blue-100 hover:bg-blue-800/50 hover:text-white'
+        }`}
+      >
+        <span>{label}</span>
+        {badge > 0 && (
+          <span className="bg-red-500 text-white text-xs rounded-full px-2 py-0.5 min-w-[20px] text-center">
+            {badge}
+          </span>
+        )}
+      </Link>
+    );
+  };
 
   return (
-    <aside className="w-64 min-h-screen bg-cyan-900 text-cyan-100 flex flex-col fixed left-0 top-0 z-40">
-      {/* Logo */}
-      <div className="px-6 py-5 border-b border-cyan-800">
-        <Link href="/dashboard" className="flex items-center gap-2 text-white font-bold text-lg">
-          <span className="text-2xl">💧</span>
-          <span>FacilityH2O</span>
-        </Link>
+    <>
+      {/* ── DESKTOP SIDEBAR (hidden on mobile) ── */}
+      <aside className="hidden md:flex w-64 min-h-screen bg-[#003366] text-white flex-col flex-shrink-0">
+        {/* Logo */}
+        <div className="px-6 py-5 border-b border-blue-800">
+          <div className="text-2xl font-bold">💧 FacilityH2O</div>
+          <div className="text-xs text-blue-300 mt-1">FacilityH2O Inc.</div>
+        </div>
+
+        {/* User Info */}
         {user && (
-          <div className="mt-3">
-            <p className="text-xs text-cyan-300 truncate">{user.name}</p>
-            <p className="text-xs text-cyan-400 capitalize">{user.role}</p>
+          <div className="px-6 py-4 border-b border-blue-800 bg-blue-900/30">
+            <div className="text-sm font-semibold">{user.name}</div>
+            {user.role === 'admin' ? (
+              <div className="text-xs text-blue-300 mt-0.5">Systems Director · All Facilities</div>
+            ) : (
+              <div className="text-xs text-blue-300 mt-0.5">
+                {hospitalNames[user.hospital] || user.hospital}
+              </div>
+            )}
           </div>
         )}
-      </div>
 
-      {/* Nav */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
-        {NAV_ITEMS.map((item) => {
-          if (item.adminOnly && !isAdmin) return null;
-          const active = pathname === item.href || pathname.startsWith(item.href + '/');
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                active
-                  ? 'bg-cyan-600 text-white'
-                  : 'text-cyan-200 hover:bg-cyan-800 hover:text-white'
-              }`}
-            >
-              <span>{item.icon}</span>
-              <span>{item.label}</span>
-              {item.href === '/alerts' && alertCount > 0 && (
-                <span className="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                  {alertCount}
-                </span>
-              )}
+        {/* Nav */}
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+          {navItems.map(({ href, label, badge }) => (
+            <NavLink key={href} href={href} label={label} badge={badge} />
+          ))}
+        </nav>
+
+        {/* Theme + Logout */}
+        <div className="px-3 py-4 border-t border-blue-800 space-y-1">
+          <button
+            onClick={toggleTheme}
+            className="theme-toggle"
+          >
+            {isDark ? '☀️ Day Mode' : '🌙 Night Mode'}
+          </button>
+          <button
+            onClick={handleLogout}
+            className="w-full px-3 py-2.5 text-sm text-blue-200 hover:text-white hover:bg-blue-800/50 rounded-lg text-left transition-colors"
+          >
+            🚪 Sign Out
+          </button>
+        </div>
+      </aside>
+
+      {/* ── MOBILE TOP BAR ── */}
+      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-[#003366] text-white flex items-center justify-between px-4 py-3 shadow-lg">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="p-1.5 rounded-lg hover:bg-blue-800/50 transition"
+            aria-label="Menu"
+          >
+            {mobileOpen ? (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
+          </button>
+          <span className="font-bold text-lg">💧 FacilityH2O</span>
+        </div>
+        <div className="flex items-center gap-2">
+          {alertCount > 0 && (
+            <Link href="/alerts" className="bg-red-500 text-white text-xs rounded-full px-2 py-0.5 font-bold">
+              {alertCount}
             </Link>
-          );
-        })}
-      </nav>
-
-      {/* Logout */}
-      <div className="px-3 pb-6 border-t border-cyan-800 pt-4">
-        <button
-          onClick={handleLogout}
-          disabled={loggingOut}
-          className="flex items-center gap-3 w-full px-4 py-2.5 rounded-lg text-sm font-medium text-cyan-300 hover:bg-cyan-800 hover:text-white transition-colors"
-        >
-          <span>🚪</span>
-          <span>{loggingOut ? 'Logging out…' : 'Logout'}</span>
-        </button>
+          )}
+          <Link href="/entry" className="bg-[#0072CE] text-white text-xs font-semibold px-3 py-1.5 rounded-lg">
+            + Entry
+          </Link>
+        </div>
       </div>
-    </aside>
+
+      {/* ── MOBILE SLIDE-OUT DRAWER ── */}
+      {mobileOpen && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="md:hidden fixed inset-0 z-40 bg-black/50"
+            onClick={() => setMobileOpen(false)}
+          />
+          {/* Drawer */}
+          <div className="md:hidden fixed top-0 left-0 bottom-0 z-50 w-72 bg-[#003366] text-white flex flex-col shadow-2xl">
+            <div className="px-6 py-5 border-b border-blue-800 flex items-center justify-between">
+              <div>
+                <div className="text-xl font-bold">💧 FacilityH2O</div>
+                <div className="text-xs text-blue-300 mt-0.5">FacilityH2O Inc.</div>
+              </div>
+              <button onClick={() => setMobileOpen(false)} className="p-1.5 hover:bg-blue-800/50 rounded-lg">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {user && (
+              <div className="px-6 py-3 border-b border-blue-800 bg-blue-900/30">
+                <div className="text-sm font-semibold">{user.name}</div>
+                <div className="text-xs text-blue-300 mt-0.5">
+                  {user.role === 'admin' ? 'Systems Director · All Facilities' : hospitalNames[user.hospital] || user.hospital}
+                </div>
+              </div>
+            )}
+
+            <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+              {navItems.map(({ href, label, badge }) => (
+                <NavLink key={href} href={href} label={label} badge={badge} onClick={() => setMobileOpen(false)} />
+              ))}
+            </nav>
+
+            <div className="px-3 py-4 border-t border-blue-800 space-y-1">
+              <button
+                onClick={toggleTheme}
+                className="theme-toggle"
+              >
+                {isDark ? '☀️ Day Mode' : '🌙 Night Mode'}
+              </button>
+              <button
+                onClick={handleLogout}
+                className="w-full px-3 py-3 text-sm text-blue-200 hover:text-white hover:bg-blue-800/50 rounded-lg text-left transition-colors"
+              >
+                🚪 Sign Out
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ── MOBILE SPACER (pushes content below top bar) ── */}
+      <div className="md:hidden h-14 flex-shrink-0" />
+    </>
   );
 }

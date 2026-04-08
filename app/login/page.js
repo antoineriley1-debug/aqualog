@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -21,8 +20,11 @@ export default function LoginPage() {
         body: JSON.stringify({ username, password }),
       });
       const data = await res.json();
-      if (data.ok) router.push('/dashboard');
-      else setError(data.error || 'Invalid credentials');
+      if (data.success) {
+        router.push('/dashboard');
+      } else {
+        setError(data.error || 'Invalid credentials');
+      }
     } catch {
       setError('Connection error. Please try again.');
     } finally {
@@ -31,52 +33,75 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F0F9FF] flex flex-col items-center justify-center p-4">
-      <Link href="/" className="flex items-center gap-2 mb-8">
-        <span className="text-3xl">💧</span>
-        <span className="text-xl font-bold text-[#164E63]">FacilityH2O</span>
-      </Link>
-      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">Welcome back</h1>
-        <p className="text-gray-400 text-sm mb-7">Sign in to your account</p>
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Email or Username</label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              autoFocus
-              className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0891B2]"
-              placeholder="you@company.com"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0891B2]"
-              placeholder="••••••••"
-            />
-          </div>
-          {error && <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl">{error}</div>}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-[#0891B2] hover:bg-[#0E7490] text-white font-semibold py-3 rounded-xl text-sm transition disabled:opacity-60"
-          >
-            {loading ? 'Signing in...' : 'Sign In'}
-          </button>
-        </form>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="text-5xl mb-3">💧</div>
+          <h1 className="text-3xl font-bold text-[#003366]">FacilityH2O</h1>
+          <p className="text-gray-500 mt-1 text-sm">FacilityH2O Inc. · Water Chemistry Portal</p>
+        </div>
+
+        {/* Card */}
+        <div className="bg-white rounded-2xl shadow-lg p-8">
+          <h2 className="text-xl font-semibold text-gray-800 mb-6">Sign In</h2>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                Username
+              </label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                autoFocus
+                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0072CE] focus:border-transparent"
+                placeholder="Enter your username"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0072CE] focus:border-transparent"
+                placeholder="Enter your password"
+              />
+            </div>
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg">
+                {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-[#0072CE] hover:bg-[#005fa3] text-white font-semibold py-2.5 rounded-lg text-sm transition-colors disabled:opacity-60"
+            >
+              {loading ? 'Signing in...' : 'Sign In'}
+            </button>
+
+            <div className="text-center pt-2">
+              <a href="/reset-password" className="text-xs text-gray-400 hover:text-[#0072CE] transition-colors">
+                Forgot password?
+              </a>
+            </div>
+          </form>
+        </div>
+
+        <p className="text-center text-xs text-gray-400 mt-6">
+          Managed by FacilityH2O · Confidential
+        </p>
       </div>
-      <p className="text-gray-400 text-sm mt-6">
-        No account?{' '}
-        <Link href="/signup" className="text-[#0891B2] hover:underline font-medium">Start free trial →</Link>
-      </p>
     </div>
   );
 }

@@ -1,44 +1,81 @@
+/**
+ * FacilityH2O — Authentication API
+ * Author & Owner: Antoine Riley
+ * © 2026 Antoine Riley / FacilityH2O. All rights reserved.
+ *
+ * Every login attempt (success AND failure) is logged to the audit trail
+ * with timestamp, IP address, user agent, and outcome.
+ */
+
 import { NextResponse } from 'next/server';
-import { validateCredentials, createSessionToken } from '@/lib/auth';
-import { cookies } from 'next/headers';
+import { validateUser } from '@/lib/auth';
+import { logAudit } from '@/lib/store';
 
 export async function POST(request) {
+  const ip        = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+  const userAgent = request.headers.get('user-agent') || 'unknown';
+  const timestamp = new Date().toISOString();
+
   try {
     const body = await request.json();
     const { username, password } = body;
 
     if (!username || !password) {
-      return NextResponse.json({ error: 'Username and password required' }, { status: 400 });
+      return NextResponse.json({ error: 'Username and password required.' }, { status: 400 });
     }
 
-    const user = validateCredentials(username.trim(), password);
+    const user = validateUser(username, password);
+
     if (!user) {
-      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+      // Log FAILED login attempt — always record these
+      logAudit({
+        type:      'auth',
+        action:    'login_failed',
+        userId:    null,
+        username:  username,
+        detail:    `Failed login attempt for username "${username}"`,
+        outcome:   'FAILED',
+        ip,
+        userAgent,
+        timestamp,
+      });
+      return NextResponse.json({ error: 'Invalid username or password.' }, { status: 401 });
     }
 
-    const token = createSessionToken(user);
+    // Log SUCCESSFUL login
+    logAudit({
+      type:      'auth',
+      action:    'login',
+      userId:    user.id,
+      username:  user.username,
+      detail:    `Successful login — ${user.role} account`,
+      outcome:   'SUCCESS',
+      role:      user.role,
+      ip,
+      userAgent,
+      timestamp,
+    });
 
-    const cookieStore = cookies();
-    cookieStore.set('facilityh2o_session', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+    const response = NextResponse.json({ success: true, user });
+    response.cookies.set('facilityh2o_user', JSON.stringify(user), {
+      httpOnly: false,
       path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      sameSite: 'lax',
     });
 
-    return NextResponse.json({
-      ok: true,
-      user: {
-        id: user.id,
-        name: user.name,
-        role: user.role,
-        orgId: user.orgId,
-        facilities: user.facilities,
-      },
-    });
+    return response;
   } catch (err) {
-    console.error('[auth] Error:', err);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    // Log error during auth
+    logAudit({
+      type:     'auth',
+      action:   'login_error',
+      detail:   `Auth error: ${err.message}`,
+      outcome:  'ERROR',
+      ip,
+      userAgent,
+      timestamp,
+    });
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 });
   }
 }

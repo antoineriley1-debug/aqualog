@@ -2,48 +2,98 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Theme variables ─────────────────────────────────────────────────────── */
 :root {
-  --brand-primary: #0891b2;
-  --brand-dark: #164e63;
-  --brand-bg: #f0f9ff;
+  --navy:         #003366;
+  --FacilityH2O-blue: #0072CE;
+
+  /* Light mode (default) */
+  --bg:           #f3f6fa;
+  --surface:      #ffffff;
+  --surface-2:    #f8fafc;
+  --border:       #e5eaf0;
+  --text:         #1a202c;
+  --text-muted:   #718096;
+  --sidebar-bg:   #003366;
+  --input-bg:     #ffffff;
+  --card-shadow:  0 1px 3px rgba(0,0,0,0.08);
 }
 
+/* Dark mode */
+html.dark {
+  --bg:           #0f1117;
+  --surface:      #1a1d27;
+  --surface-2:    #13151e;
+  --border:       #2d3148;
+  --text:         #e2e8f0;
+  --text-muted:   #8892a4;
+  --sidebar-bg:   #0d1526;
+  --input-bg:     #1e2232;
+  --card-shadow:  0 1px 3px rgba(0,0,0,0.4);
+}
+
+/* Apply theme vars to body */
 body {
-  background-color: var(--brand-bg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.sidebar-link {
-  @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors;
+/* Dark mode overrides for Tailwind utility classes */
+html.dark .bg-gray-50   { background-color: var(--bg) !important; }
+html.dark .bg-white     { background-color: var(--surface) !important; }
+html.dark .bg-gray-100  { background-color: var(--surface-2) !important; }
+html.dark .border-gray-100,
+html.dark .border-gray-200,
+html.dark .border-gray-300 { border-color: var(--border) !important; }
+html.dark .text-gray-900 { color: var(--text) !important; }
+html.dark .text-gray-800 { color: var(--text) !important; }
+html.dark .text-gray-700 { color: #c4cad5 !important; }
+html.dark .text-gray-600 { color: #a0aab5 !important; }
+html.dark .text-gray-500 { color: var(--text-muted) !important; }
+html.dark .text-gray-400 { color: #6b7380 !important; }
+html.dark .divide-gray-50 > * + * { border-color: var(--border) !important; }
+html.dark .divide-y > * + * { border-color: var(--border) !important; }
+html.dark .shadow-sm { box-shadow: var(--card-shadow) !important; }
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: var(--input-bg) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
 }
+html.dark input::placeholder,
+html.dark textarea::placeholder { color: var(--text-muted) !important; }
+html.dark .bg-gray-50.hover\:bg-gray-50:hover { background-color: #1e2232 !important; }
+html.dark tr:hover td,
+html.dark .hover\:bg-gray-50:hover { background-color: #1e2232 !important; }
+html.dark thead,
+html.dark .bg-gray-50:not(.hover\:bg-gray-50) { background-color: var(--surface-2) !important; }
 
-.sidebar-link:hover {
-  @apply bg-cyan-800 text-white;
-}
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+html.dark ::-webkit-scrollbar-track { background: #1a1d27; }
+html.dark ::-webkit-scrollbar-thumb { background: #3d4460; }
 
-.sidebar-link.active {
-  @apply bg-cyan-600 text-white;
+/* ── Theme toggle button ─────────────────────────────────────────────────── */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+  color: #93c5fd;
+  background: transparent;
 }
-
-.btn-primary {
-  @apply bg-cyan-600 hover:bg-cyan-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors;
-}
-
-.btn-secondary {
-  @apply border border-cyan-600 text-cyan-600 hover:bg-cyan-50 font-semibold px-6 py-3 rounded-lg transition-colors;
-}
-
-.card {
-  @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6;
-}
-
-.input-field {
-  @apply w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent;
-}
-
-.badge-alert {
-  @apply bg-red-100 text-red-700 text-xs font-semibold px-2 py-0.5 rounded-full;
-}
-
-.badge-ok {
-  @apply bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded-full;
-}
+.theme-toggle:hover { background: rgba(255,255,255,0.08); }

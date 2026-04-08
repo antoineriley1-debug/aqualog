@@ -62,7 +62,7 @@ We explicitly do **not** collect or store:
 - **Government-issued ID numbers**
 - Personal financial data beyond billing contact information
 
-If you believe you have accidentally entered PHI into FacilityH2O, contact us immediately at antoine.riley@crothall.com for removal assistance.
+If you believe you have accidentally entered PHI into FacilityH2O, contact us immediately at antoine.riley@facilityh2o.com for removal assistance.
 
 ---
 
@@ -122,7 +122,7 @@ Depending on your jurisdiction, you may have the following rights with respect t
 - **Objection / Restriction:** Object to certain processing or request we restrict processing.
 - **Withdraw Consent:** Where processing is based on consent, withdraw that consent at any time.
 
-To exercise these rights, contact: **antoine.riley@crothall.com**
+To exercise these rights, contact: **antoine.riley@facilityh2o.com**
 
 We will respond to verifiable requests within **30 days**. We may need to verify your identity before processing your request.
 
@@ -168,7 +168,7 @@ FacilityH2O is used in clinical environments for **facility infrastructure manag
 - The Service tracks water chemistry for building systems — not patient care systems.
 - Healthcare customers who contractually require a Business Associate Agreement (BAA) may request our template BAA. This is provided as a courtesy; we do not believe a BAA is legally required given the nature of the data we process.
 
-For BAA requests: antoine.riley@crothall.com
+For BAA requests: antoine.riley@facilityh2o.com
 
 ---
 
@@ -206,7 +206,7 @@ We may update this Privacy Policy periodically. We will notify you by email or i
 For privacy-related questions, data requests, or concerns:
 
 **FacilityH2O / Antoine Riley**
-Email: antoine.riley@crothall.com
+Email: antoine.riley@facilityh2o.com
 Website: https://facilityh2o.com
 
 ---

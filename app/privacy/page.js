@@ -120,7 +120,7 @@ export default function PrivacyPage() {
               </ul>
               <p className="text-green-700 text-xs mt-4">
                 If you believe PHI has been accidentally entered into FacilityH2O, contact us immediately at{' '}
-                <a href="mailto:antoine.riley@crothall.com" className="underline">antoine.riley@crothall.com</a> for removal assistance.
+                <a href="mailto:antoine.riley@facilityh2o.com" className="underline">antoine.riley@facilityh2o.com</a> for removal assistance.
               </p>
             </div>
           </section>
@@ -228,8 +228,8 @@ export default function PrivacyPage() {
             </div>
             <p className="text-gray-600 text-sm mt-4">
               To exercise these rights, contact{' '}
-              <a href="mailto:antoine.riley@crothall.com" className="text-[#0891B2] hover:underline">
-                antoine.riley@crothall.com
+              <a href="mailto:antoine.riley@facilityh2o.com" className="text-[#0891B2] hover:underline">
+                antoine.riley@facilityh2o.com
               </a>. We respond within 30 days.
             </p>
           </section>
@@ -276,8 +276,8 @@ export default function PrivacyPage() {
               <p className="font-bold text-[#164E63]">FacilityH2O / Antoine Riley</p>
               <p className="text-gray-600 text-sm mt-1">
                 Email:{' '}
-                <a href="mailto:antoine.riley@crothall.com" className="text-[#0891B2] hover:underline">
-                  antoine.riley@crothall.com
+                <a href="mailto:antoine.riley@facilityh2o.com" className="text-[#0891B2] hover:underline">
+                  antoine.riley@facilityh2o.com
                 </a>
               </p>
               <p className="text-gray-600 text-sm">

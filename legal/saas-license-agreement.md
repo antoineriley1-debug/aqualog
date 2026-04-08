@@ -246,7 +246,7 @@ Failure by either party to enforce any provision shall not constitute a waiver o
 ### 12.7 Notices
 
 Legal notices shall be sent to:
-- **Licensor:** antoine.riley@crothall.com
+- **Licensor:** antoine.riley@facilityh2o.com
 - **Licensee:** The contact email on file with FacilityH2O
 
 ---
@@ -254,7 +254,7 @@ Legal notices shall be sent to:
 ## Contact
 
 **FacilityH2O / Antoine Riley**
-Email: antoine.riley@crothall.com
+Email: antoine.riley@facilityh2o.com
 Website: https://facilityh2o.com
 
 ---

@@ -1,25 +1,50 @@
 import './globals.css';
+import fs from 'fs';
+import path from 'path';
 
 export const metadata = {
-  title: 'FacilityH2O — Water Chemistry Compliance. Simplified.',
-  description:
-    'Track boiler and chilled water readings across all your facilities. Stay compliant. Get alerted instantly.',
-  icons: { icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><text y="32" font-size="32">💧</text></svg>' },
+  title: 'FacilityH2O | FacilityH2O Inc.',
+  description: 'Water Chemistry Tracking Portal for FacilityH2O Inc. Hospitals',
 };
 
+function getGlobalTheme() {
+  try {
+    const f = path.join(process.cwd(), 'data', 'theme.json');
+    if (fs.existsSync(f)) return JSON.parse(fs.readFileSync(f, 'utf8'));
+  } catch {}
+  return { primary: '#0072CE', navy: '#003366', accent: '#F6C90E', mode: 'light' };
+}
+
 export default function RootLayout({ children }) {
+  const theme = getGlobalTheme();
+  const isDark = theme.mode === 'dark';
+
+  const cssVars = `
+    :root {
+      --navy:         ${theme.navy};
+      --FacilityH2O-blue: ${theme.primary};
+      --accent:       ${theme.accent || '#F6C90E'};
+    }
+  `;
+
   return (
-    <html lang="en">
+    <html lang="en" className={isDark ? 'dark' : ''}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
-        <style>{`body { font-family: 'Inter', sans-serif; }`}</style>
+        <style dangerouslySetInnerHTML={{ __html: cssVars }} />
+        {/* Allow personal dark/light override on top of global theme */}
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function() {
+            try {
+              var personal = localStorage.getItem('facilityh2o-theme-override');
+              if (personal === 'dark') document.documentElement.classList.add('dark');
+              else if (personal === 'light') document.documentElement.classList.remove('dark');
+            } catch(e) {}
+          })();
+        `}} />
       </head>
-      <body className="bg-sky-50 min-h-screen">{children}</body>
+      <body className="min-h-screen" style={{ backgroundColor: 'var(--bg)', color: 'var(--text)' }}>
+        {children}
+      </body>
     </html>
   );
 }

@@ -23,7 +23,7 @@ This Business Associate Agreement ("BAA" or "Agreement") is entered into as of t
 
 **Business Associate:**
 FacilityH2O (a pending LLC owned by Antoine Riley)
-Email: antoine.riley@crothall.com
+Email: antoine.riley@facilityh2o.com
 Website: https://facilityh2o.com
 ("Business Associate" or "BA")
 
@@ -271,7 +271,7 @@ Title: Owner / Operator
 
 Date: ___________________________
 
-Email: antoine.riley@crothall.com
+Email: antoine.riley@facilityh2o.com
 
 ---
 

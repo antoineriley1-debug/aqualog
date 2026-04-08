@@ -1,122 +1,123 @@
 [
   {
-    "id": "usr_admin",
-    "orgId": "org_demo",
+    "id": "usr_ariley",
     "username": "ariley",
     "password": "51351853",
     "role": "admin",
-    "name": "System Admin",
-    "email": "admin@facilityh2o.com",
-    "facilities": null,
+    "hospital": null,
+    "name": "Antoine Riley",
+    "email": "antoine.riley@facilityh2o.com",
     "active": true,
-    "createdAt": "2026-03-02T00:00:00Z"
+    "createdAt": "2026-04-02T00:00:00.000Z"
   },
   {
-    "id": "usr_op_wsh",
-    "orgId": "org_demo",
-    "username": "op_washington",
-    "password": "Wash2026!",
+    "id": "usr_whc",
+    "username": "op_whc",
+    "password": "WHC2026!",
     "role": "operator",
+    "hospital": "whc",
     "name": "Washington Operator",
-    "email": "op_washington@facilityh2o.com",
-    "facilities": ["fac_washington"],
+    "email": null,
     "active": true,
-    "createdAt": "2026-03-02T00:00:00Z"
+    "createdAt": "2026-04-02T00:00:00.000Z"
   },
   {
-    "id": "usr_op_lnc",
-    "orgId": "org_demo",
+    "id": "usr_somd",
     "username": "op_lincoln",
-    "password": "Linc2026!",
+    "password": "Lincoln2026!",
     "role": "operator",
+    "hospital": "somd",
     "name": "Lincoln Operator",
-    "email": "op_lincoln@facilityh2o.com",
-    "facilities": ["fac_lincoln"],
+    "email": null,
     "active": true,
-    "createdAt": "2026-03-02T00:00:00Z"
+    "createdAt": "2026-04-02T00:00:00.000Z"
   },
   {
-    "id": "usr_op_jef",
-    "orgId": "org_demo",
+    "id": "usr_harbor",
     "username": "op_jefferson",
-    "password": "Jeff2026!",
+    "password": "Jefferson2026!",
     "role": "operator",
+    "hospital": "harbor",
     "name": "Jefferson Operator",
-    "email": "op_jefferson@facilityh2o.com",
-    "facilities": ["fac_jefferson"],
+    "email": null,
     "active": true,
-    "createdAt": "2026-03-02T00:00:00Z"
+    "createdAt": "2026-04-02T00:00:00.000Z"
   },
   {
-    "id": "usr_op_mad",
-    "orgId": "org_demo",
+    "id": "usr_mont",
     "username": "op_madison",
-    "password": "Madi2026!",
+    "password": "Madison2026!",
     "role": "operator",
+    "hospital": "mont",
     "name": "Madison Operator",
-    "email": "op_madison@facilityh2o.com",
-    "facilities": ["fac_madison"],
+    "email": null,
     "active": true,
-    "createdAt": "2026-03-02T00:00:00Z"
+    "createdAt": "2026-04-02T00:00:00.000Z"
   },
   {
-    "id": "usr_op_adm",
-    "orgId": "org_demo",
+    "id": "usr_geo",
     "username": "op_adams",
-    "password": "Adam2026!",
+    "password": "Adams2026!",
     "role": "operator",
+    "hospital": "geo",
     "name": "Adams Operator",
-    "email": "op_adams@facilityh2o.com",
-    "facilities": ["fac_adams"],
+    "email": null,
     "active": true,
-    "createdAt": "2026-03-02T00:00:00Z"
+    "createdAt": "2026-04-02T00:00:00.000Z"
   },
   {
-    "id": "usr_op_mnr",
-    "orgId": "org_demo",
+    "id": "usr_frank",
     "username": "op_monroe",
-    "password": "Monr2026!",
+    "password": "Monroe2026!",
     "role": "operator",
+    "hospital": "frank",
     "name": "Monroe Operator",
-    "email": "op_monroe@facilityh2o.com",
-    "facilities": ["fac_monroe"],
+    "email": null,
     "active": true,
-    "createdAt": "2026-03-02T00:00:00Z"
+    "createdAt": "2026-04-02T00:00:00.000Z"
   },
   {
-    "id": "usr_op_jck",
-    "orgId": "org_demo",
+    "id": "usr_gs",
     "username": "op_jackson",
-    "password": "Jack2026!",
+    "password": "Jackson2026!",
     "role": "operator",
+    "hospital": "gs",
     "name": "Jackson Operator",
-    "email": "op_jackson@facilityh2o.com",
-    "facilities": ["fac_jackson"],
+    "email": null,
     "active": true,
-    "createdAt": "2026-03-02T00:00:00Z"
+    "createdAt": "2026-04-02T00:00:00.000Z"
   },
   {
-    "id": "usr_op_plk",
-    "orgId": "org_demo",
+    "id": "usr_union",
     "username": "op_polk",
     "password": "Polk2026!",
     "role": "operator",
+    "hospital": "union",
     "name": "Polk Operator",
-    "email": "op_polk@facilityh2o.com",
-    "facilities": ["fac_polk"],
+    "email": null,
     "active": true,
-    "createdAt": "2026-03-02T00:00:00Z"
+    "createdAt": "2026-04-02T00:00:00.000Z"
   },
   {
-    "id": "usr_op_tyl",
-    "orgId": "org_demo",
+    "id": "usr_stm",
     "username": "op_tyler",
-    "password": "Tyle2026!",
+    "password": "Tyler2026!",
     "role": "operator",
+    "hospital": "stm",
     "name": "Tyler Operator",
-    "email": "op_tyler@facilityh2o.com",
-    "facilities": ["fac_tyler"],
+    "email": null,
     "active": true,
-    "createdAt": "2026-03-02T00:00:00Z"
+    "createdAt": "2026-04-02T00:00:00.000Z"
+  },
+  {
+    "id": "usr_nrh",
+    "username": "op_harrison",
+    "password": "Harrison2026!",
+    "role": "operator",
+    "hospital": "nrh",
+    "name": "Harrison Operator",
+    "email": null,
+    "active": true,
+    "createdAt": "2026-04-02T00:00:00.000Z"
   }
 ]

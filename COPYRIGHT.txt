@@ -1,0 +1,56 @@
+================================================================================
+COPYRIGHT NOTICE
+================================================================================
+
+Title of Work:     FacilityH2O — FacilityH2O Inc. Water Chemistry Portal
+Author:            Antoine Riley
+Year of Creation:  2026
+Copyright Owner:   Antoine Riley
+All Rights Reserved.
+
+This software, including all source code, design, architecture, data structures,
+algorithms, user interface, and documentation, is the original creative work of
+Antoine Riley and is protected by United States copyright law (17 U.S.C. § 101
+et seq.) and international copyright treaties.
+
+Unauthorized reproduction, distribution, modification, public display, or
+creation of derivative works of this software, in whole or in part, without the
+express written permission of Antoine Riley is strictly prohibited and may result
+in civil and criminal penalties.
+
+CONTACT
+-------
+Author:    Antoine Riley
+Email:     antoine.riley@FacilityH2O.com
+Organization: FacilityH2O / FacilityH2O Inc.
+
+DESCRIPTION OF WORK
+-------------------
+FacilityH2O is a proprietary web-based water chemistry management and compliance
+platform built for FacilityH2O Inc. hospital network facilities. The system
+includes:
+
+  - Water chemistry data entry and tracking (boiler and chilled water systems)
+  - ANSI/AAMI ST108:2023 compliance module (critical water, utility water, steam)
+  - Legionella / Water Management Program (WMP) logging per ASHRAE 188-2018
+  - Laboratory chain of custody form generation
+  - Self-audit checklist for Joint Commission (EC.02.05.02) and CMS surveys
+  - Role-based access control with owner-level super-admin (ariley)
+  - Compliance scoring and reporting dashboard
+  - Hospital directory and contact management
+  - Notification rules and alert escalation system
+  - Tamper-evident entry logging with SHA-256 integrity sealing
+  - 3-year data retention per regulatory requirements
+  - Dark/light mode and custom theming (owner-controlled)
+  - Password reset system and full sign-in audit trail
+
+TECH STACK
+----------
+  - Next.js 14 (React)
+  - Tailwind CSS
+  - Node.js
+  - JSON data store
+
+================================================================================
+© 2026 Antoine Riley. All Rights Reserved.
+================================================================================

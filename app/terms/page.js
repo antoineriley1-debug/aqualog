@@ -128,7 +128,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-bold text-[#164E63] mb-4 pb-2 border-b border-cyan-100">5. Cancellation &amp; Refund Policy</h2>
             <p className="text-gray-700 leading-relaxed mb-3">
               You may cancel your subscription at any time by providing <strong>30 days' written notice</strong> to{' '}
-              <a href="mailto:antoine.riley@crothall.com" className="text-[#0891B2] hover:underline">antoine.riley@crothall.com</a>{' '}
+              <a href="mailto:antoine.riley@facilityh2o.com" className="text-[#0891B2] hover:underline">antoine.riley@facilityh2o.com</a>{' '}
               or via your account settings. Cancellation takes effect at the end of the billing period following the 30-day notice.
             </p>
             <p className="text-gray-700 leading-relaxed mb-3">
@@ -232,7 +232,7 @@ export default function TermsPage() {
           <h3 className="text-xl font-bold mb-2">Questions about these Terms?</h3>
           <p className="text-cyan-100 mb-4">We're happy to clarify anything before you sign up.</p>
           <a
-            href="mailto:antoine.riley@crothall.com"
+            href="mailto:antoine.riley@facilityh2o.com"
             className="bg-white text-[#0891B2] font-bold px-6 py-3 rounded-xl hover:bg-cyan-50 transition inline-block"
           >
             Contact Us

@@ -1,92 +1,173 @@
 import { NextResponse } from 'next/server';
-import { getSession, canAccessFacility } from '@/lib/auth';
-import { getEntriesByOrg, saveEntry, saveAlert, generateId, getFacilitiesByOrg } from '@/lib/store';
-import { getOutOfRangeParams } from '@/lib/chemistryRanges';
+import { getUserFromRequest } from '@/lib/auth';
+import { getAllEntries, getEntriesForHospital, addEntry, logAudit } from '@/lib/store';
+import { addAlert } from '@/lib/store';
+import { getOutOfRangeParams, CHEMISTRY_RANGES } from '@/lib/chemistryRanges';
+import { detectDrift } from '@/lib/driftDetection';
+import { getHospital, getHospitalVendor } from '@/lib/hospitals';
 
 export async function GET(request) {
-  const session = await getSession();
-  if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const user = await getUserFromRequest(request);
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
 
   const { searchParams } = new URL(request.url);
-  const facilityFilter = searchParams.get('facility');
+  const hospitalFilter = searchParams.get('hospital');
   const systemFilter = searchParams.get('system');
+  const shiftFilter = searchParams.get('shift');
   const fromDate = searchParams.get('from');
   const toDate = searchParams.get('to');
 
-  let entries = getEntriesByOrg(session.orgId);
+  let entries;
+  if (user.role === 'admin') {
+    entries = hospitalFilter ? getEntriesForHospital(hospitalFilter) : getAllEntries();
+  } else {
+    entries = getEntriesForHospital(user.hospital);
+  }
 
-  if (facilityFilter) entries = entries.filter(e => e.facilityId === facilityFilter);
-  if (systemFilter) entries = entries.filter(e => e.system === systemFilter);
-  if (fromDate) entries = entries.filter(e => e.date >= fromDate);
-  if (toDate) entries = entries.filter(e => e.date <= toDate);
+  if (systemFilter) {
+    entries = entries.filter((e) => e.system === systemFilter);
+  }
+  if (shiftFilter) {
+    entries = entries.filter((e) => e.shift === shiftFilter);
+  }
+  if (fromDate) {
+    entries = entries.filter((e) => e.date >= fromDate);
+  }
+  if (toDate) {
+    entries = entries.filter((e) => e.date <= toDate);
+  }
 
+  // Sort newest first
   entries.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
   return NextResponse.json({ entries });
 }
 
 export async function POST(request) {
-  const session = await getSession();
-  if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const user = await getUserFromRequest(request);
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
 
   try {
     const body = await request.json();
-    const { facilityId, system, shift, date, time, testerName, operatorName, values, notes } = body;
+    const { hospitalId, system, shift, date, time, testerName, operatorName, values, notes, correctiveAction } = body;
 
-    if (!facilityId || !system || !shift || !date || !operatorName || !values) {
-      return NextResponse.json({ error: 'Missing required fields.' }, { status: 400 });
+    if (!hospitalId || !system || !shift || !date || !operatorName || !testerName || !values) {
+      return NextResponse.json({ error: 'Missing required fields. Tester name is required.' }, { status: 400 });
     }
 
-    if (!canAccessFacility(session, facilityId)) {
+    // Operators can only submit for their own hospital
+    if (user.role === 'operator' && user.hospital !== hospitalId) {
       return NextResponse.json({ error: 'Forbidden.' }, { status: 403 });
     }
 
-    const entry = {
-      id: generateId('ent'),
-      orgId: session.orgId,
-      facilityId, system, shift, date, time: time || null,
-      testerName: testerName || null,
-      operatorName, values, notes: notes || null,
-      hasAlerts: false,
-      createdAt: new Date().toISOString(),
-    };
+    const entryData = { hospitalId, system, shift, date, time: time || null, testerName, operatorName, values, notes };
 
-    const oor = getOutOfRangeParams(system, values);
-    if (oor.length > 0) {
-      entry.hasAlerts = true;
-      const alert = {
-        id: generateId('alt'),
-        orgId: session.orgId,
-        facilityId, system, shift, date,
-        testerName: testerName || null,
-        operatorName,
-        outOfRange: oor,
-        acknowledged: false,
-        createdAt: new Date().toISOString(),
+    // Attach corrective action if provided
+    if (correctiveAction && correctiveAction.action) {
+      entryData.correctiveAction = {
+        taken: true,
+        action: correctiveAction.action,
+        actionBy: correctiveAction.actionBy || operatorName,
+        actionAt: new Date().toISOString(),
+        followUpRequired: correctiveAction.followUpRequired || false,
+        followUpNotes: correctiveAction.followUpNotes || '',
       };
-      saveAlert(alert);
+    }
 
-      // Email alert (graceful fallback)
+    const entry = addEntry(entryData);
+
+    // Audit log
+    logAudit({
+      type: 'entry',
+      action: 'create',
+      userId: user.id,
+      username: user.username,
+      hospitalId,
+      entityId: entry.id,
+      entityType: 'entry',
+      detail: `${system} ${shift} shift on ${date}`,
+    });
+
+    // Check for out-of-range values
+    const oor = getOutOfRangeParams(system, values);
+    let alert = null;
+    if (oor.length > 0) {
+      alert = addAlert({
+        entryId: entry.id,
+        hospitalId,
+        system,
+        shift,
+        date,
+        operatorName,
+        outOfRangeParams: oor,
+      });
+
+      // Attempt email notification (graceful fallback)
       if (process.env.RESEND_API_KEY && process.env.ALERT_EMAIL_TO) {
         try {
           const { Resend } = await import('resend');
           const resend = new Resend(process.env.RESEND_API_KEY);
-          const paramList = oor.map(p => `${p.label}: ${p.value}${p.unit} (range: ${p.min}–${p.max})`).join('\n');
+          const hospital = getHospital(hospitalId);
+          const vendor = getHospitalVendor(hospitalId);
+          const paramList = oor
+            .map((p) => `${p.label}: ${p.value}${p.unit} (range: ${p.min}–${p.max}${p.unit})`)
+            .join('\n');
+          const vendorSection = vendor
+            ? `\nWater Treatment Vendor: ${vendor.company}\nEmergency Line: ${vendor.emergency || 'N/A'}`
+            : '';
           await resend.emails.send({
-            from: 'FacilityH2O <alerts@facilityh2o.com>',
+            from: process.env.ALERT_EMAIL_FROM || 'FacilityH2O@facilityh2o.com',
             to: process.env.ALERT_EMAIL_TO,
-            subject: `⚠️ Out-of-Range Alert — ${facilityId} ${system} ${shift}`,
-            text: `Out-of-range values detected:\n\n${paramList}\n\nLogged by ${operatorName} on ${date}.`,
+            subject: `[FacilityH2O] Out-of-Range Alert — ${hospitalId.toUpperCase()} ${system} ${shift} shift`,
+            text: `Out-of-range parameters detected:\n\n${paramList}\n\nEntry logged by ${operatorName} on ${date}.${vendorSection}`,
           });
-        } catch (e) {
-          console.warn('Email alert failed:', e.message);
+        } catch (emailErr) {
+          console.warn('Email notification failed:', emailErr.message);
         }
       }
     }
 
-    saveEntry(entry);
-    return NextResponse.json({ success: true, entry }, { status: 201 });
+    // Drift detection — check all parameters for trending
+    const driftWarnings = [];
+    const allEntries = getAllEntries();
+    const systemRanges = CHEMISTRY_RANGES[system] || {};
+    for (const [param, range] of Object.entries(systemRanges)) {
+      const drift = detectDrift(allEntries, hospitalId, system, param, range);
+      if (drift) {
+        driftWarnings.push(drift);
+
+        // Send drift warning email
+        if (process.env.RESEND_API_KEY && process.env.ALERT_EMAIL_TO) {
+          try {
+            const { Resend } = await import('resend');
+            const resend = new Resend(process.env.RESEND_API_KEY);
+            const hospital = getHospital(hospitalId);
+            const hospitalName = hospital?.name || hospitalId;
+            await resend.emails.send({
+              from: process.env.ALERT_EMAIL_FROM || 'FacilityH2O@facilityh2o.com',
+              to: process.env.ALERT_EMAIL_TO,
+              subject: `⚠️ FacilityH2O Trend Warning — ${hospitalName} ${system} ${param} trending ${drift.direction}`,
+              text: `Trend Warning: ${param} is trending ${drift.direction} and approaching the limit.\n\nLast 3 readings: ${drift.trend.join(', ')}\nCurrent: ${drift.current}\nLimit: ${drift.limit}\n\nFacility: ${hospitalName}\nSystem: ${system}`,
+            });
+          } catch (emailErr) {
+            console.warn('Drift warning email failed:', emailErr.message);
+          }
+        }
+      }
+    }
+
+    const response = { success: true, entry, alert };
+    if (driftWarnings.length > 0) {
+      response.drift_warnings = driftWarnings;
+    }
+
+    return NextResponse.json(response, { status: 201 });
   } catch (err) {
-    console.error(err);
+    console.error('POST /api/entries error:', err);
     return NextResponse.json({ error: 'Server error.' }, { status: 500 });
   }
 }
