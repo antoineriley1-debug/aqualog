@@ -85,7 +85,7 @@ export default function HistoryPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `FacilityH2O-history-${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `aqualog-history-${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
   };
 
@@ -243,8 +243,18 @@ export default function HistoryPage() {
                                 })}
                               </div>
                               {e.notes && (
-                                <div className="text-sm text-gray-600 bg-white rounded-lg px-3 py-2 border border-gray-200">
+                                <div className="text-sm text-gray-600 bg-white rounded-lg px-3 py-2 border border-gray-200 mb-2">
                                   <span className="font-medium">Notes:</span> {e.notes}
+                                </div>
+                              )}
+                              {e.correctiveAction?.taken && (
+                                <div className="text-sm bg-orange-50 border border-orange-200 rounded-lg px-3 py-2 mt-2">
+                                  <div className="font-semibold text-orange-800 mb-1">🔧 Corrective Action Taken</div>
+                                  <div className="text-orange-900"><span className="font-medium">Action:</span> {e.correctiveAction.action}</div>
+                                  {e.correctiveAction.actionBy && <div className="text-orange-700 text-xs mt-0.5">By: {e.correctiveAction.actionBy} · {e.correctiveAction.actionAt ? new Date(e.correctiveAction.actionAt).toLocaleString() : ''}</div>}
+                                  {e.correctiveAction.followUpRequired && (
+                                    <div className="mt-1 text-orange-800 font-medium">⚠️ Follow-up Required{e.correctiveAction.followUpNotes ? `: ${e.correctiveAction.followUpNotes}` : ''}</div>
+                                  )}
                                 </div>
                               )}
                             </td>
