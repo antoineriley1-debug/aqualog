@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: aqualog
+    name: facilityh2o
     runtime: node
     buildCommand: npm install && npm run build
     startCommand: npm start
@@ -10,40 +10,40 @@ services:
       - key: PORT
         value: 3000
       - key: CRON_SECRET
-        value: aqualog_cron_2026
+        value: facilityh2o_cron_2026
 
   - type: cron
-    name: aqualog-check-day-shift
+    name: facilityh2o-check-day-shift
     runtime: node
     buildCommand: npm install
     startCommand: node scripts/check-missed-shifts.js
     schedule: "0 18 * * 1-5"
     envVars:
       - key: NEXT_PUBLIC_APP_URL
-        value: https://aqualog-k0xm.onrender.com
+        value: https://facilityh2o.onrender.com
       - key: CRON_SECRET
-        value: aqualog_cron_2026
+        value: facilityh2o_cron_2026
 
   - type: cron
-    name: aqualog-check-evening-shift
+    name: facilityh2o-check-evening-shift
     runtime: node
     buildCommand: npm install
     startCommand: node scripts/check-missed-shifts.js
     schedule: "0 2 * * 2-6"
     envVars:
       - key: NEXT_PUBLIC_APP_URL
-        value: https://aqualog-k0xm.onrender.com
+        value: https://facilityh2o.onrender.com
       - key: CRON_SECRET
-        value: aqualog_cron_2026
+        value: facilityh2o_cron_2026
 
   - type: cron
-    name: aqualog-check-night-shift
+    name: facilityh2o-check-night-shift
     runtime: node
     buildCommand: npm install
     startCommand: node scripts/check-missed-shifts.js
     schedule: "0 10 * * 1-6"
     envVars:
       - key: NEXT_PUBLIC_APP_URL
-        value: https://aqualog-k0xm.onrender.com
+        value: https://facilityh2o.onrender.com
       - key: CRON_SECRET
-        value: aqualog_cron_2026
+        value: facilityh2o_cron_2026

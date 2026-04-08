@@ -1,7 +1,7 @@
 /**
- * AquaLog — Next.js Config
+ * FacilityH2O — Next.js Config
  * Author & Owner: Antoine W. Riley Sr.
- * © 2026 Antoine W. Riley Sr. / Crothall Healthcare. All Rights Reserved.
+ * © 2026 Antoine W. Riley Sr. / FacilityH2O Inc.. All Rights Reserved.
  * Copyright Registration Filed — U.S. Copyright Office
  */
 
@@ -54,9 +54,9 @@ const nextConfig = {
         // API CORS — allow mobile app access
         source: '/api/:path*',
         headers: [
-          { key: 'Access-Control-Allow-Origin',  value: 'https://www.medstarh20log.com' },
+          { key: 'Access-Control-Allow-Origin',  value: 'https://www.facilityh2o.com' },
           { key: 'Access-Control-Allow-Methods', value: 'GET,POST,PATCH,DELETE,OPTIONS' },
-          { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Cookie, X-Aqualog-User' },
+          { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Cookie, X-FacilityH2O-User' },
         ],
       },
     ];
