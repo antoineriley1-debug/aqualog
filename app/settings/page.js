@@ -11,13 +11,13 @@ import Sidebar from '@/components/Sidebar';
 
 function getUser() {
   if (typeof document === 'undefined') return null;
-  const raw = document.cookie.split(';').find((c) => c.trim().startsWith('facilityh2o_user='));
+  const raw = document.cookie.split(';').find((c) => c.trim().startsWith('FacilityH2O_user='));
   if (!raw) return null;
   try { return JSON.parse(decodeURIComponent(raw.split('=')[1])); } catch { return null; }
 }
 
 const PRESET_META = {
-  FacilityH2O:  { label: 'FacilityH2O Inc. (Default)', preview: ['#003366','#0072CE','#F6C90E'], dark: false },
+  FacilityH2O:  { label: 'FacilityH2O (Default)', preview: ['#003366','#0072CE','#F6C90E'], dark: false },
   dark:     { label: 'Dark Mode',         preview: ['#0d1526','#0072CE','#F6C90E'], dark: true  },
   ocean:    { label: 'Ocean',             preview: ['#0c4a6e','#0891b2','#22d3ee'], dark: false },
   forest:   { label: 'Forest',            preview: ['#14532d','#16a34a','#86efac'], dark: false },

@@ -57,7 +57,7 @@ export async function POST(request) {
     });
 
     const response = NextResponse.json({ success: true, user });
-    response.cookies.set('facilityh2o_user', JSON.stringify(user), {
+    response.cookies.set('FacilityH2O_user', JSON.stringify(user), {
       httpOnly: false,
       path: '/',
       maxAge: 60 * 60 * 24 * 7, // 7 days

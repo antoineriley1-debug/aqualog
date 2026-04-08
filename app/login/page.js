@@ -39,7 +39,7 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <div className="text-5xl mb-3">💧</div>
           <h1 className="text-3xl font-bold text-[#003366]">FacilityH2O</h1>
-          <p className="text-gray-500 mt-1 text-sm">FacilityH2O Inc. · Water Chemistry Portal</p>
+          <p className="text-gray-500 mt-1 text-sm">Water Chemistry Compliance Portal</p>
         </div>
 
         {/* Card */}
@@ -99,7 +99,7 @@ export default function LoginPage() {
         </div>
 
         <p className="text-center text-xs text-gray-400 mt-6">
-          Managed by FacilityH2O · Confidential
+          FacilityH2O Inc. · Water Chemistry Compliance · Confidential
         </p>
       </div>
     </div>

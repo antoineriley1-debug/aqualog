@@ -5,7 +5,7 @@ import { logAudit } from '@/lib/store';
 export async function POST(request) {
   try {
     const cookieStore = cookies();
-    const cookie = cookieStore.get('facilityh2o_user');
+    const cookie = cookieStore.get('FacilityH2O_user');
     const user = getUserFromCookie(cookie?.value);
 
     if (user) {
@@ -22,7 +22,7 @@ export async function POST(request) {
   }
 
   const response = NextResponse.json({ success: true });
-  response.cookies.set('facilityh2o_user', '', {
+  response.cookies.set('FacilityH2O_user', '', {
     httpOnly: false,
     path: '/',
     maxAge: 0,

@@ -21,7 +21,7 @@ export function middleware(request) {
     return NextResponse.next();
   }
 
-  const cookie = request.cookies.get('facilityh2o_user');
+  const cookie = request.cookies.get('FacilityH2O_user');
 
   if (!cookie) {
     const loginUrl = new URL('/login', request.url);

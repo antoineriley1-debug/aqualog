@@ -4,20 +4,20 @@ import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 
 const HOSPITALS = [
-  { id: 'whc', name: 'FacilityH2O Inc. Washington Hospital Center' },
-  { id: 'somd', name: 'FacilityH2O Inc. Southern Maryland Hospital Center' },
-  { id: 'harbor', name: 'FacilityH2O Inc. Harbor Hospital' },
-  { id: 'mont', name: 'FacilityH2O Inc. Montgomery Medical Center' },
-  { id: 'geo', name: 'FacilityH2O Inc. Georgetown University Hospital' },
-  { id: 'frank', name: 'FacilityH2O Inc. Franklin Square Medical Center' },
-  { id: 'gs', name: 'FacilityH2O Inc. Good Samaritan Hospital' },
-  { id: 'union', name: 'FacilityH2O Inc. Union Memorial Hospital' },
-  { id: 'stm', name: "FacilityH2O Inc. St. Mary's Hospital" },
+  { id: 'whc', name: 'FacilityH2O Washington Hospital Center' },
+  { id: 'somd', name: 'FacilityH2O Southern Maryland Hospital Center' },
+  { id: 'harbor', name: 'FacilityH2O Harbor Hospital' },
+  { id: 'mont', name: 'FacilityH2O Montgomery Medical Center' },
+  { id: 'geo', name: 'FacilityH2O Georgetown University Hospital' },
+  { id: 'frank', name: 'FacilityH2O Franklin Square Medical Center' },
+  { id: 'gs', name: 'FacilityH2O Good Samaritan Hospital' },
+  { id: 'union', name: 'FacilityH2O Union Memorial Hospital' },
+  { id: 'stm', name: "FacilityH2O St. Mary's Hospital" },
 ];
 
 function getUser() {
   if (typeof document === 'undefined') return null;
-  const raw = document.cookie.split(';').find((c) => c.trim().startsWith('facilityh2o_user='));
+  const raw = document.cookie.split(';').find((c) => c.trim().startsWith('FacilityH2O_user='));
   if (!raw) return null;
   try { return JSON.parse(decodeURIComponent(raw.split('=')[1])); } catch { return null; }
 }

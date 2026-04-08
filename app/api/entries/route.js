@@ -120,7 +120,7 @@ export async function POST(request) {
             ? `\nWater Treatment Vendor: ${vendor.company}\nEmergency Line: ${vendor.emergency || 'N/A'}`
             : '';
           await resend.emails.send({
-            from: process.env.ALERT_EMAIL_FROM || 'FacilityH2O@facilityh2o.com',
+            from: process.env.ALERT_EMAIL_FROM || 'FacilityH2O@FacilityH2O.net',
             to: process.env.ALERT_EMAIL_TO,
             subject: `[FacilityH2O] Out-of-Range Alert — ${hospitalId.toUpperCase()} ${system} ${shift} shift`,
             text: `Out-of-range parameters detected:\n\n${paramList}\n\nEntry logged by ${operatorName} on ${date}.${vendorSection}`,
@@ -148,7 +148,7 @@ export async function POST(request) {
             const hospital = getHospital(hospitalId);
             const hospitalName = hospital?.name || hospitalId;
             await resend.emails.send({
-              from: process.env.ALERT_EMAIL_FROM || 'FacilityH2O@facilityh2o.com',
+              from: process.env.ALERT_EMAIL_FROM || 'FacilityH2O@FacilityH2O.net',
               to: process.env.ALERT_EMAIL_TO,
               subject: `⚠️ FacilityH2O Trend Warning — ${hospitalName} ${system} ${param} trending ${drift.direction}`,
               text: `Trend Warning: ${param} is trending ${drift.direction} and approaching the limit.\n\nLast 3 readings: ${drift.trend.join(', ')}\nCurrent: ${drift.current}\nLimit: ${drift.limit}\n\nFacility: ${hospitalName}\nSystem: ${system}`,

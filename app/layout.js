@@ -35,7 +35,7 @@ export default function RootLayout({ children }) {
         <script dangerouslySetInnerHTML={{ __html: `
           (function() {
             try {
-              var personal = localStorage.getItem('facilityh2o-theme-override');
+              var personal = localStorage.getItem('FacilityH2O-theme-override');
               if (personal === 'dark') document.documentElement.classList.add('dark');
               else if (personal === 'light') document.documentElement.classList.remove('dark');
             } catch(e) {}

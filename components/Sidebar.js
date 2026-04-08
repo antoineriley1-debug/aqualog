@@ -20,11 +20,11 @@ export default function Sidebar() {
     const html = document.documentElement;
     if (html.classList.contains('dark')) {
       html.classList.remove('dark');
-      localStorage.setItem('facilityh2o-theme', 'light');
+      localStorage.setItem('FacilityH2O-theme', 'light');
       setIsDark(false);
     } else {
       html.classList.add('dark');
-      localStorage.setItem('facilityh2o-theme', 'dark');
+      localStorage.setItem('FacilityH2O-theme', 'dark');
       setIsDark(true);
     }
   };
@@ -32,7 +32,7 @@ export default function Sidebar() {
   useEffect(() => {
     const raw = document.cookie
       .split(';')
-      .find((c) => c.trim().startsWith('facilityh2o_user='));
+      .find((c) => c.trim().startsWith('FacilityH2O_user='));
     if (raw) {
       try {
         const val = decodeURIComponent(raw.split('=')[1]);

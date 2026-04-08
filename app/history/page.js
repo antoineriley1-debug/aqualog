@@ -29,7 +29,7 @@ const CHILLED_FIELDS = [
 
 function getUser() {
   if (typeof document === 'undefined') return null;
-  const raw = document.cookie.split(';').find((c) => c.trim().startsWith('facilityh2o_user='));
+  const raw = document.cookie.split(';').find((c) => c.trim().startsWith('FacilityH2O_user='));
   if (!raw) return null;
   try { return JSON.parse(decodeURIComponent(raw.split('=')[1])); } catch { return null; }
 }

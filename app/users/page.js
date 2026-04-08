@@ -6,7 +6,7 @@ import { HOSPITALS } from '@/lib/hospitals';
 
 function getUser() {
   if (typeof document === 'undefined') return null;
-  const raw = document.cookie.split(';').find((c) => c.trim().startsWith('facilityh2o_user='));
+  const raw = document.cookie.split(';').find((c) => c.trim().startsWith('FacilityH2O_user='));
   if (!raw) return null;
   try { return JSON.parse(decodeURIComponent(raw.split('=')[1])); } catch { return null; }
 }
@@ -204,7 +204,7 @@ export default function UsersPage() {
                   type="email"
                   value={form.email}
                   onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
-                  placeholder="email@facilityh2o.com"
+                  placeholder="email@FacilityH2O.net"
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0072CE]"
                 />
               </div>
