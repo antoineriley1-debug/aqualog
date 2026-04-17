@@ -1,0 +1,25 @@
+{
+  "hospitals": {},
+  "global": {
+    "levels": {
+      "0": {
+        "name": "critical",
+        "contacts": [
+          {
+            "email": "info@facilityh2o.com",
+            "phone": "+14844755596"
+          }
+        ]
+      },
+      "1": {
+        "name": "warning",
+        "contacts": [
+          {
+            "email": "info@facilityh2o.com",
+            "phone": "+14844755596"
+          }
+        ]
+      }
+    }
+  }
+}
