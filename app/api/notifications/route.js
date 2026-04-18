@@ -82,6 +82,8 @@ export async function POST(request) {
   const { hospitalId, thresholds, levels, contacts } = body;
   const rules = readRules();
 
+  const { quietHours } = body;
+
   if (hospitalId) {
     // Hospital-specific rules
     if (!rules.hospitals) rules.hospitals = {};
@@ -97,6 +99,7 @@ export async function POST(request) {
     if (thresholds) rules.global.thresholds = { ...rules.global.thresholds, ...thresholds };
     if (levels)     rules.global.levels     = levels;
     if (contacts)   rules.global.contacts   = contacts;
+    if (quietHours) rules.global.quietHours = quietHours;
     rules.global.updatedAt = new Date().toISOString();
     rules.global.updatedBy = user.username;
   }

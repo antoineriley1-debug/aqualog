@@ -76,6 +76,7 @@ export default function Sidebar() {
           { href: '/compliance', label: '📈 Compliance', shortLabel: 'Compliance' },
           { href: '/audit', label: '🔍 Audit Log', shortLabel: 'Audit' },
           { href: '/notifications', label: '🔔 Alert Rules', shortLabel: 'Alerts' },
+          { href: '/settings/notifications', label: '⚙️ Notification Settings', shortLabel: 'Notif Settings' },
           { href: '/users', label: '👥 Users', shortLabel: 'Users' },
           { href: '/directory', label: '📞 Directory', shortLabel: 'Directory' },
           // ── AAMI ST108 Section ──

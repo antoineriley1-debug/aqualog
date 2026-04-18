@@ -28,10 +28,14 @@ export default function AlertsPage() {
   const [loading, setLoading] = useState(true);
   const [filterHospital, setFilterHospital] = useState('');
   const [filterAcked, setFilterAcked] = useState('unacknowledged');
+  const [testLoading, setTestLoading] = useState(false);
+  const [testResult, setTestResult] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const u = getUser();
     if (u?.role !== 'admin') { router.push('/dashboard'); return; }
+    setIsAdmin(u?.role === 'admin');
     fetch('/api/alerts')
       .then((r) => r.json())
       .then((d) => { setAlerts(d.alerts || []); setLoading(false); });
@@ -53,15 +57,67 @@ export default function AlertsPage() {
 
   const hospitalName = (id) => HOSPITALS.find((h) => h.id === id)?.name || id;
 
+  const fireTestAlert = async () => {
+    setTestLoading(true);
+    setTestResult(null);
+    try {
+      const res = await fetch('/api/test-alert', { method: 'POST' });
+      const data = await res.json();
+      setTestResult(data);
+    } catch (err) {
+      setTestResult({ error: err.message });
+    } finally {
+      setTestLoading(false);
+    }
+  };
+
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
       <main className="flex-1 w-full min-w-0 p-4 md:p-8 pt-16 md:pt-8">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">⚠️ Alerts</h1>
-          <p className="text-gray-500 text-sm mt-1">
-            {alerts.filter((a) => !a.acknowledged).length} unacknowledged · {alerts.length} total
-          </p>
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">⚠️ Alerts</h1>
+            <p className="text-gray-500 text-sm mt-1">
+              {alerts.filter((a) => !a.acknowledged).length} unacknowledged · {alerts.length} total
+            </p>
+          </div>
+          {isAdmin && (
+            <div className="flex flex-col items-end gap-2">
+              <button
+                onClick={fireTestAlert}
+                disabled={testLoading}
+                className="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition disabled:opacity-50 flex items-center gap-2 shadow-sm"
+              >
+                {testLoading ? (
+                  <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <span>🧪</span>
+                )}
+                {testLoading ? 'Sending…' : 'Test Alerts'}
+              </button>
+              {testResult && !testResult.error && (
+                <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm text-xs space-y-1 max-w-sm">
+                  <div className={testResult.email?.ok ? 'text-green-600' : 'text-red-600'}>
+                    {testResult.email?.ok
+                      ? `✅ Email sent to ${(testResult.email.recipients || []).join(', ')}`
+                      : `❌ Email: ${testResult.email?.error || 'No recipients'}`}
+                  </div>
+                  <div className={testResult.sms?.ok ? 'text-green-600' : 'text-red-600'}>
+                    {testResult.sms?.ok
+                      ? `✅ SMS sent to ${(testResult.sms.recipients || []).join(', ')}`
+                      : `❌ SMS: ${testResult.sms?.error || 'No recipients'}`}
+                  </div>
+                  <div className="text-gray-400 mt-1">{testResult.timestamp}</div>
+                </div>
+              )}
+              {testResult?.error && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-xs text-red-600 max-w-sm">
+                  ❌ {testResult.error}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Filters */}

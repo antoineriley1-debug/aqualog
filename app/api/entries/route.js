@@ -6,6 +6,15 @@ import { detectDrift } from '@/lib/driftDetection';
 import { getHospital, getHospitalVendor } from '@/lib/hospitals';
 import fs from 'fs';
 import path from 'path';
+import {
+  shouldSendAlert,
+  recordAlertSent,
+  queueDigestAlert,
+  determineLevel,
+  getContactsForLevel,
+  isInQuietHours,
+  readRules,
+} from '@/lib/alertThrottle';
 
 // ── Load notification contacts from rules file ───────────────────────────────
 function getNotificationContacts(hospitalId, level) {
@@ -67,47 +76,90 @@ async function sendSMS(numbers, message) {
   }
 }
 
-// ── Dispatch OOR alert notifications ────────────────────────────────────────
+// ── Dispatch OOR alert notifications (with smart throttle/quiet hours) ──────
 async function dispatchAlertNotifications({ hospitalId, hospitalName, system, shift, date, operatorName, oor, vendor }) {
+  const alertLevel = determineLevel('oor', oor);
+
   const paramList = oor.map(p => `  • ${p.label}: ${p.value}${p.unit} (range: ${p.min}–${p.max}${p.unit})`).join('\n');
   const vendorLine = vendor ? `\nWater Treatment Vendor: ${vendor.company} | Emergency: ${vendor.emergency || 'N/A'}` : '';
 
   const subject = `🚨 Out-of-Range Alert — ${hospitalName} | ${system === 'boiler' ? 'Boiler' : 'Chilled'} Water | ${shift}`;
   const text = `OUT-OF-RANGE WATER CHEMISTRY ALERT\n\nFacility: ${hospitalName}\nSystem: ${system === 'boiler' ? 'Boiler Water' : 'Chilled Water'}\nShift: ${shift} | Date: ${date}\nLogged By: ${operatorName}\n\nOUT-OF-RANGE PARAMETERS:\n${paramList}${vendorLine}\n\n— FacilityH2O Alert System`;
   const html = `<div style="font-family:sans-serif;max-width:600px"><div style="background:#c0392b;color:white;padding:16px;border-radius:8px 8px 0 0"><h2 style="margin:0">🚨 Out-of-Range Alert</h2></div><div style="border:1px solid #e0e0e0;border-top:none;padding:20px;border-radius:0 0 8px 8px"><p><strong>Facility:</strong> ${hospitalName}<br><strong>System:</strong> ${system === 'boiler' ? '🔥 Boiler Water' : '❄️ Chilled Water'}<br><strong>Shift:</strong> ${shift} | <strong>Date:</strong> ${date}<br><strong>Logged By:</strong> ${operatorName}</p><h3 style="color:#c0392b">Out-of-Range Parameters:</h3><ul>${oor.map(p => `<li><strong>${p.label}:</strong> ${p.value}${p.unit} <em>(acceptable: ${p.min}–${p.max}${p.unit})</em></li>`).join('')}</ul>${vendor ? `<p style="color:#666;font-size:12px">Vendor: ${vendor.company} | Emergency: ${vendor.emergency || 'N/A'}</p>` : ''}<hr style="border:none;border-top:1px solid #eee;margin:16px 0"><p style="color:#999;font-size:11px">FacilityH2O Alert System</p></div></div>`;
-
-  // Collect all recipients — env var + notification rules (Level 0 = immediate)
-  const ruleContacts = getNotificationContacts(hospitalId, 0);
-  const envEmails = getEnvEmails();
-  const ruleEmails = ruleContacts.map(c => c.email).filter(Boolean);
-  const allEmails = [...new Set([...envEmails, ...ruleEmails])];
-  const smsNumbers = ruleContacts.map(c => c.sms).filter(Boolean);
-
   const smsText = `🚨 OOR Alert: ${hospitalName} ${system} ${shift} on ${date}. Params: ${oor.map(p => `${p.label}=${p.value}`).join(', ')}. See portal for details.`;
 
-  await Promise.all([
-    allEmails.length ? sendEmail({ to: allEmails, subject, text, html }) : Promise.resolve(),
-    smsNumbers.length ? sendSMS(smsNumbers, smsText) : Promise.resolve(),
-  ]);
+  // Use smart dispatch per contact
+  const contacts = getContactsForLevel(hospitalId, alertLevel);
+  const envEmails = getEnvEmails();
+
+  // For env-configured emails, always send (these are legacy fallback)
+  if (envEmails.length) {
+    await sendEmail({ to: envEmails, subject, text, html });
+  }
+
+  for (const contact of contacts) {
+    const decision = shouldSendAlert({
+      hospitalId, system, level: alertLevel,
+      contactEmail: contact.email, contactSms: contact.sms,
+    });
+
+    const alertData = { hospitalId, hospitalName, system, shift, date, operatorName, oor, level: alertLevel, contact, subject, text, html, smsText };
+
+    if (decision.sendEmail && contact.email) {
+      await sendEmail({ to: contact.email, subject, text, html });
+    }
+    if (decision.sendSms && contact.sms) {
+      await sendSMS([contact.sms], smsText);
+    }
+
+    // Record sent timestamps for throttle tracking
+    if (decision.sendEmail || decision.sendSms) {
+      recordAlertSent({ hospitalId, system, level: alertLevel, contactEmail: contact.email, contactSms: contact.sms });
+    }
+
+    // Queue for digest if throttled/suppressed
+    if (decision.queueForDigest) {
+      queueDigestAlert(alertData);
+    }
+  }
 }
 
-// ── Dispatch drift warning notifications ────────────────────────────────────
+// ── Dispatch drift warning notifications (with smart throttle) ──────────────
 async function dispatchDriftNotifications({ hospitalId, hospitalName, system, param, drift }) {
+  const alertLevel = 2; // Drift = Info level
+
   const subject = `⚠️ Trend Warning — ${hospitalName} | ${param} drifting ${drift.direction}`;
   const text = `WATER CHEMISTRY TREND WARNING\n\nFacility: ${hospitalName}\nSystem: ${system === 'boiler' ? 'Boiler Water' : 'Chilled Water'}\nParameter: ${param}\n\nTrend: ${drift.direction.toUpperCase()}\nLast readings: ${drift.trend.join(' → ')}\nCurrent: ${drift.current} | Limit: ${drift.limit}\n\n— FacilityH2O Alert System`;
-
-  const ruleContacts = getNotificationContacts(hospitalId, 1); // Level 1 = trending
-  const envEmails = getEnvEmails();
-  const ruleEmails = ruleContacts.map(c => c.email).filter(Boolean);
-  const allEmails = [...new Set([...envEmails, ...ruleEmails])];
-  const smsNumbers = ruleContacts.map(c => c.sms).filter(Boolean);
-
   const smsText = `⚠️ Trend Warning: ${hospitalName} ${system} ${param} drifting ${drift.direction}. Current: ${drift.current}, limit: ${drift.limit}.`;
 
-  await Promise.all([
-    allEmails.length ? sendEmail({ to: allEmails, subject, text }) : Promise.resolve(),
-    smsNumbers.length ? sendSMS(smsNumbers, smsText) : Promise.resolve(),
-  ]);
+  const contacts = getContactsForLevel(hospitalId, alertLevel);
+  const envEmails = getEnvEmails();
+
+  if (envEmails.length) {
+    await sendEmail({ to: envEmails, subject, text });
+  }
+
+  for (const contact of contacts) {
+    const decision = shouldSendAlert({
+      hospitalId, system, level: alertLevel,
+      contactEmail: contact.email, contactSms: contact.sms,
+    });
+
+    if (decision.sendEmail && contact.email) {
+      await sendEmail({ to: contact.email, subject, text });
+    }
+    if (decision.sendSms && contact.sms) {
+      await sendSMS([contact.sms], smsText);
+    }
+
+    if (decision.sendEmail || decision.sendSms) {
+      recordAlertSent({ hospitalId, system, level: alertLevel, contactEmail: contact.email, contactSms: contact.sms });
+    }
+
+    if (decision.queueForDigest) {
+      queueDigestAlert({ hospitalId, hospitalName, system, param, drift, level: alertLevel, contact, subject, text, smsText });
+    }
+  }
 }
 
 // ── GET ──────────────────────────────────────────────────────────────────────
