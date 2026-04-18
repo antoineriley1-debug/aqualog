@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
@@ -96,7 +96,7 @@ export default function UsersPage() {
       // Show the link in a copyable alert since email may not be configured
       const copy = window.confirm(`Reset link for ${user.name}:\n\n${data.resetUrl}\n\nClick OK to copy to clipboard.`);
       if (copy) navigator.clipboard?.writeText(data.resetUrl).catch(() => {});
-      setMsg({ type: 'success', text: `Reset link generated for ${user.name}. ${user.email ? `Also sent to ${user.email}.` : 'No email on file � copy from the dialog.'}` });
+      setMsg({ type: 'success', text: `Reset link generated for ${user.name}. ${user.email ? `Also sent to ${user.email}.` : 'No email on file — copy from the dialog.'}` });
     } else {
       setMsg({ type: 'success', text: data.message || 'Reset link sent.' });
     }
@@ -150,7 +150,7 @@ export default function UsersPage() {
             onClick={() => setShowAdd(!showAdd)}
             className="bg-[#0072CE] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#005fa3] transition"
           >
-            {showAdd ? '? Cancel' : '+ Add User'}
+            {showAdd ? '✕ Cancel' : '+ Add User'}
           </button>
         </div>
 
@@ -204,7 +204,7 @@ export default function UsersPage() {
                   type="email"
                   value={form.email}
                   onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
-                  placeholder="email@medstarhealth.org"
+                  placeholder="email@FacilityH2O.net"
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0072CE]"
                 />
               </div>
@@ -258,11 +258,11 @@ export default function UsersPage() {
           <div className="text-center text-gray-400 py-12">Loading...</div>
         ) : (
           <div className="space-y-6">
-            {/* Admin accounts � visible to super-admin only */}
+            {/* Admin accounts — visible to super-admin only */}
             {isSuperAdmin && admins.length > 0 && (
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="px-5 py-3 bg-[#003366] text-white text-sm font-semibold flex items-center gap-2">
-                  ?? Admin Accounts
+                  🔐 Admin Accounts
                   <span className="ml-2 text-xs bg-yellow-400 text-gray-900 px-2 py-0.5 rounded-full font-bold">Owner View Only</span>
                   <span className="ml-auto text-xs text-blue-200 font-normal">Full system access</span>
                 </div>
@@ -278,8 +278,8 @@ export default function UsersPage() {
             {byHospital.map(({ hospital, users: hospUsers }) => (
               <div key={hospital.id} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="px-5 py-3 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700 flex items-center justify-between">
-                  <span>?? {hospital.name}</span>
-                  <span className="text-xs text-gray-400">{hospital.code} � {hospUsers.length} user{hospUsers.length !== 1 ? 's' : ''}</span>
+                  <span>🏥 {hospital.name}</span>
+                  <span className="text-xs text-gray-400">{hospital.code} · {hospUsers.length} user{hospUsers.length !== 1 ? 's' : ''}</span>
                 </div>
                 {hospUsers.length === 0 ? (
                   <div className="px-5 py-4 text-sm text-gray-400 italic">No users assigned to this hospital.</div>
@@ -321,7 +321,7 @@ function UserRow({ user, hospitalName, onToggle, onDelete, onReset, onSendReset,
         </div>
         <div className="text-xs text-gray-400 mt-0.5">
           Username: <span className="font-mono text-gray-600">{user.username}</span>
-          {user.email && <span className="ml-3">?? {user.email}</span>}
+          {user.email && <span className="ml-3">✉️ {user.email}</span>}
         </div>
 
         {editingPw && (
@@ -340,14 +340,14 @@ function UserRow({ user, hospitalName, onToggle, onDelete, onReset, onSendReset,
       </div>
 
       <div className="flex items-center gap-2 flex-shrink-0">
-        {/* Send Reset Link � available for all users */}
+        {/* Send Reset Link — available for all users */}
         {onSendReset && (
           <button
             onClick={() => onSendReset(user)}
             className="text-xs text-[#0072CE] hover:text-[#005fa3] px-2 py-1 rounded border border-[#0072CE]/30 hover:border-[#0072CE] transition"
             title="Generate a password reset link for this user"
           >
-            ?? Reset Link
+            🔗 Reset Link
           </button>
         )}
         {/* Manual password reset: admins can reset operators; super-admin can reset anyone except themselves */}
@@ -356,7 +356,7 @@ function UserRow({ user, hospitalName, onToggle, onDelete, onReset, onSendReset,
             onClick={() => setEditingPw(!editingPw)}
             className="text-xs text-gray-500 hover:text-[#0072CE] px-2 py-1 rounded border border-gray-200 hover:border-[#0072CE] transition"
           >
-            ?? Set PW
+            🔑 Set PW
           </button>
         )}
         {/* Disable/Enable: operators only (super-admin can also toggle other admins) */}
@@ -369,7 +369,7 @@ function UserRow({ user, hospitalName, onToggle, onDelete, onReset, onSendReset,
                 : 'text-green-600 border-green-200 hover:bg-green-50'
             }`}
           >
-            {user.active ? '? Disable' : '? Enable'}
+            {user.active ? '⏸ Disable' : '▶ Enable'}
           </button>
         )}
         {/* Remove: operators only (super-admin can also remove other admins) */}
@@ -378,7 +378,7 @@ function UserRow({ user, hospitalName, onToggle, onDelete, onReset, onSendReset,
             onClick={() => onDelete(user)}
             className="text-xs text-red-500 hover:text-red-700 px-2 py-1 rounded border border-red-100 hover:border-red-300 hover:bg-red-50 transition"
           >
-            ?? Remove
+            🗑 Remove
           </button>
         )}
       </div>

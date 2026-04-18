@@ -24,7 +24,7 @@ export default function DirectoryPage() {
   }, []);
 
   const exportCSV = () => {
-    const rows = [['Hospital', 'Title', 'Name', 'Office Phone', 'Mobile Phone', 'MedStar Email', 'MedStar Email']];
+    const rows = [['Hospital', 'Title', 'Name', 'Office Phone', 'Mobile Phone', 'FacilityH2O Email', 'FacilityH2O Email']];
     HOSPITALS.forEach((h) => {
       h.contacts.forEach((c) => {
         rows.push([
@@ -43,7 +43,7 @@ export default function DirectoryPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `AquaLog-directory-${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `FacilityH2O-directory-${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
   };
 
@@ -76,7 +76,7 @@ export default function DirectoryPage() {
           <div>
             <h1 className="text-2xl font-bold text-gray-900">📞 Staff Directory</h1>
             <p className="text-gray-500 text-sm mt-1">
-              {HOSPITALS.length} facilities · {totalContacts} contacts · Managed by Crothall Healthcare
+              {HOSPITALS.length} facilities · {totalContacts} contacts · Managed by FacilityH2O
             </p>
           </div>
           <button

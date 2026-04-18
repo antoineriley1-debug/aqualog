@@ -80,7 +80,7 @@ export default function AuditPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `AquaLog-audit-${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `FacilityH2O-audit-${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };

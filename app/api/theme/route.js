@@ -1,5 +1,5 @@
-/**
- * FacilityH2O — Global Theme API
+ï»¿/**
+ * FacilityH2O â€” Global Theme API
  * Author & Owner: Antoine Riley
  * Only ariley (super-admin) can change the global theme.
  * All users see the theme ariley sets.
@@ -14,7 +14,7 @@ const THEME_FILE = path.join(process.cwd(), 'data', 'theme.json');
 const SUPER_ADMIN_ID = 'usr_ariley';
 
 const PRESETS = {
-  medstar:  { primary: '#0072CE', navy: '#003366', accent: '#F6C90E', mode: 'light', name: 'MedStar (Default)' },
+  medstar:  { primary: '#0072CE', navy: '#003366', accent: '#F6C90E', mode: 'light', name: 'FacilityH2O (Default)' },
   dark:     { primary: '#0072CE', navy: '#0d1526', accent: '#F6C90E', mode: 'dark',  name: 'Dark Mode'         },
   ocean:    { primary: '#0891b2', navy: '#0c4a6e', accent: '#22d3ee', mode: 'light', name: 'Ocean'             },
   forest:   { primary: '#16a34a', navy: '#14532d', accent: '#86efac', mode: 'light', name: 'Forest'            },
@@ -34,13 +34,13 @@ function writeTheme(t) {
   fs.writeFileSync(THEME_FILE, JSON.stringify(t, null, 2), 'utf8');
 }
 
-// GET — public, any user can read current theme
+// GET â€” public, any user can read current theme
 export async function GET() {
   const theme = readTheme();
   return NextResponse.json({ theme, presets: PRESETS });
 }
 
-// POST — ariley only, sets global theme
+// POST â€” ariley only, sets global theme
 export async function POST(request) {
   const user = await getUserFromRequest(request);
   if (!user || user.id !== SUPER_ADMIN_ID) {
@@ -54,7 +54,7 @@ export async function POST(request) {
   if (preset && PRESETS[preset]) {
     newTheme = { ...PRESETS[preset], preset };
   } else if (custom) {
-    // Custom colors — validate they're hex values
+    // Custom colors â€” validate they're hex values
     const hex = /^#[0-9A-Fa-f]{6}$/;
     if (!hex.test(custom.primary || '') || !hex.test(custom.navy || '')) {
       return NextResponse.json({ error: 'Invalid hex color values.' }, { status: 400 });

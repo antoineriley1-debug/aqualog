@@ -4,15 +4,15 @@ import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 
 const HOSPITALS = [
-  { id: 'whc', name: 'MedStar Washington Hospital Center' },
-  { id: 'somd', name: 'MedStar Southern Maryland Hospital Center' },
-  { id: 'harbor', name: 'MedStar Harbor Hospital' },
-  { id: 'mont', name: 'MedStar Montgomery Medical Center' },
-  { id: 'geo', name: 'MedStar Georgetown University Hospital' },
-  { id: 'frank', name: 'MedStar Franklin Square Medical Center' },
-  { id: 'gs', name: 'MedStar Good Samaritan Hospital' },
-  { id: 'union', name: 'MedStar Union Memorial Hospital' },
-  { id: 'stm', name: "MedStar St. Mary's Hospital" },
+  { id: 'whc', name: 'FacilityH2O Washington Hospital Center' },
+  { id: 'somd', name: 'FacilityH2O Southern Maryland Hospital Center' },
+  { id: 'harbor', name: 'FacilityH2O Harbor Hospital' },
+  { id: 'mont', name: 'FacilityH2O Montgomery Medical Center' },
+  { id: 'geo', name: 'FacilityH2O Georgetown University Hospital' },
+  { id: 'frank', name: 'FacilityH2O Franklin Square Medical Center' },
+  { id: 'gs', name: 'FacilityH2O Good Samaritan Hospital' },
+  { id: 'union', name: 'FacilityH2O Union Memorial Hospital' },
+  { id: 'stm', name: "FacilityH2O St. Mary's Hospital" },
 ];
 
 function getUser() {

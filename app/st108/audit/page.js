@@ -244,7 +244,7 @@ export default function ST108AuditPage() {
             ))}
           </div>
           <div className="text-xs text-gray-400 mt-6 border-t border-gray-100 pt-4">
-            ANSI/AAMI ST108:2023 Self-Audit · AquaLog — MedStar Health Water Chemistry Portal · Author: Antoine Riley
+            ANSI/AAMI ST108:2023 Self-Audit · FacilityH2O — FacilityH2O Inc. Water Chemistry Portal · Author: Antoine Riley
           </div>
         </div>
 

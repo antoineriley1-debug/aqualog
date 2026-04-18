@@ -3,8 +3,8 @@ import fs from 'fs';
 import path from 'path';
 
 export const metadata = {
-  title: 'AquaLog | MedStar Health',
-  description: 'Water Chemistry Tracking Portal for MedStar Health Hospitals',
+  title: 'FacilityH2O | FacilityH2O Inc.',
+  description: 'Water Chemistry Tracking Portal for FacilityH2O Inc. Hospitals',
 };
 
 function getGlobalTheme() {

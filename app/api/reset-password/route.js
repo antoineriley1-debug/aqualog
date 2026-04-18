@@ -1,7 +1,7 @@
-/**
- * FacilityH2O � Password Reset API
+﻿/**
+ * FacilityH2O — Password Reset API
  * Author & Owner: Antoine Riley
- * � 2026 Antoine Riley / FacilityH2O. All rights reserved.
+ * © 2026 Antoine Riley / FacilityH2O. All rights reserved.
  *
  * - Any user can request a self-service reset for their own account
  * - Admins can also force-reset any user's password from the Users page
@@ -25,7 +25,7 @@ export async function POST(request) {
   const body = await request.json().catch(() => ({}));
   const { action, token, newPassword, username } = body;
 
-  // -- Step 1: request a reset token ----------------------------------------
+  // ── Step 1: request a reset token ────────────────────────────────────────
   if (action === 'request') {
     if (!username) {
       return NextResponse.json({ ok: true, message: 'If that account exists, a reset link has been sent.' });
@@ -60,8 +60,8 @@ export async function POST(request) {
         await resend.emails.send({
           from: process.env.ALERT_EMAIL_FROM || 'aqualog@medstarh20log.com',
           to: userEmail,
-          subject: 'AquaLog - Password Reset Request',
-          text: `You requested a password reset for your AquaLog account.\n\nClick this link to reset your password (valid for 1 hour):\n${resetUrl}\n\nIf you did not request this, ignore this email.\n\nAquaLog � MedStar Health Water Chemistry Portal`,
+          subject: 'FacilityH2O — Password Reset Request',
+          text: `You requested a password reset for your FacilityH2O account.\n\nClick this link to reset your password (valid for 1 hour):\n${resetUrl}\n\nIf you did not request this, ignore this email.\n\nFacilityH2O · FacilityH2O Inc. Water Chemistry Portal`,
         });
         return NextResponse.json({ ok: true, message: `Reset link sent to ${userEmail}` });
       } catch (e) {
@@ -75,11 +75,11 @@ export async function POST(request) {
       ok: true,
       message: 'Reset link generated. Share it with the user or use it directly.',
       resetUrl,
-      note: 'Email not configured � use or share the link below.',
+      note: 'Email not configured — use or share the link below.',
     });
   }
 
-  // -- Step 2: validate token ------------------------------------------------
+  // ── Step 2: validate token ────────────────────────────────────────────────
   if (action === 'validate') {
     const tokens = readTokens();
     const record = tokens[token];
@@ -89,7 +89,7 @@ export async function POST(request) {
     return NextResponse.json({ ok: true, username: record.username });
   }
 
-  // -- Step 3: set new password ----------------------------------------------
+  // ── Step 3: set new password ──────────────────────────────────────────────
   if (action === 'reset') {
     if (!token || !newPassword || newPassword.length < 8) {
       return NextResponse.json({ ok: false, error: 'Password must be at least 8 characters.' }, { status: 400 });

@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+Ôªøimport { NextResponse } from 'next/server';
 import { getAllEntries, getAllAlerts } from '@/lib/store';
 import { HOSPITALS } from '@/lib/hospitals';
 import { calcComplianceScore } from '@/lib/compliance';
@@ -38,7 +38,7 @@ export async function GET(request) {
         if (e.outOfRangeParams?.length > 0) oorCount += e.outOfRangeParams.length;
       });
 
-      // Count missed shifts (expected 3 shifts/day ◊ 2 systems ◊ 7 days)
+      // Count missed shifts (expected 3 shifts/day √ó 2 systems √ó 7 days)
       const expectedWeek = 7 * 3 * 2;
       const missedShifts = Math.max(0, expectedWeek - weekEntries.length);
 
@@ -82,15 +82,15 @@ export async function GET(request) {
     const htmlEmail = `
 <!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"><title>AquaLog Weekly Report</title></head>
+<head><meta charset="utf-8"><title>FacilityH2O Weekly Report</title></head>
 <body style="font-family:Arial,sans-serif;background:#f9fafb;margin:0;padding:20px">
   <div style="max-width:700px;margin:0 auto;background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1)">
     <div style="background:#003366;padding:24px 32px">
-      <h1 style="color:white;margin:0;font-size:22px">?? AquaLog Weekly Report</h1>
+      <h1 style="color:white;margin:0;font-size:22px">üíß FacilityH2O Weekly Report</h1>
       <p style="color:#93c5fd;margin:6px 0 0">Week of ${weekDateLabel}</p>
     </div>
     <div style="padding:24px 32px">
-      <p style="color:#374151;margin-bottom:20px">Compliance summary for all MedStar facilities ó month-to-date scores with weekly activity.</p>
+      <p style="color:#374151;margin-bottom:20px">Compliance summary for all FacilityH2O facilities ‚Äî month-to-date scores with weekly activity.</p>
 
       <table style="width:100%;border-collapse:collapse;font-size:14px">
         <thead>
@@ -110,20 +110,20 @@ export async function GET(request) {
 
       ${hospitalData.some(h => h.isCritical) ? `
         <div style="margin-top:20px;padding:14px 18px;background:#fee2e2;border:1px solid #fca5a5;border-radius:8px">
-          <strong style="color:#991b1b">?? Attention Required</strong>
+          <strong style="color:#991b1b">‚ö†Ô∏è Attention Required</strong>
           <p style="color:#991b1b;margin:6px 0 0">The following facilities have grades of D or F and require immediate attention:
             ${hospitalData.filter(h => h.isCritical).map(h => h.name).join(', ')}
           </p>
         </div>
       ` : `
         <div style="margin-top:20px;padding:14px 18px;background:#dcfce7;border:1px solid #86efac;border-radius:8px">
-          <strong style="color:#166534">? All Facilities Performing Well</strong>
+          <strong style="color:#166534">‚úÖ All Facilities Performing Well</strong>
           <p style="color:#166534;margin:6px 0 0">No facilities with critical grades this week.</p>
         </div>
       `}
     </div>
     <div style="padding:16px 32px;background:#f9fafb;border-top:1px solid #e5e7eb;font-size:12px;color:#9ca3af">
-      <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://aqualog-k0xm.onrender.com'}" style="color:#0072CE">View AquaLog Portal</a> ∑ Generated ${new Date().toLocaleString()} ∑ MedStar Health ∑ AquaLog
+      <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://aqualog-k0xm.onrender.com'}" style="color:#0072CE">View FacilityH2O Portal</a> ¬∑ Generated ${new Date().toLocaleString()} ¬∑ FacilityH2O Inc. ¬∑ FacilityH2O
     </div>
   </div>
 </body>
@@ -138,7 +138,7 @@ export async function GET(request) {
         await resend.emails.send({
           from: process.env.ALERT_EMAIL_FROM || 'aqualog@facilityh2o.com',
           to: process.env.ALERT_EMAIL_TO,
-          subject: `AquaLog Weekly Report ó Week of ${weekDateLabel}`,
+          subject: `FacilityH2O Weekly Report ‚Äî Week of ${weekDateLabel}`,
           html: htmlEmail,
         });
         emailSent = true;
@@ -146,7 +146,7 @@ export async function GET(request) {
         console.warn('Weekly report email failed:', err.message);
       }
     } else {
-      console.log('RESEND_API_KEY or ALERT_EMAIL_TO not set ó skipping email');
+      console.log('RESEND_API_KEY or ALERT_EMAIL_TO not set ‚Äî skipping email');
     }
 
     return NextResponse.json({

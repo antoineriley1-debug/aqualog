@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Privacy Policy | AquaLog',
-  description: 'AquaLog Privacy Policy — effective April 2026',
+  title: 'Privacy Policy | FacilityH2O',
+  description: 'FacilityH2O Privacy Policy — effective April 2026',
 };
 
 export default function PrivacyPage() {
@@ -12,11 +12,11 @@ export default function PrivacyPage() {
       <header className="bg-gradient-to-r from-[#164E63] to-[#0891B2] text-white">
         <div className="max-w-4xl mx-auto px-6 py-10">
           <Link href="/" className="text-cyan-200 hover:text-white text-sm mb-4 inline-block transition">
-            ← Back to AquaLog
+            ← Back to FacilityH2O
           </Link>
           <div className="flex items-center gap-3 mb-2">
             <span className="text-2xl">💧</span>
-            <span className="text-sm font-semibold text-cyan-200 uppercase tracking-widest">AquaLog</span>
+            <span className="text-sm font-semibold text-cyan-200 uppercase tracking-widest">FacilityH2O</span>
           </div>
           <h1 className="text-4xl font-extrabold mb-2">Privacy Policy</h1>
           <p className="text-cyan-200 text-sm">
@@ -34,7 +34,7 @@ export default function PrivacyPage() {
           <div>
             <p className="font-bold text-blue-900 mb-1">Healthcare Notice</p>
             <p className="text-blue-800 text-sm leading-relaxed">
-              AquaLog is a water chemistry compliance platform used in facility management — <strong>not a clinical system</strong>. We do not collect, store, or process Protected Health Information (PHI) as defined under HIPAA. We are not a HIPAA Covered Entity. Healthcare customers requiring a Business Associate Agreement (BAA) may request our template BAA as a courtesy.
+              FacilityH2O is a water chemistry compliance platform used in facility management — <strong>not a clinical system</strong>. We do not collect, store, or process Protected Health Information (PHI) as defined under HIPAA. We are not a HIPAA Covered Entity. Healthcare customers requiring a Business Associate Agreement (BAA) may request our template BAA as a courtesy.
             </p>
           </div>
         </div>
@@ -119,7 +119,7 @@ export default function PrivacyPage() {
                 ))}
               </ul>
               <p className="text-green-700 text-xs mt-4">
-                If you believe PHI has been accidentally entered into AquaLog, contact us immediately at{' '}
+                If you believe PHI has been accidentally entered into FacilityH2O, contact us immediately at{' '}
                 <a href="mailto:antoine.riley@facilityh2o.com" className="underline">antoine.riley@facilityh2o.com</a> for removal assistance.
               </p>
             </div>
@@ -273,7 +273,7 @@ export default function PrivacyPage() {
               For privacy questions, data requests, BAA inquiries, or concerns:
             </p>
             <div className="bg-[#F0F9FF] border border-cyan-200 rounded-xl p-5">
-              <p className="font-bold text-[#164E63]">AquaLog / Antoine Riley</p>
+              <p className="font-bold text-[#164E63]">FacilityH2O / Antoine Riley</p>
               <p className="text-gray-600 text-sm mt-1">
                 Email:{' '}
                 <a href="mailto:antoine.riley@facilityh2o.com" className="text-[#0891B2] hover:underline">
@@ -294,7 +294,7 @@ export default function PrivacyPage() {
 
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-400 py-10 text-center text-sm">
-        <div className="text-white font-bold text-lg mb-2">💧 AquaLog</div>
+        <div className="text-white font-bold text-lg mb-2">💧 FacilityH2O</div>
         <div className="flex items-center justify-center gap-4 mt-2 flex-wrap">
           <Link href="/" className="hover:text-white transition">Home</Link>
           <span className="text-gray-600">·</span>
@@ -302,7 +302,7 @@ export default function PrivacyPage() {
           <span className="text-gray-600">·</span>
           <Link href="/privacy" className="hover:text-white transition text-white">Privacy Policy</Link>
         </div>
-        <p className="mt-4 text-gray-500">© 2026 Antoine Riley. AquaLog™. All rights reserved.</p>
+        <p className="mt-4 text-gray-500">© 2026 Antoine Riley. FacilityH2O™. All rights reserved.</p>
       </footer>
     </div>
   );

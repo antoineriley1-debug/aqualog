@@ -9,7 +9,7 @@
  *   3rd Shift ends 5:30 AM   → run at 6:00 AM:  0 6  * * *
  */
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://aqualog-k0xm.onrender.com';
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://facilityh2o.onrender.com';
 const SECRET = process.env.CRON_SECRET || 'facilityh2o_cron_2026';
 
 async function run() {

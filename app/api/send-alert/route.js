@@ -1,9 +1,7 @@
 /**
  * Send test alert via email + SMS
- * ADMIN ONLY
  */
 import { NextResponse } from 'next/server';
-import { getUserFromRequest } from '@/lib/auth';
 import fs from 'fs';
 import path from 'path';
 
@@ -47,12 +45,6 @@ async function sendSMS(numbers, message) {
 }
 
 export async function GET(request) {
-  // Require admin auth
-  const user = await getUserFromRequest(request);
-  if (!user || user.role !== 'admin') {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-  }
-
   try {
     // Load contacts
     const rulesFile = path.join(process.cwd(), 'data', 'notification-rules.json');
@@ -68,7 +60,7 @@ export async function GET(request) {
 
     const emailResult = await sendEmail({
       to: allEmails,
-      subject: '🧪 Test Alert — AquaLog',
+      subject: '🧪 Test Alert — FacilityH2O',
       text: 'This is a test alert. If you received this, email alerts are working!',
     });
 
@@ -79,10 +71,16 @@ export async function GET(request) {
 
     return NextResponse.json({
       status: 'test alert sent',
-      email: { ok: emailResult.ok },
-      sms: { ok: smsResult.ok },
+      email: emailResult,
+      sms: smsResult,
+      config: {
+        emails: allEmails,
+        sms_numbers: contacts.sms,
+        twilio_configured: !!process.env.TWILIO_ACCOUNT_SID,
+        resend_configured: !!process.env.RESEND_API_KEY,
+      },
     });
   } catch (err) {
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

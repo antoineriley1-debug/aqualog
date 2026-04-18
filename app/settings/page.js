@@ -1,8 +1,8 @@
-'use client';
+﻿'use client';
 /**
- * FacilityH2O � Owner Settings (ariley only)
+ * FacilityH2O — Owner Settings (ariley only)
  * Author & Owner: Antoine Riley
- * Global theme control � changes apply to ALL users site-wide.
+ * Global theme control — changes apply to ALL users site-wide.
  */
 
 import { useEffect, useState } from 'react';
@@ -17,7 +17,7 @@ function getUser() {
 }
 
 const PRESET_META = {
-  FacilityH2O:  { label: 'MedStar (Default)', preview: ['#003366','#0072CE','#F6C90E'], dark: false },
+  FacilityH2O:  { label: 'FacilityH2O (Default)', preview: ['#003366','#0072CE','#F6C90E'], dark: false },
   dark:     { label: 'Dark Mode',         preview: ['#0d1526','#0072CE','#F6C90E'], dark: true  },
   ocean:    { label: 'Ocean',             preview: ['#0c4a6e','#0891b2','#22d3ee'], dark: false },
   forest:   { label: 'Forest',            preview: ['#14532d','#16a34a','#86efac'], dark: false },
@@ -110,7 +110,7 @@ export default function SettingsPage() {
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900">Site Settings</h1>
           <p className="text-gray-500 text-sm mt-1">
-            ?? Changes you make here apply to <strong>all users</strong> across the entire site.
+            🎨 Changes you make here apply to <strong>all users</strong> across the entire site.
           </p>
         </div>
 
@@ -123,7 +123,7 @@ export default function SettingsPage() {
         {/* Color Scheme Presets */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
           <h2 className="text-base font-bold text-gray-800 mb-1">Color Scheme</h2>
-          <p className="text-sm text-gray-500 mb-5">Select a preset � changes the colors and light/dark mode for everyone.</p>
+          <p className="text-sm text-gray-500 mb-5">Select a preset — changes the colors and light/dark mode for everyone.</p>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {Object.entries(PRESET_META).map(([key, meta]) => {
@@ -144,8 +144,8 @@ export default function SettingsPage() {
                     ))}
                   </div>
                   <div className="text-sm font-semibold text-gray-800">{meta.label}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">{meta.dark ? '?? Dark' : '?? Light'}</div>
-                  {isActive && <div className="text-xs text-[#0072CE] font-bold mt-1">? Active</div>}
+                  <div className="text-xs text-gray-400 mt-0.5">{meta.dark ? '🌙 Dark' : '☀️ Light'}</div>
+                  {isActive && <div className="text-xs text-[#0072CE] font-bold mt-1">✓ Active</div>}
                   {saving === key && <div className="text-xs text-gray-400 mt-1">Applying...</div>}
                 </button>
               );
@@ -197,7 +197,7 @@ export default function SettingsPage() {
                       custom.mode === m ? 'bg-[#0072CE] text-white border-[#0072CE]' : 'border-gray-200 text-gray-600 hover:border-gray-300'
                     }`}
                   >
-                    {m === 'light' ? '?? Light' : '?? Dark'}
+                    {m === 'light' ? '☀️ Light' : '🌙 Dark'}
                   </button>
                 ))}
               </div>
@@ -221,14 +221,14 @@ export default function SettingsPage() {
             disabled={saving === 'custom'}
             className="bg-[#0072CE] text-white px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#005fa3] transition disabled:opacity-50"
           >
-            {saving === 'custom' ? 'Applying...' : '?? Apply Custom Theme'}
+            {saving === 'custom' ? 'Applying...' : '💾 Apply Custom Theme'}
           </button>
         </div>
 
-        {/* -- TEST ALERT SYSTEM -- */}
+        {/* ── TEST ALERT SYSTEM ── */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mt-6">
           <div className="flex items-start gap-4">
-            <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-xl flex-shrink-0">??</div>
+            <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-xl flex-shrink-0">🔔</div>
             <div className="flex-1">
               <h2 className="text-base font-bold text-gray-800">Test Alert Notifications</h2>
               <p className="text-sm text-gray-500 mt-1">
@@ -237,10 +237,10 @@ export default function SettingsPage() {
 
               <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-600 bg-gray-50 rounded-lg p-4">
                 <div>
-                  <span className="font-semibold text-gray-700">?? Email:</span> Sends to <code className="bg-gray-100 px-1 rounded text-xs">ALERT_EMAIL_TO</code> env var + notification rules
+                  <span className="font-semibold text-gray-700">📧 Email:</span> Sends to <code className="bg-gray-100 px-1 rounded text-xs">ALERT_EMAIL_TO</code> env var + notification rules
                 </div>
                 <div>
-                  <span className="font-semibold text-gray-700">?? SMS:</span> Sends to all phone numbers in notification rules (Twilio)
+                  <span className="font-semibold text-gray-700">📱 SMS:</span> Sends to all phone numbers in notification rules (Twilio)
                 </div>
               </div>
 
@@ -250,9 +250,9 @@ export default function SettingsPage() {
                 className="mt-4 flex items-center gap-2 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition"
               >
                 {testingAlert ? (
-                  <><span className="animate-spin">?</span> Sending test alert...</>
+                  <><span className="animate-spin">⟳</span> Sending test alert...</>
                 ) : (
-                  <>?? Send Test Alert</>
+                  <>🔔 Send Test Alert</>
                 )}
               </button>
 
@@ -261,10 +261,10 @@ export default function SettingsPage() {
                 <div className="mt-4 rounded-xl border overflow-hidden">
                   {/* Email result */}
                   <div className={`flex items-start gap-3 p-4 border-b ${testResult.email?.ok ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'}`}>
-                    <span className="text-lg">{testResult.email?.ok ? '?' : '?'}</span>
+                    <span className="text-lg">{testResult.email?.ok ? '✅' : '❌'}</span>
                     <div>
                       <div className="font-semibold text-sm text-gray-800">
-                        Email � {testResult.email?.ok ? 'Sent Successfully' : 'Failed'}
+                        Email — {testResult.email?.ok ? 'Sent Successfully' : 'Failed'}
                       </div>
                       {testResult.email?.ok ? (
                         <div className="text-xs text-gray-500 mt-0.5">
@@ -278,10 +278,10 @@ export default function SettingsPage() {
                   </div>
                   {/* SMS result */}
                   <div className={`flex items-start gap-3 p-4 ${testResult.sms?.ok ? 'bg-green-50' : 'bg-red-50'}`}>
-                    <span className="text-lg">{testResult.sms?.ok ? '?' : '?'}</span>
+                    <span className="text-lg">{testResult.sms?.ok ? '✅' : '❌'}</span>
                     <div>
                       <div className="font-semibold text-sm text-gray-800">
-                        SMS � {testResult.sms?.ok ? 'Sent Successfully' : 'Failed / Not Configured'}
+                        SMS — {testResult.sms?.ok ? 'Sent Successfully' : 'Failed / Not Configured'}
                       </div>
                       {testResult.sms?.ok ? (
                         <div className="text-xs text-gray-500 mt-0.5">

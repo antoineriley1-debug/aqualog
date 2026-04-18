@@ -102,7 +102,7 @@ export async function GET(request) {
     // Example: Send test alert
     const emailResult = await sendEmail({
       to: allEmails.filter(Boolean),
-      subject: '🧪 Test Alert — AquaLog',
+      subject: '🧪 Test Alert — FacilityH2O',
       text: 'This is a test alert sent from the cron job.',
     });
 

@@ -48,7 +48,7 @@ function SignupForm() {
     <div className="min-h-screen bg-[#F0F9FF] flex flex-col items-center justify-center p-4">
       <Link href="/" className="flex items-center gap-2 mb-8">
         <span className="text-3xl">💧</span>
-        <span className="text-xl font-bold text-[#164E63]">AquaLog</span>
+        <span className="text-xl font-bold text-[#164E63]">FacilityH2O</span>
       </Link>
 
       {/* Step indicator */}

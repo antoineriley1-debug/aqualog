@@ -134,8 +134,8 @@ export default function Sidebar() {
       <aside className="hidden md:flex w-64 min-h-screen bg-[#003366] text-white flex-col flex-shrink-0">
         {/* Logo */}
         <div className="px-6 py-5 border-b border-blue-800">
-          <div className="text-2xl font-bold">💧 AquaLog</div>
-          <div className="text-xs text-blue-300 mt-1">MedStar Health</div>
+          <div className="text-2xl font-bold">💧 FacilityH2O</div>
+          <div className="text-xs text-blue-300 mt-1">FacilityH2O Inc.</div>
         </div>
 
         {/* User Info */}
@@ -194,7 +194,7 @@ export default function Sidebar() {
               </svg>
             )}
           </button>
-          <span className="font-bold text-lg">💧 AquaLog</span>
+          <span className="font-bold text-lg">💧 FacilityH2O</span>
         </div>
         <div className="flex items-center gap-2">
           {alertCount > 0 && (
@@ -220,8 +220,8 @@ export default function Sidebar() {
           <div className="md:hidden fixed top-0 left-0 bottom-0 z-50 w-72 bg-[#003366] text-white flex flex-col shadow-2xl">
             <div className="px-6 py-5 border-b border-blue-800 flex items-center justify-between">
               <div>
-                <div className="text-xl font-bold">💧 AquaLog</div>
-                <div className="text-xs text-blue-300 mt-0.5">MedStar Health</div>
+                <div className="text-xl font-bold">💧 FacilityH2O</div>
+                <div className="text-xs text-blue-300 mt-0.5">FacilityH2O Inc.</div>
               </div>
               <button onClick={() => setMobileOpen(false)} className="p-1.5 hover:bg-blue-800/50 rounded-lg">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
