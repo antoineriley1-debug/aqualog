@@ -3,11 +3,16 @@ import { useEffect, useState, useRef } from 'react';
 import Sidebar from '@/components/Sidebar';
 
 const HOSPITALS = [
-  { name: 'Montgomery', issue: 'Low pH steam issue, absent amine residuals' },
-  { name: 'Union Memorial', issue: 'Iron contamination in chilled loop' },
-  { name: 'Harbor', issue: 'Standard operation' },
-  { name: 'Southern Maryland', issue: 'Boiler shutdown blocked, blower failure' },
-  { name: 'Washington Hospital Center', issue: 'High cycles optimization needed' },
+  { id: 'whc', name: 'Washington Hospital Center', issue: 'High cycles optimization needed' },
+  { id: 'mont', name: 'Montgomery', issue: 'Low pH steam issue, absent amine residuals' },
+  { id: 'union', name: 'Union Memorial', issue: 'Iron contamination in chilled loop' },
+  { id: 'harbor', name: 'Harbor', issue: 'Standard operation' },
+  { id: 'somd', name: 'Southern Maryland', issue: 'Boiler shutdown blocked, blower failure' },
+  { id: 'geo', name: 'Georgetown University Hospital', issue: 'Steam trap maintenance, condensate return quality' },
+  { id: 'frank', name: 'Franklin Square Medical Center', issue: 'Cooling tower biological control, legionella prevention' },
+  { id: 'gs', name: 'Good Samaritan Hospital', issue: 'Aging boiler system, scale buildup concerns' },
+  { id: 'stm', name: "St. Mary's Hospital", issue: 'Chilled water loop corrosion, low inhibitor levels' },
+  { id: 'nrh', name: 'National Rehabilitation Hospital (NRH)', issue: 'Compact system, limited redundancy' },
 ];
 
 function getUser() {
@@ -19,7 +24,7 @@ function getUser() {
 
 export default function AdvisorPage() {
   const [user, setUser] = useState(null);
-  const [hospital, setHospital] = useState(HOSPITALS[0].name);
+  const [hospital, setHospital] = useState(HOSPITALS[0].id);
   const [question, setQuestion] = useState('');
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -55,7 +60,7 @@ export default function AdvisorPage() {
       const res = await fetch('/api/advisor', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ hospital, question: q, history }),
+        body: JSON.stringify({ hospitalId: hospital, question: q, history }),
       });
 
       if (!res.ok) {
@@ -113,7 +118,7 @@ export default function AdvisorPage() {
 
   if (!user) return null;
 
-  const selectedHospital = HOSPITALS.find((h) => h.name === hospital);
+  const selectedHospital = HOSPITALS.find((h) => h.id === hospital);
 
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -137,7 +142,7 @@ export default function AdvisorPage() {
                 className="text-sm border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
                 {HOSPITALS.map((h) => (
-                  <option key={h.name} value={h.name}>{h.name}</option>
+                  <option key={h.id} value={h.id}>{h.name}</option>
                 ))}
               </select>
               {messages.length > 0 && (
@@ -168,14 +173,14 @@ export default function AdvisorPage() {
               </h2>
               <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md">
                 Ask questions about boiler water chemistry, chilled water loops, steam systems,
-                cooling towers, or any water treatment topic for <strong>{hospital}</strong>.
+                cooling towers, or any water treatment topic for <strong>{selectedHospital?.name || hospital}</strong>.
               </p>
               <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-lg">
                 {[
-                  'What should my boiler water pH be?',
-                  'How do I address iron in the chilled loop?',
-                  'When should I blow down the cooling tower?',
-                  'What are normal conductivity ranges?',
+                  'What are the current trends for this facility?',
+                  'Are any parameters trending out of range?',
+                  'Analyze recent boiler water readings',
+                  'What corrective actions should we take based on current data?',
                 ].map((suggestion) => (
                   <button
                     key={suggestion}
@@ -247,7 +252,7 @@ export default function AdvisorPage() {
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={`Ask about water chemistry at ${hospital}...`}
+              placeholder={`Ask about water chemistry at ${selectedHospital?.name || hospital}...`}
               className="flex-1 border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-2.5 text-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white dark:focus:bg-gray-600 transition-colors"
               disabled={loading}
               autoComplete="off"
