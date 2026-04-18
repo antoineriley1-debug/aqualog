@@ -89,7 +89,7 @@ export async function POST(request) {
   const allEmails = [...new Set([...envEmails, ...ruleEmails])];
 
   // Collect SMS numbers from rule contacts
-  const smsNumbers = ruleContacts.map(c => c.phone).filter(Boolean);
+  const smsNumbers = ruleContacts.map(c => c.sms).filter(Boolean);
 
   const subject = `✅ TEST ALERT — FacilityH2O Notification System | ${ts}`;
   const text = `TEST ALERT — FacilityH2O\n\nThis is a test notification triggered by ${user.name} (${user.username}) to verify the alert system is working correctly.\n\nTimestamp: ${ts}\nTriggered by: ${user.name}\nRole: ${user.role}\n\nIf you received this message, email alerts are working correctly.\n\n— FacilityH2O Alert System`;
