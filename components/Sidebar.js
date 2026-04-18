@@ -68,6 +68,7 @@ export default function Sidebar() {
     { href: '/entry', label: '➕ New Entry', shortLabel: 'Entry' },
     { href: '/history', label: '📋 History', shortLabel: 'History' },
     { href: '/trends', label: '📈 Trends', shortLabel: 'Trends' },
+    { href: '/advisor', label: '🧪 Chemistry Advisor', shortLabel: 'Advisor' },
     ...(user?.role === 'admin'
       ? [
           { href: '/alerts', label: '🔔 Alerts', shortLabel: 'Alerts', badge: alertCount },
