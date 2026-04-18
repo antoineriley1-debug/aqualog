@@ -9,7 +9,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
           <div className="flex items-center gap-2 text-xl font-bold text-[#003366]">
             <span className="text-2xl">💧</span>
-            <span>FacilityH2O</span>
+            <span>AquaLog</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
             <a href="#features" className="hover:text-[#0072CE] transition">Features</a>
@@ -37,7 +37,7 @@ export default function LandingPage() {
             Water Chemistry Compliance.<br />Built for Facilities.
           </h1>
           <p className="text-xl text-blue-100 max-w-2xl mx-auto mb-10 leading-relaxed">
-            FacilityH2O is the purpose-built water treatment logging platform trusted by facility engineers and compliance officers. Shift-based logging, real-time alerts, and audit-ready reports — all in one place.
+            AquaLog is the purpose-built water treatment logging platform trusted by facility engineers and compliance officers. Shift-based logging, real-time alerts, and audit-ready reports — all in one place.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link href="/login" className="bg-white text-[#003366] font-bold px-8 py-3.5 rounded-xl hover:bg-blue-50 transition shadow-lg text-base">
@@ -78,10 +78,10 @@ export default function LandingPage() {
               <p>
                 Then I became a Systems Director at MedStar Health — overseeing facilities across 10 hospitals in the DC/Maryland/Virginia region — and inherited paper logs. I watched facility teams scramble before Joint Commission visits. I saw Legionella alerts get missed because someone forgot to check a notebook. I knew exactly what was wrong because I&apos;d <em>been</em> the one filling out those logs.
               </p>
-              <p className="text-lg font-semibold text-[#003366]">So I built FacilityH2O. Because no one else was going to.</p>
+              <p className="text-lg font-semibold text-[#003366]">So I built AquaLog. Because no one else was going to.</p>
               <blockquote className="border-l-4 border-[#0072CE] pl-6 py-2 bg-blue-50 rounded-r-xl">
                 <p className="text-gray-700 italic text-sm leading-relaxed">
-                  &ldquo;I spent over a decade in mechanical rooms — running high-pressure boilers at Temple University, maintaining systems at Main Line Health, supervising MEP operations at UPenn. I knew every valve, every gauge, every chemical treatment schedule. Then I became a director and inherited paper logs. I built FacilityH2O because no one else was going to.&rdquo;
+                  &ldquo;I spent over a decade in mechanical rooms — running high-pressure boilers at Temple University, maintaining systems at Main Line Health, supervising MEP operations at UPenn. I knew every valve, every gauge, every chemical treatment schedule. Then I became a director and inherited paper logs. I built AquaLog because no one else was going to.&rdquo;
                 </p>
                 <cite className="block mt-3 text-xs font-semibold text-[#003366] not-italic">
                   — Antoine W. Riley Sr., Founder | Systems Director, Crothall Healthcare / MedStar Health
@@ -97,7 +97,7 @@ export default function LandingPage() {
                   <div className="w-14 h-14 rounded-full bg-[#003366] text-white flex items-center justify-center font-bold text-lg flex-shrink-0">AWR</div>
                   <div>
                     <div className="font-bold text-gray-900">Antoine W. Riley Sr.</div>
-                    <div className="text-sm text-gray-500">Founder, FacilityH2O</div>
+                    <div className="text-sm text-gray-500">Founder, AquaLog</div>
                     <div className="text-xs text-[#0072CE]">Systems Director — Crothall Healthcare / MedStar Health</div>
                   </div>
                 </div>
@@ -124,7 +124,7 @@ export default function LandingPage() {
                     { role: 'Stationary Engineer', org: 'Main Line Health — 3 years' },
                     { role: 'MEP Supervisor', org: 'University of Pennsylvania' },
                     { role: 'Systems Director', org: 'Crothall Healthcare / MedStar Health — 10 hospitals' },
-                    { role: 'Founder, FacilityH2O', org: 'Built the system the field actually needed', highlight: true },
+                    { role: 'Founder, AquaLog', org: 'Built the system the field actually needed', highlight: true },
                   ].map((step, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <div className={`w-3 h-3 rounded-full mt-1 flex-shrink-0 ${step.highlight ? 'bg-[#0072CE] ring-4 ring-blue-100' : 'bg-gray-300'}`} />
@@ -186,7 +186,7 @@ export default function LandingPage() {
               { icon: '🧫', title: 'Legionella Program Tracking', desc: 'Log and track your Legionella water management program entries. Full audit history for regulatory submissions.' },
               { icon: '🔍', title: 'Tamper-Evident Audit Log', desc: 'Every login, every entry, every change is permanently logged with timestamp, user, and IP. SHA-256 sealed — immutable chain of custody.' },
               { icon: '👥', title: 'Role-Based Access', desc: 'Admin accounts see all facilities and reports. Operator accounts are scoped to their assigned building only. No configuration needed.' },
-              { icon: '🎨', title: 'Custom Branding', desc: 'Set your color scheme, dark/light mode, and site-wide theme. Make FacilityH2O look like it belongs to your organization.' },
+              { icon: '🎨', title: 'Custom Branding', desc: 'Set your color scheme, dark/light mode, and site-wide theme. Make AquaLog look like it belongs to your organization.' },
             ].map(f => (
               <div key={f.title} className="bg-[#F0F9FF] rounded-2xl p-6 border border-blue-100 hover:shadow-md transition">
                 <div className="text-3xl mb-4">{f.icon}</div>
@@ -205,17 +205,17 @@ export default function LandingPage() {
             <div className="inline-block text-xs font-bold text-yellow-300 uppercase tracking-widest bg-white/10 px-4 py-1.5 rounded-full mb-4">Regulatory Coverage</div>
             <h2 className="text-3xl font-bold mb-3">Every Standard. Covered.</h2>
             <p className="text-blue-200 text-lg max-w-2xl mx-auto">
-              FacilityH2O is built around the regulations that govern healthcare water systems — so you&apos;re never scrambling to prove compliance.
+              AquaLog is built around the regulations that govern healthcare water systems — so you&apos;re never scrambling to prove compliance.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { badge: 'TJC', title: 'The Joint Commission', desc: 'EC.02.05.02 — Water management plan requirement. TJC can cite you on the spot for missing documentation. FacilityH2O keeps it current, accessible, and audit-ready at all times.' },
+              { badge: 'TJC', title: 'The Joint Commission', desc: 'EC.02.05.02 — Water management plan requirement. TJC can cite you on the spot for missing documentation. AquaLog keeps it current, accessible, and audit-ready at all times.' },
               { badge: 'AAMI', title: 'ANSI/AAMI ST108:2023', desc: 'Water quality standards for medical device reprocessing. Our compliance module tracks every required parameter — conductivity, endotoxin, bacterial levels, and more.' },
               { badge: 'ASHRAE', title: 'ASHRAE 188-2018', desc: 'Legionella risk management for building water systems. Full Water Management Program logging, biological testing tracking, and corrective action documentation.' },
               { badge: 'CMS', title: 'CMS QSO17-30', desc: 'Centers for Medicare & Medicaid Services water management program requirements. Stay compliant and reimbursable — one missed requirement shouldn\'t cost you CMS status.' },
               { badge: 'DOH', title: 'State DOH Requirements', desc: 'Department of Health water quality and Legionella regulations vary by state. Our flexible logging system captures what your state requires with customizable parameters.' },
-              { badge: '+', title: 'Always Up To Date', desc: 'Regulations change. We track them so you don\'t have to. When standards update, FacilityH2O updates — your workflow stays the same, your compliance stays current.' },
+              { badge: '+', title: 'Always Up To Date', desc: 'Regulations change. We track them so you don\'t have to. When standards update, AquaLog updates — your workflow stays the same, your compliance stays current.' },
             ].map(c => (
               <div key={c.badge} className="bg-white/10 rounded-2xl p-7">
                 <div className="inline-block bg-[#F6C90E] text-[#003366] text-xs font-bold px-3 py-1 rounded-full mb-4">{c.badge}</div>
@@ -288,7 +288,7 @@ export default function LandingPage() {
             <div className="inline-block text-xs font-bold text-yellow-300 uppercase tracking-widest bg-white/10 px-4 py-1.5 rounded-full mb-6">Get Started</div>
             <h2 className="text-3xl font-bold mb-4">Your Next Inspection Is Coming.<br />Be Ready.</h2>
             <p className="text-blue-100 mb-6 leading-relaxed">
-              Don&apos;t wait for a citation to fix your water management program. Request a demo today and see how FacilityH2O transforms compliance from a liability into a competitive advantage.
+              Don&apos;t wait for a citation to fix your water management program. Request a demo today and see how AquaLog transforms compliance from a liability into a competitive advantage.
             </p>
             <ul className="space-y-3 text-sm text-blue-100">
               {[
@@ -333,7 +333,7 @@ export default function LandingPage() {
       {/* FOOTER */}
       <footer className="bg-gray-900 text-gray-400 py-12 px-6 text-center text-sm">
         <div className="flex items-center justify-center gap-2 text-white font-bold text-lg mb-3">
-          <span className="text-xl">💧</span> FacilityH2O
+          <span className="text-xl">💧</span> AquaLog
         </div>
         <p className="text-gray-500 mb-1">Water Chemistry Compliance. Built for Facilities.</p>
         <p className="text-gray-600 text-xs mb-5">Built by a Stationary Engineer turned Systems Director — Antoine W. Riley Sr.</p>
@@ -344,7 +344,7 @@ export default function LandingPage() {
           <Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link>
           <a href="mailto:info@facilityh2o.com" className="hover:text-white transition">info@facilityh2o.com</a>
         </div>
-        <p className="text-gray-600">© 2026 Antoine Riley. FacilityH2O™. All rights reserved.</p>
+        <p className="text-gray-600">© 2026 Antoine Riley. AquaLog™. All rights reserved.</p>
       </footer>
     </div>
   );

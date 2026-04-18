@@ -11,10 +11,18 @@ export function middleware(request) {
 
   // Public routes
   if (
+    pathname === '/' ||
     pathname === '/login' ||
     pathname === '/reset-password' ||
+    pathname === '/signup' ||
+    pathname === '/privacy' ||
+    pathname === '/terms' ||
+    pathname === '/legal' ||
+    pathname === '/pricing' ||
     pathname.startsWith('/api/auth') ||
     pathname.startsWith('/api/reset-password') ||
+    pathname.startsWith('/api/signup') ||
+    pathname.startsWith('/api/cron/') ||
     pathname.startsWith('/_next') ||
     pathname.startsWith('/favicon')
   ) {
@@ -22,24 +30,26 @@ export function middleware(request) {
   }
 
   const cookie = request.cookies.get('FacilityH2O_user');
+  const isApi = pathname.startsWith('/api/');
 
   if (!cookie) {
-    const loginUrl = new URL('/login', request.url);
-    return NextResponse.redirect(loginUrl);
+    if (isApi) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
+  let parsedUser;
   try {
-    const user = JSON.parse(cookie.value);
-    if (!user || !user.username) {
-      const loginUrl = new URL('/login', request.url);
-      return NextResponse.redirect(loginUrl);
+    parsedUser = JSON.parse(cookie.value);
+    if (!parsedUser || !parsedUser.username) {
+      if (isApi) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.redirect(new URL('/login', request.url));
     }
   } catch {
-    const loginUrl = new URL('/login', request.url);
-    return NextResponse.redirect(loginUrl);
+    if (isApi) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  // Protect admin-only routes
+  // Protect admin-only page routes
   const adminOnlyPaths = [
     '/alerts', '/reports', '/users', '/directory', '/compliance', '/audit',
     '/st108/report', '/st108/audit',   // ST108 compliance reports = admin only
@@ -47,18 +57,25 @@ export function middleware(request) {
     '/settings',                       // Owner-only site settings
     '/notifications',                  // Alert rules — admin only
   ];
+
+  // Admin-only API routes
+  const adminOnlyApiPaths = [
+    '/api/test-alert',
+    '/api/debug-alert',
+    '/api/send-alert',
+    '/api/users',
+    '/api/notifications',
+  ];
+
   // /st108, /legionella = all authenticated users (operators log readings)
   // /st108 (water log entry) is accessible to all authenticated users
-  if (adminOnlyPaths.some((p) => pathname.startsWith(p))) {
-    try {
-      const user = JSON.parse(cookie.value);
-      if (user.role !== 'admin') {
-        const dashboardUrl = new URL('/dashboard', request.url);
-        return NextResponse.redirect(dashboardUrl);
-      }
-    } catch {
-      const loginUrl = new URL('/login', request.url);
-      return NextResponse.redirect(loginUrl);
+  const isAdminOnly = adminOnlyPaths.some((p) => pathname.startsWith(p)) ||
+                      adminOnlyApiPaths.some((p) => pathname.startsWith(p));
+
+  if (isAdminOnly) {
+    if (parsedUser.role !== 'admin') {
+      if (isApi) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      return NextResponse.redirect(new URL('/dashboard', request.url));
     }
   }
 

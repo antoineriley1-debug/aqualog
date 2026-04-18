@@ -84,8 +84,8 @@ function ResetPasswordContent() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="text-5xl mb-3">💧</div>
-          <h1 className="text-3xl font-bold text-[#003366]">FacilityH2O</h1>
-          <p className="text-gray-500 mt-1 text-sm">FacilityH2O Inc. · Water Chemistry Portal</p>
+          <h1 className="text-3xl font-bold text-[#003366]">AquaLog</h1>
+          <p className="text-gray-500 mt-1 text-sm">MedStar Health · Water Chemistry Portal</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-lg p-8">
@@ -191,7 +191,7 @@ function ResetPasswordContent() {
         </div>
 
         <p className="text-center text-xs text-gray-400 mt-6">
-          Managed by FacilityH2O · Confidential
+          Managed by Crothall Healthcare · Confidential
         </p>
       </div>
     </div>

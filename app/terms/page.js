@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Terms of Service | FacilityH2O',
-  description: 'FacilityH2O Terms of Service — effective April 2026',
+  title: 'Terms of Service | AquaLog',
+  description: 'AquaLog Terms of Service — effective April 2026',
 };
 
 export default function TermsPage() {
@@ -12,11 +12,11 @@ export default function TermsPage() {
       <header className="bg-gradient-to-r from-[#164E63] to-[#0891B2] text-white">
         <div className="max-w-4xl mx-auto px-6 py-10">
           <Link href="/" className="text-cyan-200 hover:text-white text-sm mb-4 inline-block transition">
-            ← Back to FacilityH2O
+            ← Back to AquaLog
           </Link>
           <div className="flex items-center gap-3 mb-2">
             <span className="text-2xl">💧</span>
-            <span className="text-sm font-semibold text-cyan-200 uppercase tracking-widest">FacilityH2O</span>
+            <span className="text-sm font-semibold text-cyan-200 uppercase tracking-widest">AquaLog</span>
           </div>
           <h1 className="text-4xl font-extrabold mb-2">Terms of Service</h1>
           <p className="text-cyan-200 text-sm">
@@ -61,17 +61,17 @@ export default function TermsPage() {
           <section id="section-1" className="mb-10">
             <h2 className="text-2xl font-bold text-[#164E63] mb-4 pb-2 border-b border-cyan-100">1. Acceptance of Terms</h2>
             <p className="text-gray-700 leading-relaxed">
-              By accessing or using FacilityH2O ("the Service"), you ("Customer," "you," or "your") agree to be bound by these Terms of Service ("Terms"). If you are accepting these Terms on behalf of a company or other legal entity, you represent that you have the authority to bind that entity.
+              By accessing or using AquaLog ("the Service"), you ("Customer," "you," or "your") agree to be bound by these Terms of Service ("Terms"). If you are accepting these Terms on behalf of a company or other legal entity, you represent that you have the authority to bind that entity.
             </p>
             <p className="text-gray-700 leading-relaxed mt-3">
-              If you do not agree to these Terms, do not access or use the Service. These Terms constitute a legally binding agreement between you and FacilityH2O (a pending LLC owned by Antoine Riley).
+              If you do not agree to these Terms, do not access or use the Service. These Terms constitute a legally binding agreement between you and AquaLog (a pending LLC owned by Antoine Riley).
             </p>
           </section>
 
           <section id="section-2" className="mb-10">
             <h2 className="text-2xl font-bold text-[#164E63] mb-4 pb-2 border-b border-cyan-100">2. Description of Service</h2>
             <p className="text-gray-700 leading-relaxed">
-              FacilityH2O is a cloud-based Software as a Service (SaaS) platform designed for water chemistry compliance tracking in commercial, healthcare, and hospitality environments. The Service enables facilities to log and analyze water chemistry readings, monitor compliance with ASHRAE 188 and The Joint Commission standards, generate alerts for out-of-range values, and produce compliance reports.
+              AquaLog is a cloud-based Software as a Service (SaaS) platform designed for water chemistry compliance tracking in commercial, healthcare, and hospitality environments. The Service enables facilities to log and analyze water chemistry readings, monitor compliance with ASHRAE 188 and The Joint Commission standards, generate alerts for out-of-range values, and produce compliance reports.
             </p>
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mt-4">
               <p className="text-amber-800 text-sm font-medium">
@@ -189,7 +189,7 @@ export default function TermsPage() {
           <section id="section-9" className="mb-10">
             <h2 className="text-2xl font-bold text-[#164E63] mb-4 pb-2 border-b border-cyan-100">9. Intellectual Property</h2>
             <p className="text-gray-700 leading-relaxed">
-              All software, algorithms, designs, trademarks, and content comprising the Service (excluding Customer Data) are the exclusive intellectual property of Antoine Riley / FacilityH2O. Nothing in these Terms transfers any ownership of our intellectual property to you. "FacilityH2O" and associated logos are trademarks of Antoine Riley.
+              All software, algorithms, designs, trademarks, and content comprising the Service (excluding Customer Data) are the exclusive intellectual property of Antoine Riley / AquaLog. Nothing in these Terms transfers any ownership of our intellectual property to you. "AquaLog" and associated logos are trademarks of Antoine Riley.
             </p>
           </section>
 
@@ -197,7 +197,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-bold text-[#164E63] mb-4 pb-2 border-b border-cyan-100">10. Limitation of Liability</h2>
             <div className="bg-gray-50 border border-gray-200 rounded-xl p-5">
               <p className="text-gray-700 text-sm leading-relaxed uppercase font-medium">
-                To the maximum extent permitted by law, FacilityH2O shall not be liable for indirect, incidental, special, consequential, or punitive damages. Our total aggregate liability for any claims shall not exceed the greater of the fees paid by you in the three months preceding the claim or $500.
+                To the maximum extent permitted by law, AquaLog shall not be liable for indirect, incidental, special, consequential, or punitive damages. Our total aggregate liability for any claims shall not exceed the greater of the fees paid by you in the three months preceding the claim or $500.
               </p>
             </div>
           </section>
@@ -214,7 +214,7 @@ export default function TermsPage() {
           <section id="section-12" className="mb-10">
             <h2 className="text-2xl font-bold text-[#164E63] mb-4 pb-2 border-b border-cyan-100">12. Indemnification</h2>
             <p className="text-gray-700 leading-relaxed">
-              You agree to indemnify and hold harmless FacilityH2O and its owner from claims, damages, and expenses (including reasonable attorneys' fees) arising from your use of the Service in violation of these Terms, your violation of applicable laws, or any claim that your Customer Data infringes third-party rights.
+              You agree to indemnify and hold harmless AquaLog and its owner from claims, damages, and expenses (including reasonable attorneys' fees) arising from your use of the Service in violation of these Terms, your violation of applicable laws, or any claim that your Customer Data infringes third-party rights.
             </p>
           </section>
 
@@ -242,7 +242,7 @@ export default function TermsPage() {
 
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-400 py-10 text-center text-sm">
-        <div className="text-white font-bold text-lg mb-2">💧 FacilityH2O</div>
+        <div className="text-white font-bold text-lg mb-2">💧 AquaLog</div>
         <div className="flex items-center justify-center gap-4 mt-2 flex-wrap">
           <Link href="/" className="hover:text-white transition">Home</Link>
           <span className="text-gray-600">·</span>
@@ -250,7 +250,7 @@ export default function TermsPage() {
           <span className="text-gray-600">·</span>
           <Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link>
         </div>
-        <p className="mt-4 text-gray-500">© 2026 Antoine Riley. FacilityH2O™. All rights reserved.</p>
+        <p className="mt-4 text-gray-500">© 2026 Antoine Riley. AquaLog™. All rights reserved.</p>
       </footer>
     </div>
   );

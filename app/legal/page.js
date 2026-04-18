@@ -8,7 +8,7 @@ const sections = [
     content: [
       {
         heading: 'Ownership',
-        text: 'FacilityH2O Inc.H2OLog.com and all content, features, functionality, source code, data architecture, user interface design, logging methodology, validation logic, system workflows, and visual displays contained therein are the exclusive proprietary property of Antoine W. Riley Sr. and are protected under applicable United States copyright law, trade secret law, and other intellectual property laws and treaties.',
+        text: 'MedStarH2OLog.com and all content, features, functionality, source code, data architecture, user interface design, logging methodology, validation logic, system workflows, and visual displays contained therein are the exclusive proprietary property of Antoine W. Riley Sr. and are protected under applicable United States copyright law, trade secret law, and other intellectual property laws and treaties.',
       },
       {
         heading: 'Copyright Registration',
@@ -16,7 +16,7 @@ const sections = [
       },
       {
         heading: 'Restricted Use',
-        text: 'Access to FacilityH2O Inc.H2OLog.com is granted solely for the authorized internal use of credentialed users within their assigned facility. Users may not: (a) copy, replicate, or reconstruct any portion of the platform\'s interface, workflow, or data structure; (b) use the platform as a reference to develop competing software; (c) scrape, harvest, or extract data through automated means; or (d) share login credentials with any unauthorized party.',
+        text: 'Access to MedStarH2OLog.com is granted solely for the authorized internal use of credentialed users within their assigned facility. Users may not: (a) copy, replicate, or reconstruct any portion of the platform\'s interface, workflow, or data structure; (b) use the platform as a reference to develop competing software; (c) scrape, harvest, or extract data through automated means; or (d) share login credentials with any unauthorized party.',
       },
       {
         heading: 'Trade Secret Notice',
@@ -24,7 +24,7 @@ const sections = [
       },
       {
         heading: 'No License Granted',
-        text: 'Nothing in these Terms shall be construed as granting any license or right to use any intellectual property of FacilityH2O Inc.H2OLog.com without the express prior written consent of the owner. All rights not expressly granted herein are reserved by Antoine W. Riley Sr.',
+        text: 'Nothing in these Terms shall be construed as granting any license or right to use any intellectual property of MedStarH2OLog.com without the express prior written consent of the owner. All rights not expressly granted herein are reserved by Antoine W. Riley Sr.',
       },
     ],
   },
@@ -34,11 +34,11 @@ const sections = [
     content: [
       {
         heading: '1. Authorized Users',
-        text: 'FacilityH2O is an internal system restricted exclusively to authorized employees and contractors of FacilityH2O and FacilityH2O Inc.. Access is granted on a per-site basis. No unauthorized personnel may access this system.',
+        text: 'AquaLog is an internal system restricted exclusively to authorized employees and contractors of MedStar Health and Crothall Healthcare.. Access is granted on a per-site basis. No unauthorized personnel may access this system.',
       },
       {
         heading: '2. Permitted Use',
-        text: 'This system is authorized solely for logging, reviewing, and managing water chemistry readings for assigned FacilityH2O Inc. facilities. Any other use is prohibited.',
+        text: 'This system is authorized solely for logging, reviewing, and managing water chemistry readings for assigned MedStar Health facilities. Any other use is prohibited.',
       },
       {
         heading: '3. Prohibited Actions',
@@ -46,7 +46,7 @@ const sections = [
       },
       {
         heading: '4. Monitoring',
-        text: 'All activity within FacilityH2O is logged and may be reviewed by system administrators at any time. By using this system, you consent to such monitoring.',
+        text: 'All activity within AquaLog is logged and may be reviewed by system administrators at any time. By using this system, you consent to such monitoring.',
       },
       {
         heading: '5. Violations',
@@ -60,15 +60,15 @@ const sections = [
     content: [
       {
         heading: '1. Retention Period',
-        text: 'All water chemistry readings logged in FacilityH2O are retained for a minimum of 24 months from the date of entry, consistent with ASHRAE Standard 188 and The Joint Commission water management plan documentation requirements.',
+        text: 'All water chemistry readings logged in AquaLog are retained for a minimum of 24 months from the date of entry, consistent with ASHRAE Standard 188 and The Joint Commission water management plan documentation requirements.',
       },
       {
         heading: '2. Data Types Stored',
-        text: 'FacilityH2O stores: water chemistry readings (pH, phosphate, sulfite, conductivity, etc.), user account information, shift entry records, alert records, and system access logs. No Protected Health Information (PHI) is collected or stored.',
+        text: 'AquaLog stores: water chemistry readings (pH, phosphate, sulfite, conductivity, etc.), user account information, shift entry records, alert records, and system access logs. No Protected Health Information (PHI) is collected or stored.',
       },
       {
         heading: '3. Regulatory Basis',
-        text: 'Retention periods are aligned with: ASHRAE Standard 188-2018 (Legionellosis: Risk Management for Building Water Systems), The Joint Commission EC.02.05.07, and FacilityH2O internal documentation standards.',
+        text: 'Retention periods are aligned with: ASHRAE Standard 188-2018 (Legionellosis: Risk Management for Building Water Systems), The Joint Commission EC.02.05.07, and MedStar Health internal documentation standards.',
       },
       {
         heading: '4. Backups',
@@ -76,7 +76,7 @@ const sections = [
       },
       {
         heading: '5. Data Deletion',
-        text: 'Upon decommission of this system, all data will be exported to CSV format and transferred to FacilityH2O Inc. records management prior to deletion. No data will be destroyed without written authorization from the FacilityH2O Inc. Systems Director.',
+        text: 'Upon decommission of this system, all data will be exported to CSV format and transferred to MedStar Health records management prior to deletion. No data will be destroyed without written authorization from the MedStar Health Systems Director.',
       },
     ],
   },
@@ -98,11 +98,11 @@ const sections = [
       },
       {
         heading: '4. Encryption',
-        text: 'All data in transit is encrypted via HTTPS/TLS. Access to FacilityH2O via unencrypted HTTP is not permitted in production.',
+        text: 'All data in transit is encrypted via HTTPS/TLS. Access to AquaLog via unencrypted HTTP is not permitted in production.',
       },
       {
         heading: '5. Incident Response',
-        text: 'Any suspected security incident, unauthorized access, or data breach must be reported immediately to Antoine Riley (antoine.riley@facilityh2o.com) and the FacilityH2O IT security team.',
+        text: 'Any suspected security incident, unauthorized access, or data breach must be reported immediately to Antoine Riley (antoine.riley@facilityh2o.com) and the MedStar Health IT security team.',
       },
       {
         heading: '6. Password Policy',
@@ -116,7 +116,7 @@ const sections = [
     content: [
       {
         heading: '1. Internal System',
-        text: 'FacilityH2O is an internal system operated by FacilityH2O for FacilityH2O Inc.. This notice applies to all authorized users of the system.',
+        text: 'AquaLog is an internal system operated by Crothall Healthcare for MedStar Health.. This notice applies to all authorized users of the system.',
       },
       {
         heading: '2. What Is Logged',
@@ -124,11 +124,11 @@ const sections = [
       },
       {
         heading: '3. Who Can Access Your Activity',
-        text: 'Antoine Riley (Systems Director) and designated FacilityH2O management have access to all system activity across all facilities for compliance and oversight purposes.',
+        text: 'Antoine Riley (Systems Director) and designated MedStar Health management have access to all system activity across all facilities for compliance and oversight purposes.',
       },
       {
         heading: '4. No External Sharing',
-        text: 'Data recorded in FacilityH2O is not shared with external parties except as required by law, regulation, or accreditation audit.',
+        text: 'Data recorded in AquaLog is not shared with external parties except as required by law, regulation, or accreditation audit.',
       },
       {
         heading: '5. Security',
@@ -150,7 +150,7 @@ export default function LegalPage() {
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900">Legal & Policies</h1>
           <p className="text-gray-500 text-sm mt-1">
-            FacilityH2O Inc.H2OLog.com · FacilityH2O · FacilityH2O Inc. · Managed by FacilityH2O · Last Updated: April 7, 2026
+            MedStarH2OLog.com · AquaLog · MedStar Health · Managed by Crothall Healthcare · Last Updated: April 7, 2026
           </p>
         </div>
 
@@ -174,7 +174,7 @@ export default function LegalPage() {
         </div>
 
         <div className="mt-8 text-center text-xs text-gray-400">
-          © 2026 Antoine W. Riley Sr. · FacilityH2O Inc.H2OLog.com · All Rights Reserved · Copyright Registration Filed with the U.S. Copyright Office
+          © 2026 Antoine W. Riley Sr. · MedStarH2OLog.com · All Rights Reserved · Copyright Registration Filed with the U.S. Copyright Office
         </div>
       </main>
     </div>

@@ -1,12 +1,12 @@
-ï»¿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { getAllEntries } from '@/lib/store';
 import { HOSPITALS } from '@/lib/hospitals';
 
 // Shift windows (ET):
-// 1st Shift: 5:00 AM â€“ 1:30 PM  â†’ check at 2:00 PM
-// 2nd Shift: 1:00 PM â€“ 9:30 PM  â†’ check at 10:00 PM
-// 3rd Shift: 9:00 PM â€“ 5:30 AM  â†’ check at 6:00 AM
+// 1st Shift: 5:00 AM – 1:30 PM  ? check at 2:00 PM
+// 2nd Shift: 1:00 PM – 9:30 PM  ? check at 10:00 PM
+// 3rd Shift: 9:00 PM – 5:30 AM  ? check at 6:00 AM
 
 export async function GET(request) {
   // Allow internal calls with secret key OR admin session
@@ -30,9 +30,9 @@ export async function GET(request) {
   const yesterday = new Date(etNow.getTime() - 86400000).toISOString().split('T')[0];
 
   // Determine which shift to check based on current time
-  // Day shift: check after 1:30 PM (13:30) â€” so if hour >= 14 and hour < 22
-  // Evening shift: check after 9:30 PM (21:30) â€” so if hour >= 22
-  // Night shift: check after 5:00 AM (05:00) â€” so if hour >= 6 and hour < 14
+  // Day shift: check after 1:30 PM (13:30) — so if hour >= 14 and hour < 22
+  // Evening shift: check after 9:30 PM (21:30) — so if hour >= 22
+  // Night shift: check after 5:00 AM (05:00) — so if hour >= 6 and hour < 14
   let shiftToCheck = null;
   let checkDate = today;
 
@@ -104,9 +104,9 @@ export async function GET(request) {
       const { Resend } = await import('resend');
       const resend = new Resend(process.env.RESEND_API_KEY);
       await resend.emails.send({
-        from: 'FacilityH2O Alerts <alerts@facilityh2o.com>',
+        from: 'AquaLog Alerts <alerts@facilityh2o.com>',
         to: process.env.ALERT_EMAIL_TO,
-        subject: `âš ï¸ FacilityH2O: ${missing.length} Missed ${shiftToCheck} Shift Reading${missing.length > 1 ? 's' : ''} â€” ${checkDate}`,
+        subject: `?? AquaLog: ${missing.length} Missed ${shiftToCheck} Shift Reading${missing.length > 1 ? 's' : ''} — ${checkDate}`,
         html: emailBody,
       });
       emailSent = true;
@@ -128,16 +128,16 @@ export async function GET(request) {
 
 function buildEmailBody(shift, date, missing) {
   const shiftTimes = {
-    '1st Shift': '5:00 AM â€“ 1:30 PM',
-    '2nd Shift': '1:00 PM â€“ 9:30 PM',
-    '3rd Shift': '9:00 PM â€“ 5:30 AM',
+    '1st Shift': '5:00 AM – 1:30 PM',
+    '2nd Shift': '1:00 PM – 9:30 PM',
+    '3rd Shift': '9:00 PM – 5:30 AM',
   };
 
   const rows = missing.map(m => {
-    const missed = [m.missingBoiler && 'ğŸ”¥ Boiler', m.missingChilled && 'â„ï¸ Chilled'].filter(Boolean).join(', ');
+    const missed = [m.missingBoiler && '?? Boiler', m.missingChilled && '?? Chilled'].filter(Boolean).join(', ');
     const dirInfo = m.director
       ? `${m.director.name}<br/>${[m.director.office, m.director.mobile].filter(Boolean).join(' / ')}<br/><a href="mailto:${m.director.email}">${m.director.email}</a>`
-      : '<span style="color:#999">â€”</span>';
+      : '<span style="color:#999">—</span>';
 
     return `
       <tr style="border-bottom:1px solid #f0f0f0">
@@ -153,14 +153,14 @@ function buildEmailBody(shift, date, missing) {
 <body style="font-family:Arial,sans-serif;background:#f8f9fa;margin:0;padding:20px">
   <div style="max-width:700px;margin:0 auto;background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
     <div style="background:#003366;padding:20px 28px">
-      <div style="color:white;font-size:22px;font-weight:bold">ğŸ’§ FacilityH2O</div>
-      <div style="color:#90c4f0;font-size:13px;margin-top:4px">FacilityH2O Inc. Â· Water Chemistry Portal</div>
+      <div style="color:white;font-size:22px;font-weight:bold">?? AquaLog</div>
+      <div style="color:#90c4f0;font-size:13px;margin-top:4px">MedStar Health · Water Chemistry Portal</div>
     </div>
     <div style="padding:24px 28px">
       <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:16px 20px;margin-bottom:24px">
-        <div style="font-size:18px;font-weight:700;color:#dc2626">âš ï¸ Missed ${shift} Shift Readings</div>
+        <div style="font-size:18px;font-weight:700;color:#dc2626">?? Missed ${shift} Shift Readings</div>
         <div style="color:#666;margin-top:6px;font-size:14px">
-          ${shift} Shift (${shiftTimes[shift]}) Â· ${date} Â· ${missing.length} facilit${missing.length !== 1 ? 'ies' : 'y'} missing
+          ${shift} Shift (${shiftTimes[shift]}) · ${date} · ${missing.length} facilit${missing.length !== 1 ? 'ies' : 'y'} missing
         </div>
       </div>
       <table style="width:100%;border-collapse:collapse;font-size:14px">
@@ -174,7 +174,7 @@ function buildEmailBody(shift, date, missing) {
         <tbody>${rows}</tbody>
       </table>
       <div style="margin-top:24px;padding-top:16px;border-top:1px solid #eee;font-size:12px;color:#999;text-align:center">
-        FacilityH2O Â· FacilityH2O Inc. Â· Managed by FacilityH2O
+        AquaLog · MedStar Health · Managed by Crothall Healthcare
       </div>
     </div>
   </div>

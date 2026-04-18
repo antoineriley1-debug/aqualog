@@ -1,9 +1,11 @@
 /**
  * DEBUG: Test email and SMS sending directly
  * This endpoint bypasses entry logic and sends test alerts
+ * ADMIN ONLY — requires authenticated admin session
  */
 
 import { NextResponse } from 'next/server';
+import { getUserFromRequest } from '@/lib/auth';
 import fs from 'fs';
 import path from 'path';
 
@@ -85,6 +87,12 @@ async function sendSMS(numbers, message) {
 }
 
 export async function GET(request) {
+  // Require admin auth
+  const user = await getUserFromRequest(request);
+  if (!user || user.role !== 'admin') {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
   try {
     // Load notification rules
     const rulesFile = path.join(process.cwd(), 'data', 'notification-rules.json');
@@ -102,7 +110,7 @@ export async function GET(request) {
 
     const emailResult = await sendEmail({
       to: emails.length ? emails : 'info@facilityh2o.com',
-      subject: '🧪 DEBUG TEST ALERT — FacilityH2O',
+      subject: '🧪 DEBUG TEST ALERT — AquaLog',
       text: 'This is a debug test email. If you received this, email alerts are working.',
     });
 
@@ -113,19 +121,11 @@ export async function GET(request) {
 
     return NextResponse.json({
       status: 'debug test',
-      email: emailResult,
-      sms: smsResult,
-      env_vars: {
-        resend_key_set: !!process.env.RESEND_API_KEY,
-        twilio_sid_set: !!process.env.TWILIO_ACCOUNT_SID,
-        twilio_token_set: !!process.env.TWILIO_AUTH_TOKEN,
-        twilio_from_set: !!process.env.TWILIO_FROM_NUMBER,
-        alert_email_to: process.env.ALERT_EMAIL_TO,
-      },
-      contacts_loaded: { emails, sms },
+      email: { ok: emailResult.ok },
+      sms: { ok: smsResult.ok },
     });
   } catch (err) {
     console.error('[DEBUG] Error:', err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

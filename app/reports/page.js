@@ -106,7 +106,7 @@ export default function ReportsPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `FacilityH2O-report-${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `AquaLog-report-${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
   };
 
@@ -126,7 +126,7 @@ export default function ReportsPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `FacilityH2O-all-data-${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `AquaLog-all-data-${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
   };
 

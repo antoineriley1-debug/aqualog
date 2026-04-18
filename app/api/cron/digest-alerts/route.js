@@ -91,8 +91,8 @@ export async function GET(request) {
       return `• Alert at ${a.hospitalName || 'unknown'}`;
     }).join('\n');
 
-    const subject = `📋 FacilityH2O Alert Digest — ${alerts.length} alert${alerts.length > 1 ? 's' : ''} | ${now}`;
-    const text = `ALERT DIGEST — FacilityH2O\n\n${alerts.length} alert(s) since last digest:\n\n${alertSummary}\n\nReview details at your FacilityH2O portal.\n\n— FacilityH2O Alert System`;
+    const subject = `📋 AquaLog Alert Digest — ${alerts.length} alert${alerts.length > 1 ? 's' : ''} | ${now}`;
+    const text = `ALERT DIGEST — AquaLog\n\n${alerts.length} alert(s) since last digest:\n\n${alertSummary}\n\nReview details at your AquaLog portal.\n\n— AquaLog Alert System`;
     const html = `
       <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
         <div style="background:#0072CE;color:white;padding:16px;border-radius:8px 8px 0 0">
@@ -106,7 +106,7 @@ export async function GET(request) {
             return `<li style="margin-bottom:8px">Alert at ${a.hospitalName || 'unknown'}</li>`;
           }).join('')}</ul>
           <hr style="border:none;border-top:1px solid #eee;margin:16px 0"/>
-          <p style="color:#999;font-size:11px">FacilityH2O Alert Digest · Sent ${now}</p>
+          <p style="color:#999;font-size:11px">AquaLog Alert Digest · Sent ${now}</p>
         </div>
       </div>`;
 
@@ -115,7 +115,7 @@ export async function GET(request) {
 
   // Send digest SMS
   for (const [sms, alerts] of Object.entries(bySms)) {
-    const smsText = `📋 FacilityH2O Digest: ${alerts.length} alert(s). ${alerts.slice(0, 3).map(a => a.hospitalName || 'alert').join(', ')}${alerts.length > 3 ? '...' : ''}. Check portal.`;
+    const smsText = `📋 AquaLog Digest: ${alerts.length} alert(s). ${alerts.slice(0, 3).map(a => a.hospitalName || 'alert').join(', ')}${alerts.length > 3 ? '...' : ''}. Check portal.`;
     await sendSMS([sms], smsText);
   }
 

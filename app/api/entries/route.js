@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getUserFromRequest } from '@/lib/auth';
 import { getAllEntries, getEntriesForHospital, addEntry, logAudit, addAlert } from '@/lib/store';
 import { getOutOfRangeParams, CHEMISTRY_RANGES } from '@/lib/chemistryRanges';
@@ -16,7 +16,7 @@ import {
   readRules,
 } from '@/lib/alertThrottle';
 
-// ── Load notification contacts from rules file ───────────────────────────────
+// -- Load notification contacts from rules file -------------------------------
 function getNotificationContacts(hospitalId, level) {
   try {
     const rulesFile = path.join(process.cwd(), 'data', 'notification-rules.json');
@@ -41,7 +41,7 @@ function getEnvEmails() {
   return to.split(',').map(e => e.trim()).filter(Boolean);
 }
 
-// ── Send email via Resend ────────────────────────────────────────────────────
+// -- Send email via Resend ----------------------------------------------------
 async function sendEmail({ to, subject, text, html }) {
   if (!process.env.RESEND_API_KEY) return;
   const allTo = Array.isArray(to) ? to : [to];
@@ -56,7 +56,7 @@ async function sendEmail({ to, subject, text, html }) {
   }
 }
 
-// ── Send SMS via Twilio ──────────────────────────────────────────────────────
+// -- Send SMS via Twilio ------------------------------------------------------
 async function sendSMS(numbers, message) {
   if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN || !process.env.TWILIO_FROM_NUMBER) return;
   if (!numbers?.length) return;
@@ -76,17 +76,17 @@ async function sendSMS(numbers, message) {
   }
 }
 
-// ── Dispatch OOR alert notifications (with smart throttle/quiet hours) ──────
+// -- Dispatch OOR alert notifications (with smart throttle/quiet hours) ------
 async function dispatchAlertNotifications({ hospitalId, hospitalName, system, shift, date, operatorName, oor, vendor }) {
   const alertLevel = determineLevel('oor', oor);
 
-  const paramList = oor.map(p => `  • ${p.label}: ${p.value}${p.unit} (range: ${p.min}–${p.max}${p.unit})`).join('\n');
+  const paramList = oor.map(p => `  � ${p.label}: ${p.value}${p.unit} (range: ${p.min}�${p.max}${p.unit})`).join('\n');
   const vendorLine = vendor ? `\nWater Treatment Vendor: ${vendor.company} | Emergency: ${vendor.emergency || 'N/A'}` : '';
 
-  const subject = `🚨 Out-of-Range Alert — ${hospitalName} | ${system === 'boiler' ? 'Boiler' : 'Chilled'} Water | ${shift}`;
-  const text = `OUT-OF-RANGE WATER CHEMISTRY ALERT\n\nFacility: ${hospitalName}\nSystem: ${system === 'boiler' ? 'Boiler Water' : 'Chilled Water'}\nShift: ${shift} | Date: ${date}\nLogged By: ${operatorName}\n\nOUT-OF-RANGE PARAMETERS:\n${paramList}${vendorLine}\n\n— FacilityH2O Alert System`;
-  const html = `<div style="font-family:sans-serif;max-width:600px"><div style="background:#c0392b;color:white;padding:16px;border-radius:8px 8px 0 0"><h2 style="margin:0">🚨 Out-of-Range Alert</h2></div><div style="border:1px solid #e0e0e0;border-top:none;padding:20px;border-radius:0 0 8px 8px"><p><strong>Facility:</strong> ${hospitalName}<br><strong>System:</strong> ${system === 'boiler' ? '🔥 Boiler Water' : '❄️ Chilled Water'}<br><strong>Shift:</strong> ${shift} | <strong>Date:</strong> ${date}<br><strong>Logged By:</strong> ${operatorName}</p><h3 style="color:#c0392b">Out-of-Range Parameters:</h3><ul>${oor.map(p => `<li><strong>${p.label}:</strong> ${p.value}${p.unit} <em>(acceptable: ${p.min}–${p.max}${p.unit})</em></li>`).join('')}</ul>${vendor ? `<p style="color:#666;font-size:12px">Vendor: ${vendor.company} | Emergency: ${vendor.emergency || 'N/A'}</p>` : ''}<hr style="border:none;border-top:1px solid #eee;margin:16px 0"><p style="color:#999;font-size:11px">FacilityH2O Alert System</p></div></div>`;
-  const smsText = `🚨 OOR Alert: ${hospitalName} ${system} ${shift} on ${date}. Params: ${oor.map(p => `${p.label}=${p.value}`).join(', ')}. See portal for details.`;
+  const subject = `?? Out-of-Range Alert � ${hospitalName} | ${system === 'boiler' ? 'Boiler' : 'Chilled'} Water | ${shift}`;
+  const text = `OUT-OF-RANGE WATER CHEMISTRY ALERT\n\nFacility: ${hospitalName}\nSystem: ${system === 'boiler' ? 'Boiler Water' : 'Chilled Water'}\nShift: ${shift} | Date: ${date}\nLogged By: ${operatorName}\n\nOUT-OF-RANGE PARAMETERS:\n${paramList}${vendorLine}\n\n� AquaLog Alert System`;
+  const html = `<div style="font-family:sans-serif;max-width:600px"><div style="background:#c0392b;color:white;padding:16px;border-radius:8px 8px 0 0"><h2 style="margin:0">?? Out-of-Range Alert</h2></div><div style="border:1px solid #e0e0e0;border-top:none;padding:20px;border-radius:0 0 8px 8px"><p><strong>Facility:</strong> ${hospitalName}<br><strong>System:</strong> ${system === 'boiler' ? '?? Boiler Water' : '?? Chilled Water'}<br><strong>Shift:</strong> ${shift} | <strong>Date:</strong> ${date}<br><strong>Logged By:</strong> ${operatorName}</p><h3 style="color:#c0392b">Out-of-Range Parameters:</h3><ul>${oor.map(p => `<li><strong>${p.label}:</strong> ${p.value}${p.unit} <em>(acceptable: ${p.min}�${p.max}${p.unit})</em></li>`).join('')}</ul>${vendor ? `<p style="color:#666;font-size:12px">Vendor: ${vendor.company} | Emergency: ${vendor.emergency || 'N/A'}</p>` : ''}<hr style="border:none;border-top:1px solid #eee;margin:16px 0"><p style="color:#999;font-size:11px">AquaLog Alert System</p></div></div>`;
+  const smsText = `?? OOR Alert: ${hospitalName} ${system} ${shift} on ${date}. Params: ${oor.map(p => `${p.label}=${p.value}`).join(', ')}. See portal for details.`;
 
   // Use smart dispatch per contact
   const contacts = getContactsForLevel(hospitalId, alertLevel);
@@ -124,13 +124,13 @@ async function dispatchAlertNotifications({ hospitalId, hospitalName, system, sh
   }
 }
 
-// ── Dispatch drift warning notifications (with smart throttle) ──────────────
+// -- Dispatch drift warning notifications (with smart throttle) --------------
 async function dispatchDriftNotifications({ hospitalId, hospitalName, system, param, drift }) {
   const alertLevel = 2; // Drift = Info level
 
-  const subject = `⚠️ Trend Warning — ${hospitalName} | ${param} drifting ${drift.direction}`;
-  const text = `WATER CHEMISTRY TREND WARNING\n\nFacility: ${hospitalName}\nSystem: ${system === 'boiler' ? 'Boiler Water' : 'Chilled Water'}\nParameter: ${param}\n\nTrend: ${drift.direction.toUpperCase()}\nLast readings: ${drift.trend.join(' → ')}\nCurrent: ${drift.current} | Limit: ${drift.limit}\n\n— FacilityH2O Alert System`;
-  const smsText = `⚠️ Trend Warning: ${hospitalName} ${system} ${param} drifting ${drift.direction}. Current: ${drift.current}, limit: ${drift.limit}.`;
+  const subject = `?? Trend Warning � ${hospitalName} | ${param} drifting ${drift.direction}`;
+  const text = `WATER CHEMISTRY TREND WARNING\n\nFacility: ${hospitalName}\nSystem: ${system === 'boiler' ? 'Boiler Water' : 'Chilled Water'}\nParameter: ${param}\n\nTrend: ${drift.direction.toUpperCase()}\nLast readings: ${drift.trend.join(' ? ')}\nCurrent: ${drift.current} | Limit: ${drift.limit}\n\n� AquaLog Alert System`;
+  const smsText = `?? Trend Warning: ${hospitalName} ${system} ${param} drifting ${drift.direction}. Current: ${drift.current}, limit: ${drift.limit}.`;
 
   const contacts = getContactsForLevel(hospitalId, alertLevel);
   const envEmails = getEnvEmails();
@@ -162,7 +162,7 @@ async function dispatchDriftNotifications({ hospitalId, hospitalName, system, pa
   }
 }
 
-// ── GET ──────────────────────────────────────────────────────────────────────
+// -- GET ----------------------------------------------------------------------
 export async function GET(request) {
   const user = await getUserFromRequest(request);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -190,7 +190,7 @@ export async function GET(request) {
   return NextResponse.json({ entries });
 }
 
-// ── POST ─────────────────────────────────────────────────────────────────────
+// -- POST ---------------------------------------------------------------------
 export async function POST(request) {
   const user = await getUserFromRequest(request);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -229,14 +229,14 @@ export async function POST(request) {
       detail: `${system} ${shift} shift on ${date}`,
     });
 
-    // ── Out-of-range check ──────────────────────────────────────────────────
+    // -- Out-of-range check --------------------------------------------------
     const oor = getOutOfRangeParams(system, values);
     let alert = null;
     if (oor.length > 0) {
       alert = addAlert({ entryId: entry.id, hospitalId, system, shift, date, operatorName, outOfRangeParams: oor });
       const hospital = getHospital(hospitalId);
       const vendor   = getHospitalVendor(hospitalId);
-      // Fire-and-forget — don't block the response
+      // Fire-and-forget � don't block the response
       dispatchAlertNotifications({
         hospitalId,
         hospitalName: hospital?.name || hospitalId,
@@ -244,7 +244,7 @@ export async function POST(request) {
       }).catch(err => console.warn('[notify] OOR dispatch error:', err.message));
     }
 
-    // ── Drift detection ─────────────────────────────────────────────────────
+    // -- Drift detection -----------------------------------------------------
     const driftWarnings = [];
     const allEntries    = getAllEntries();
     const systemRanges  = CHEMISTRY_RANGES[system] || {};

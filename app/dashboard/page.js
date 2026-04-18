@@ -89,7 +89,7 @@ export default function DashboardPage() {
         <main className="flex-1 w-full min-w-0 p-4 md:p-8 pt-16 md:pt-8">
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-            <p className="text-gray-500 text-sm mt-1">All FacilityH2O facilities — real-time overview</p>
+            <p className="text-gray-500 text-sm mt-1">All MedStar facilities — real-time overview</p>
           </div>
 
           {/* Summary strip */}
