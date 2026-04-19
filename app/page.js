@@ -13,7 +13,6 @@ export default function LandingPage() {
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
             <a href="#features" className="hover:text-[#0072CE] transition">Features</a>
-            <a href="#story" className="hover:text-[#0072CE] transition">Our Story</a>
             <a href="#compliance" className="hover:text-[#0072CE] transition">Compliance</a>
             <a href="#pricing" className="hover:text-[#0072CE] transition">Pricing</a>
             <a href="#demo" className="hover:text-[#0072CE] transition">Request Demo</a>
@@ -30,9 +29,6 @@ export default function LandingPage() {
       {/* HERO */}
       <section className="bg-gradient-to-br from-[#003366] to-[#0072CE] text-white py-24 px-6">
         <div className="max-w-5xl mx-auto text-center">
-          <div className="inline-block bg-white/10 text-cyan-100 text-xs font-semibold px-4 py-1.5 rounded-full mb-6 uppercase tracking-widest">
-            Built by a Stationary Engineer turned Systems Director
-          </div>
           <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-6">
             Water Chemistry Compliance.<br />Built for Facilities.
           </h1>
@@ -56,116 +52,6 @@ export default function LandingPage() {
           {['✓ ASHRAE 188 Compliant', '✓ Joint Commission Ready', '✓ CMS QSO17-30', '✓ ANSI/AAMI ST108', '✓ Shift-Based Logging', '✓ Audit Trail Built-In', '✓ Multi-Facility Dashboard'].map(item => (
             <span key={item}>{item}</span>
           ))}
-        </div>
-      </section>
-
-      {/* FOUNDER STORY */}
-      <section id="story" className="py-24 px-6 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-block text-xs font-bold text-[#0072CE] uppercase tracking-widest bg-blue-50 px-4 py-1.5 rounded-full mb-4">Founder Story</div>
-            <h2 className="text-3xl font-bold text-gray-900">From the Boiler Room to the Boardroom — to the Code</h2>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            {/* Story text */}
-            <div className="space-y-5 text-gray-700 leading-relaxed">
-              <p className="text-lg">
-                <span className="font-bold text-[#003366]">I spent over a decade in mechanical rooms before I ever sat in a director's chair.</span> Seven years as a High Pressure Stationary Engineer at Temple University — running boilers, managing chemical treatment, knowing every gauge and valve in the plant. Then Main Line Health. Then MEP Supervisor at UPenn.
-              </p>
-              <p>
-                I knew water chemistry from the floor up — not from a textbook. I knew what a bad conductivity reading smelled like before I even looked at the gauge. I knew the difference between a treatment schedule that works and one that just looks good on paper.
-              </p>
-              <p>
-                Then I became a Systems Director at MedStar Health — overseeing facilities across 10 hospitals in the DC/Maryland/Virginia region — and inherited paper logs. I watched facility teams scramble before Joint Commission visits. I saw Legionella alerts get missed because someone forgot to check a notebook. I knew exactly what was wrong because I&apos;d <em>been</em> the one filling out those logs.
-              </p>
-              <p className="text-lg font-semibold text-[#003366]">So I built FacilityH2O. Because no one else was going to.</p>
-              <blockquote className="border-l-4 border-[#0072CE] pl-6 py-2 bg-blue-50 rounded-r-xl">
-                <p className="text-gray-700 italic text-sm leading-relaxed">
-                  &ldquo;I spent over a decade in mechanical rooms — running high-pressure boilers at Temple University, maintaining systems at Main Line Health, supervising MEP operations at UPenn. I knew every valve, every gauge, every chemical treatment schedule. Then I became a director and inherited paper logs. I built FacilityH2O because no one else was going to.&rdquo;
-                </p>
-                <cite className="block mt-3 text-xs font-semibold text-[#003366] not-italic">
-                  — Antoine W. Riley Sr., Founder | Systems Director, Crothall Healthcare / MedStar Health
-                </cite>
-              </blockquote>
-            </div>
-
-            {/* Founder card + career timeline */}
-            <div className="space-y-6">
-              {/* Founder card */}
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <div className="flex items-center gap-4 mb-5">
-                  <div className="w-14 h-14 rounded-full bg-[#003366] text-white flex items-center justify-center font-bold text-lg flex-shrink-0">AWR</div>
-                  <div>
-                    <div className="font-bold text-gray-900">Antoine W. Riley Sr.</div>
-                    <div className="text-sm text-gray-500">Founder, FacilityH2O</div>
-                    <div className="text-xs text-[#0072CE]">Systems Director — Crothall Healthcare / MedStar Health</div>
-                  </div>
-                </div>
-                <div className="grid grid-cols-3 gap-3 text-center">
-                  {[
-                    { num: '10+', label: 'Hospitals Managed' },
-                    { num: '15+', label: 'Years on the Floor' },
-                    { num: 'DC/MD/VA', label: 'MedStar Region' },
-                  ].map(s => (
-                    <div key={s.label} className="bg-[#F0F9FF] rounded-xl p-3">
-                      <div className="font-extrabold text-[#003366] text-lg">{s.num}</div>
-                      <div className="text-gray-500 text-xs mt-1">{s.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Career timeline */}
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-5">Career Path</div>
-                <div className="space-y-4">
-                  {[
-                    { role: 'High Pressure Stationary Engineer', org: 'Temple University — 7 years' },
-                    { role: 'Stationary Engineer', org: 'Main Line Health — 3 years' },
-                    { role: 'MEP Supervisor', org: 'University of Pennsylvania' },
-                    { role: 'Systems Director', org: 'Crothall Healthcare / MedStar Health — 10 hospitals' },
-                    { role: 'Founder, FacilityH2O', org: 'Built the system the field actually needed', highlight: true },
-                  ].map((step, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <div className={`w-3 h-3 rounded-full mt-1 flex-shrink-0 ${step.highlight ? 'bg-[#0072CE] ring-4 ring-blue-100' : 'bg-gray-300'}`} />
-                      <div>
-                        <div className={`font-semibold text-sm ${step.highlight ? 'text-[#0072CE]' : 'text-gray-800'}`}>{step.role}</div>
-                        <div className="text-xs text-gray-400">{step.org}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CREDIBILITY PILLARS */}
-      <section className="py-16 px-6 bg-[#003366] text-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <p className="text-blue-200 text-lg font-semibold">
-              Built for facilities professionals, by a facilities professional.
-            </p>
-            <p className="text-blue-300 text-sm mt-2 max-w-2xl mx-auto">
-              Not by a software company that&apos;s never seen a mechanical room. Not by consultants who&apos;ve never held a wrench. By someone who&apos;s done this work — and knows exactly what you need.
-            </p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { icon: '🏥', title: 'Healthcare-Specific', desc: 'Designed exclusively for hospital and healthcare facility water systems.' },
-              { icon: '📜', title: 'Regulation-First', desc: 'Every feature maps to a regulatory requirement. No fluff — just compliance.' },
-              { icon: '⚡', title: 'Built for the Field', desc: 'Simple enough to use on the floor. Powerful enough for the director\'s office.' },
-              { icon: '🔒', title: 'Audit-Proof', desc: 'Tamper-evident, timestamped, exportable. Ready when the inspector walks in.' },
-            ].map(p => (
-              <div key={p.title} className="bg-white/10 rounded-2xl p-6 text-center">
-                <div className="text-3xl mb-3">{p.icon}</div>
-                <div className="font-bold text-white mb-2">{p.title}</div>
-                <div className="text-blue-200 text-xs leading-relaxed">{p.desc}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -205,7 +91,7 @@ export default function LandingPage() {
             <div className="inline-block text-xs font-bold text-yellow-300 uppercase tracking-widest bg-white/10 px-4 py-1.5 rounded-full mb-4">Regulatory Coverage</div>
             <h2 className="text-3xl font-bold mb-3">Every Standard. Covered.</h2>
             <p className="text-blue-200 text-lg max-w-2xl mx-auto">
-              FacilityH2O is built around the regulations that govern healthcare water systems — so you&apos;re never scrambling to prove compliance.
+              FacilityH2O is built around the regulations that govern healthcare water systems — so you're never scrambling to prove compliance.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -236,7 +122,7 @@ export default function LandingPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { icon: '🏥', title: 'Hospitals & Healthcare', desc: 'Meet Joint Commission water management plan requirements. Track Legionella prevention program data automatically. Built by someone who\'s worked inside major health systems.' },
+              { icon: '🏥', title: 'Hospitals & Healthcare', desc: 'Meet Joint Commission water management plan requirements. Track Legionella prevention program data automatically. Purpose-built for healthcare facilities.' },
               { icon: '🏨', title: 'Hotels & Hospitality', desc: 'Keep cooling towers, boilers, and domestic water systems in spec. Protect guests and staff from waterborne pathogens with shift-by-shift documentation.' },
               { icon: '🏢', title: 'Commercial Buildings', desc: 'ASHRAE 188 compliance made simple. Document your water treatment program with the same rigor as a major health system — at any scale.' },
             ].map(w => (
@@ -288,14 +174,13 @@ export default function LandingPage() {
             <div className="inline-block text-xs font-bold text-yellow-300 uppercase tracking-widest bg-white/10 px-4 py-1.5 rounded-full mb-6">Get Started</div>
             <h2 className="text-3xl font-bold mb-4">Your Next Inspection Is Coming.<br />Be Ready.</h2>
             <p className="text-blue-100 mb-6 leading-relaxed">
-              Don&apos;t wait for a citation to fix your water management program. Request a demo today and see how FacilityH2O transforms compliance from a liability into a competitive advantage.
+              Don't wait for a citation to fix your water management program. Request a demo today and see how FacilityH2O transforms compliance from a liability into a competitive advantage.
             </p>
             <ul className="space-y-3 text-sm text-blue-100">
               {[
                 '30-minute live walkthrough',
                 'Tailored to your hospital count and systems',
                 'No commitment required',
-                'Talk directly to Antoine — not a sales rep',
               ].map(item => (
                 <li key={item} className="flex items-center gap-2"><span className="text-yellow-300 font-bold">✓</span>{item}</li>
               ))}
@@ -307,7 +192,7 @@ export default function LandingPage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Full Name</label>
-                <input type="text" placeholder="Antoine Riley" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 text-sm focus:outline-none focus:border-[#0072CE]" />
+                <input type="text" placeholder="Your Name" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 text-sm focus:outline-none focus:border-[#0072CE]" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Job Title</label>
@@ -315,7 +200,7 @@ export default function LandingPage() {
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Organization</label>
-                <input type="text" placeholder="MedStar Health" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 text-sm focus:outline-none focus:border-[#0072CE]" />
+                <input type="text" placeholder="Your Organization" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 text-sm focus:outline-none focus:border-[#0072CE]" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Work Email</label>
@@ -336,7 +221,6 @@ export default function LandingPage() {
           <span className="text-xl">💧</span> FacilityH2O
         </div>
         <p className="text-gray-500 mb-1">Water Chemistry Compliance. Built for Facilities.</p>
-        <p className="text-gray-600 text-xs mb-5">Built by a Stationary Engineer turned Systems Director — Antoine W. Riley Sr.</p>
         <div className="flex items-center justify-center gap-6 flex-wrap mb-4">
           <Link href="/login" className="hover:text-white transition">Sign In</Link>
           <a href="#demo" className="hover:text-white transition">Request Demo</a>
@@ -344,7 +228,7 @@ export default function LandingPage() {
           <Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link>
           <a href="mailto:info@facilityh2o.com" className="hover:text-white transition">info@facilityh2o.com</a>
         </div>
-        <p className="text-gray-600">© 2026 Antoine Riley. FacilityH2O™. All rights reserved.</p>
+        <p className="text-gray-600">© 2026 FacilityH2O. All rights reserved.</p>
       </footer>
     </div>
   );
