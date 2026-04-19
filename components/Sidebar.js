@@ -144,7 +144,7 @@ export default function Sidebar() {
           <div className="px-6 py-4 border-b border-blue-800 bg-blue-900/30">
             <div className="text-sm font-semibold">{user.name}</div>
             {user.role === 'admin' ? (
-              <div className="text-xs text-blue-300 mt-0.5">Systems Director · All Facilities</div>
+              <div className="text-xs text-blue-300 mt-0.5">Administrator · All Facilities</div>
             ) : (
               <div className="text-xs text-blue-300 mt-0.5">
                 {hospitalNames[user.hospital] || user.hospital}
@@ -235,7 +235,7 @@ export default function Sidebar() {
               <div className="px-6 py-3 border-b border-blue-800 bg-blue-900/30">
                 <div className="text-sm font-semibold">{user.name}</div>
                 <div className="text-xs text-blue-300 mt-0.5">
-                  {user.role === 'admin' ? 'Systems Director · All Facilities' : hospitalNames[user.hospital] || user.hospital}
+                  {user.role === 'admin' ? 'Administrator · All Facilities' : hospitalNames[user.hospital] || user.hospital}
                 </div>
               </div>
             )}
