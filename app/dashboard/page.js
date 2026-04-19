@@ -25,6 +25,97 @@ function timeSince(iso) {
   return `${Math.floor(h / 24)}d ago`;
 }
 
+function OORBanner({ alerts: alertsProp }) {
+  const [dismissed, setDismissed] = useState(false);
+  const [currentAlerts, setCurrentAlerts] = useState(alertsProp || []);
+
+  // Auto-refresh every 60 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetch('/api/alerts')
+        .then((r) => r.json())
+        .then((data) => {
+          setCurrentAlerts(data.alerts || []);
+          setDismissed(false); // reset dismissal if new alerts come in
+        })
+        .catch(() => {});
+    }, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    setCurrentAlerts(alertsProp || []);
+  }, [alertsProp]);
+
+  const todayStr = new Date().toISOString().split('T')[0];
+  const unacknowledged = currentAlerts.filter((a) => !a.acknowledged);
+  const todayOOR = unacknowledged.filter((a) => a.date === todayStr || a.createdAt?.startsWith(todayStr));
+
+  if (dismissed) return null;
+
+  if (unacknowledged.length === 0) {
+    return (
+      <div className="mb-4 bg-green-50 border border-green-200 rounded-xl px-4 py-3 flex items-center gap-2">
+        <span className="text-green-700 text-sm font-medium">✅ All facilities within range</span>
+      </div>
+    );
+  }
+
+  // Group OOR by hospital
+  const byHospital = {};
+  unacknowledged.forEach((a) => {
+    const hid = a.hospitalId?.toUpperCase() || 'Unknown';
+    if (!byHospital[hid]) byHospital[hid] = [];
+    const params = (a.outOfRange || []).map((o) => o.label || o.param).join(', ');
+    const desc = `${a.system === 'boiler' ? 'Boiler' : 'Chilled'} ${params || ''}`.trim();
+    if (desc && !byHospital[hid].includes(desc)) byHospital[hid].push(desc);
+  });
+
+  const summaryParts = Object.entries(byHospital).map(
+    ([h, descs]) => `${h} (${descs.slice(0, 2).join(', ')}${descs.length > 2 ? '...' : ''})`
+  );
+
+  return (
+    <div className="mb-4 bg-red-50 border border-red-300 rounded-xl px-4 py-3 animate-pulse-subtle relative">
+      <style jsx>{`
+        @keyframes pulse-subtle {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.92; }
+        }
+        .animate-pulse-subtle {
+          animation: pulse-subtle 3s ease-in-out infinite;
+        }
+      `}</style>
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex-1">
+          <div className="font-semibold text-red-800 text-sm">
+            🚨 {unacknowledged.length} Out-of-Range Alert{unacknowledged.length !== 1 ? 's' : ''}
+          </div>
+          <div className="text-red-700 text-xs mt-1 leading-relaxed">
+            {summaryParts.slice(0, 4).join(' · ')}
+            {summaryParts.length > 4 && ` +${summaryParts.length - 4} more`}
+          </div>
+          <Link
+            href="/alerts"
+            className="inline-block mt-2 text-xs font-semibold text-red-700 hover:text-red-900 underline underline-offset-2"
+          >
+            View Alerts →
+          </Link>
+        </div>
+        <button
+          onClick={() => setDismissed(true)}
+          className="text-red-400 hover:text-red-600 p-1 flex-shrink-0"
+          title="Dismiss"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function DashboardPage() {
   const [user, setUser] = useState(null);
   const [entries, setEntries] = useState([]);
@@ -87,10 +178,13 @@ export default function DashboardPage() {
       <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
         <main className="flex-1 w-full min-w-0 p-4 md:p-8 pt-16 md:pt-8">
-          <div className="mb-8">
+          <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
             <p className="text-gray-500 text-sm mt-1">All FacilityH2O facilities — real-time overview</p>
           </div>
+
+          {/* OOR Alerts Banner */}
+          <OORBanner alerts={alerts} />
 
           {/* Summary strip */}
           <div className="grid grid-cols-3 gap-4 mb-8">

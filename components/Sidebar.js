@@ -75,6 +75,7 @@ export default function Sidebar() {
           ...(user?.id === 'usr_ariley' ? [{ href: '/settings', label: '🎨 Site Settings', shortLabel: 'Settings' }] : []),
           { href: '/reports', label: '📊 Reports', shortLabel: 'Reports' },
           { href: '/compliance', label: '📈 Compliance', shortLabel: 'Compliance' },
+          { href: '/compare', label: '📊 Compare Facilities', shortLabel: 'Compare' },
           { href: '/audit', label: '🔍 Audit Log', shortLabel: 'Audit' },
           { href: '/notifications', label: '🔔 Alert Rules', shortLabel: 'Alerts' },
           { href: '/settings/notifications', label: '⚙️ Notification Settings', shortLabel: 'Notif Settings' },
