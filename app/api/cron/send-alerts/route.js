@@ -1,5 +1,5 @@
 /**
- * FacilityH2O — Alert Dispatch Cron Job
+ * MedStar H2O — Alert Dispatch Cron Job
  * Call this every 5 minutes from Render or EasyCron
  * 
  * URL: https://medstarh20log.com/api/cron/send-alerts
@@ -24,7 +24,7 @@ async function sendEmail({ to, subject, text }) {
   try {
     const { Resend } = await import('resend');
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const from = process.env.ALERT_EMAIL_FROM || 'alerts@facilityh2o.com';
+    const from = process.env.ALERT_EMAIL_FROM || 'alerts@medstarh20log.com';
     
     const result = await resend.emails.send({ from, to: allTo, subject, text });
     return { ok: true, messageId: result?.id };
@@ -102,7 +102,7 @@ export async function GET(request) {
     // Example: Send test alert
     const emailResult = await sendEmail({
       to: allEmails.filter(Boolean),
-      subject: '🧪 Test Alert — FacilityH2O',
+      subject: '🧪 Test Alert — MedStar H2O',
       text: 'This is a test alert sent from the cron job.',
     });
 

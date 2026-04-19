@@ -64,7 +64,7 @@ export async function POST(request) {
     // Create session
     const token = createSessionToken(user);
     const cookieStore = cookies();
-    cookieStore.set('facilityh2o_session', token, {
+    cookieStore.set('MedStar H2O_session', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',

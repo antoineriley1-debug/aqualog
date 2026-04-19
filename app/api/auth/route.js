@@ -1,7 +1,7 @@
-﻿/**
- * FacilityH2O — Authentication API
+/**
+ * MedStar H2O — Authentication API
  * Author & Owner: Antoine Riley
- * © 2026 Antoine Riley / FacilityH2O. All rights reserved.
+ * © 2026 Antoine Riley / MedStar H2O. All rights reserved.
  *
  * Every login attempt (success AND failure) is logged to the audit trail
  * with timestamp, IP address, user agent, and outcome.

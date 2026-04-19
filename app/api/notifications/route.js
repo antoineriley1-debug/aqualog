@@ -1,7 +1,7 @@
-﻿/**
- * FacilityH2O — Notification Rules API (per-hospital + global)
+/**
+ * MedStar H2O — Notification Rules API (per-hospital + global)
  * Author & Owner: Antoine Riley
- * © 2026 Antoine Riley / FacilityH2O. All rights reserved.
+ * © 2026 Antoine Riley / MedStar H2O. All rights reserved.
  */
 
 import { NextResponse } from 'next/server';

@@ -24,7 +24,7 @@ async function sendEmail({ to, subject, text }) {
   try {
     const { Resend } = await import('resend');
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const from = process.env.ALERT_EMAIL_FROM || 'alerts@facilityh2o.com';
+    const from = process.env.ALERT_EMAIL_FROM || 'alerts@medstarh20log.com';
     console.log('[DEBUG] Sending email from:', from, 'to:', allTo);
     
     const result = await resend.emails.send({ from, to: allTo, subject, text });
@@ -101,8 +101,8 @@ export async function GET(request) {
     console.log('[DEBUG] Loaded contacts:', { emails, sms });
 
     const emailResult = await sendEmail({
-      to: emails.length ? emails : 'info@facilityh2o.com',
-      subject: '🧪 DEBUG TEST ALERT — FacilityH2O',
+      to: emails.length ? emails : 'antoine.riley.1@gmail.com',
+      subject: '🧪 DEBUG TEST ALERT — MedStar H2O',
       text: 'This is a debug test email. If you received this, email alerts are working.',
     });
 

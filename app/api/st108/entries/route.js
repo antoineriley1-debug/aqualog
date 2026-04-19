@@ -1,7 +1,7 @@
-﻿/**
- * FacilityH2O â€” ST108 Entries API
+/**
+ * MedStar H2O â€” ST108 Entries API
  * Author & Owner: Antoine Riley
- * Â© 2026 Antoine Riley / FacilityH2O. All rights reserved.
+ * Â© 2026 Antoine Riley / MedStar H2O. All rights reserved.
  */
 
 import { NextResponse } from 'next/server';

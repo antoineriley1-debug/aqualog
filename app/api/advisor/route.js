@@ -1,8 +1,8 @@
 /**
- * FacilityH2O — Chemistry Advisor API
+ * MedStar H2O — Chemistry Advisor API
  * AI-powered water chemistry advisory using Anthropic Claude
  * Enhanced with real data trend analysis
- * © 2026 Antoine Riley / FacilityH2O. All rights reserved.
+ * © 2026 Antoine Riley / MedStar H2O. All rights reserved.
  */
 
 import { getUserFromRequest } from '@/lib/auth';

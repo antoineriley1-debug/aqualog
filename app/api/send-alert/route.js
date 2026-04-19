@@ -12,7 +12,7 @@ async function sendEmail({ to, subject, text }) {
   try {
     const { Resend } = await import('resend');
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const from = process.env.ALERT_EMAIL_FROM || 'alerts@facilityh2o.com';
+    const from = process.env.ALERT_EMAIL_FROM || 'alerts@medstarh20log.com';
     const result = await resend.emails.send({ from, to: allTo, subject, text });
     return { ok: true, messageId: result?.id };
   } catch (err) {
@@ -60,7 +60,7 @@ export async function GET(request) {
 
     const emailResult = await sendEmail({
       to: allEmails,
-      subject: '🧪 Test Alert — FacilityH2O',
+      subject: '🧪 Test Alert — MedStar H2O',
       text: 'This is a test alert. If you received this, email alerts are working!',
     });
 

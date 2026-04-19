@@ -1,7 +1,7 @@
-﻿/**
- * FacilityH2O â€” FacilityH2O Inc. Water Chemistry Portal
+/**
+ * MedStar H2O â€” MedStar Health Water Chemistry Portal
  * Author & Owner: Antoine Riley
- * Â© 2026 Antoine Riley / FacilityH2O. All rights reserved.
+ * Â© 2026 Antoine Riley / MedStar H2O. All rights reserved.
  */
 import { NextResponse } from 'next/server';
 import { getUserFromRequest, getAllUsers, addUser, getUsersForAdmin, SUPER_ADMIN_ID } from '@/lib/auth';

@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { getAllEntries } from '@/lib/store';
 import { HOSPITALS } from '@/lib/hospitals';
@@ -104,9 +104,9 @@ export async function GET(request) {
       const { Resend } = await import('resend');
       const resend = new Resend(process.env.RESEND_API_KEY);
       await resend.emails.send({
-        from: 'FacilityH2O Alerts <alerts@facilityh2o.com>',
+        from: 'MedStar H2O Alerts <alerts@medstarh20log.com>',
         to: process.env.ALERT_EMAIL_TO,
-        subject: `⚠️ FacilityH2O: ${missing.length} Missed ${shiftToCheck} Shift Reading${missing.length > 1 ? 's' : ''} — ${checkDate}`,
+        subject: `⚠️ MedStar H2O: ${missing.length} Missed ${shiftToCheck} Shift Reading${missing.length > 1 ? 's' : ''} — ${checkDate}`,
         html: emailBody,
       });
       emailSent = true;
@@ -153,8 +153,8 @@ function buildEmailBody(shift, date, missing) {
 <body style="font-family:Arial,sans-serif;background:#f8f9fa;margin:0;padding:20px">
   <div style="max-width:700px;margin:0 auto;background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
     <div style="background:#003366;padding:20px 28px">
-      <div style="color:white;font-size:22px;font-weight:bold">💧 FacilityH2O</div>
-      <div style="color:#90c4f0;font-size:13px;margin-top:4px">FacilityH2O Inc. · Water Chemistry Portal</div>
+      <div style="color:white;font-size:22px;font-weight:bold">💧 MedStar H2O</div>
+      <div style="color:#90c4f0;font-size:13px;margin-top:4px">MedStar Health · Water Chemistry Portal</div>
     </div>
     <div style="padding:24px 28px">
       <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:16px 20px;margin-bottom:24px">
@@ -174,7 +174,7 @@ function buildEmailBody(shift, date, missing) {
         <tbody>${rows}</tbody>
       </table>
       <div style="margin-top:24px;padding-top:16px;border-top:1px solid #eee;font-size:12px;color:#999;text-align:center">
-        FacilityH2O · FacilityH2O Inc. · Managed by FacilityH2O
+        MedStar H2O · MedStar Health · Managed by MedStar H2O
       </div>
     </div>
   </div>

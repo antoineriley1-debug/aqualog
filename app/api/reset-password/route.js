@@ -1,7 +1,7 @@
-﻿/**
- * FacilityH2O — Password Reset API
+/**
+ * MedStar H2O — Password Reset API
  * Author & Owner: Antoine Riley
- * © 2026 Antoine Riley / FacilityH2O. All rights reserved.
+ * © 2026 Antoine Riley / MedStar H2O. All rights reserved.
  *
  * - Any user can request a self-service reset for their own account
  * - Admins can also force-reset any user's password from the Users page
@@ -60,8 +60,8 @@ export async function POST(request) {
         await resend.emails.send({
           from: process.env.ALERT_EMAIL_FROM || 'aqualog@medstarh20log.com',
           to: userEmail,
-          subject: 'FacilityH2O — Password Reset Request',
-          text: `You requested a password reset for your FacilityH2O account.\n\nClick this link to reset your password (valid for 1 hour):\n${resetUrl}\n\nIf you did not request this, ignore this email.\n\nFacilityH2O · FacilityH2O Inc. Water Chemistry Portal`,
+          subject: 'MedStar H2O — Password Reset Request',
+          text: `You requested a password reset for your MedStar H2O account.\n\nClick this link to reset your password (valid for 1 hour):\n${resetUrl}\n\nIf you did not request this, ignore this email.\n\nMedStar H2O · MedStar Health Water Chemistry Portal`,
         });
         return NextResponse.json({ ok: true, message: `Reset link sent to ${userEmail}` });
       } catch (e) {
