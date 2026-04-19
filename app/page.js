@@ -143,8 +143,8 @@ export default function LandingPage() {
           <p className="text-gray-500 text-lg mb-12">Per-facility monthly lease. No long-term contracts. Cancel anytime.</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { name: 'Starter', price: '$99', per: '/facility/mo', features: ['Up to 2 facilities', 'Shift logging', 'Basic alerts', 'History & trends', 'Email support'], highlight: false },
-              { name: 'Professional', price: '$249', per: '/facility/mo', features: ['Unlimited facilities', 'ST108 compliance module', 'Legionella tracking', 'Audit log', 'Custom branding', 'Priority support'], highlight: true },
+              { name: 'Starter', price: '$250', per: '/facility/mo', features: ['Up to 2 facilities', 'Shift logging', 'Basic alerts', 'History & trends', 'Email support'], highlight: false },
+              { name: 'Professional', price: '$499', per: '/facility/mo', features: ['Unlimited facilities', 'ST108 compliance module', 'Legionella tracking', 'Audit log', 'Custom branding', 'Priority support'], highlight: true },
               { name: 'Enterprise', price: 'Custom', per: '', features: ['Volume pricing', 'Dedicated onboarding', 'SLA guarantee', 'Custom integrations', 'HIPAA BAA available', 'Phone support'], highlight: false },
             ].map(p => (
               <div key={p.name} className={`rounded-2xl p-8 border-2 flex flex-col ${p.highlight ? 'border-[#0072CE] shadow-lg bg-[#F0F9FF]' : 'border-gray-200'}`}>
