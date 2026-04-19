@@ -94,6 +94,19 @@ export default function Sidebar() {
     { href: '/legal', label: '📋 Legal & Policies', shortLabel: 'Legal' },
   ];
 
+  const HOSPITALS = [
+    { id: 'whc', name: 'MedStar Washington Hospital Center' },
+    { id: 'somd', name: 'MedStar Southern Maryland Hospital Center' },
+    { id: 'harbor', name: 'MedStar Harbor Hospital' },
+    { id: 'mont', name: 'MedStar Montgomery Medical Center' },
+    { id: 'geo', name: 'MedStar Georgetown University Hospital' },
+    { id: 'frank', name: 'MedStar Franklin Square Medical Center' },
+    { id: 'gs', name: 'MedStar Good Samaritan Hospital' },
+    { id: 'union', name: 'MedStar Union Memorial Hospital' },
+    { id: 'stm', name: 'MedStar St. Mary\'s Hospital' },
+    { id: 'nrh', name: 'MedStar National Rehabilitation Hospital' },
+  ];
+
   const hospitalNames = {
     whc: 'Washington Hospital Center',
     somd: 'Southern Maryland',
@@ -158,6 +171,18 @@ export default function Sidebar() {
           {navItems.map(({ href, label, badge }) => (
             <NavLink key={href} href={href} label={label} badge={badge} />
           ))}
+          
+          {/* Hospital Test Guides */}
+          {user?.role === 'admin' && (
+            <div className="mt-6 pt-4 border-t border-blue-800">
+              <div className="px-3 py-2 text-xs font-semibold text-blue-300 uppercase tracking-wide">Test Guides</div>
+              <div className="space-y-1">
+                {HOSPITALS.map((h) => (
+                  <NavLink key={h.id} href={`/hospital/${h.id}`} label={`🧪 ${h.name.split(' ')[1]}`} />
+                ))}
+              </div>
+            </div>
+          )}
         </nav>
 
         {/* Theme + Logout */}
@@ -244,6 +269,17 @@ export default function Sidebar() {
               {navItems.map(({ href, label, badge }) => (
                 <NavLink key={href} href={href} label={label} badge={badge} onClick={() => setMobileOpen(false)} />
               ))}
+              
+              {user?.role === 'admin' && (
+                <div className="mt-6 pt-4 border-t border-blue-800">
+                  <div className="px-3 py-2 text-xs font-semibold text-blue-300 uppercase tracking-wide">Test Guides</div>
+                  <div className="space-y-1">
+                    {HOSPITALS.map((h) => (
+                      <NavLink key={h.id} href={`/hospital/${h.id}`} label={`🧪 ${h.name.split(' ')[1]}`} onClick={() => setMobileOpen(false)} />
+                    ))}
+                  </div>
+                </div>
+              )}
             </nav>
 
             <div className="px-3 py-4 border-t border-blue-800 space-y-1">
