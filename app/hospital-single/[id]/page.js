@@ -79,8 +79,8 @@ export default function HospitalSinglePage() {
   useEffect(() => {
     if (!hospital) return;
     Promise.all([
-      fetch(`/api/entries?hospitalId=${hospital.id}`).then((r) => r.json()),
-      fetch(`/api/alerts?hospitalId=${hospital.id}`).then((r) => r.json()),
+      fetch(`/api/entries?hospitalId=${hospital.id}`, { credentials: 'include' }).then((r) => r.json()),
+      fetch(`/api/alerts?hospitalId=${hospital.id}`, { credentials: 'include' }).then((r) => r.json()),
     ]).then(([eData, aData]) => {
       setEntries((eData.entries || []).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
       setAlerts((aData.alerts || []).filter((a) => a.hospitalId === hospital.id));
