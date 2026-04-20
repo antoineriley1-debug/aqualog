@@ -28,6 +28,7 @@ export default function HospitalSinglePage() {
   const [entries, setEntries] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [testTab, setTestTab] = useState('boiler');
+  const [showDropdown, setShowDropdown] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -69,8 +70,6 @@ export default function HospitalSinglePage() {
   const unacknowledgedAlerts = alerts.filter((a) => !a.acknowledged);
   const lastBoilerPH = boilerEntries[0]?.values?.ph;
   const lastChilledPH = chilledEntries[0]?.values?.ph;
-
-  const [showDropdown, setShowDropdown] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-50">
