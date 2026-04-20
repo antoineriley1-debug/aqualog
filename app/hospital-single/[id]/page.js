@@ -60,17 +60,14 @@ export default function HospitalSinglePage() {
     }
 
     if (id) {
-      console.log(`[DEBUG] Looking up hospital. id=${id}, HOSPITALS.length=${Array.isArray(HOSPITALS) ? HOSPITALS.length : 'NOT_ARRAY'}`);
       const h = HOSPITALS.find((x) => x.id === id);
       if (h) {
-        console.log(`[DEBUG] Hospital found:`, h.name);
         setHospital(h);
       } else {
-        const available = Array.isArray(HOSPITALS) ? HOSPITALS.map((x) => x.id).join(', ') : 'HOSPITALS_NOT_ARRAY';
-        console.error(`[ERROR] Hospital not found: id='${id}', available='${available}'`);
+        // Log the mismatch for debugging
+        const available = HOSPITALS.map((x) => x.id);
+        console.error(`[ERROR] Hospital lookup failed: id='${id}' vs available=['${available.join("','")}']`);
       }
-    } else {
-      console.warn(`[WARN] id is falsy:`, id);
     }
   }, [id]);
 
@@ -96,10 +93,15 @@ export default function HospitalSinglePage() {
   }
 
   if (!hospital) {
+    const availableIds = Array.isArray(HOSPITALS) ? HOSPITALS.map(h => h.id).join(', ') : 'HOSPITALS_NOT_ARRAY';
     return (
-      <div className="flex items-center justify-center min-h-screen bg-red-50 flex-col gap-4">
-        <div className="text-red-600 text-lg font-bold">Hospital not found</div>
-        <div className="text-gray-600 text-sm">ID: {id} | Available: {HOSPITALS.map(h => h.id).join(', ')}</div>
+      <div className="flex items-center justify-center min-h-screen bg-red-50 flex-col gap-4 p-4">
+        <div className="text-red-600 text-lg font-bold">Hospital Not Found</div>
+        <div className="bg-white p-4 rounded border border-red-200 max-w-2xl text-sm font-mono">
+          <p><strong>Requested ID:</strong> {id}</p>
+          <p><strong>Available IDs:</strong> {availableIds}</p>
+          <p><strong>Match Check:</strong> {id && HOSPITALS.some(h => h.id === id) ? '✓ Match exists' : '✗ No match'}</p>
+        </div>
       </div>
     );
   }
