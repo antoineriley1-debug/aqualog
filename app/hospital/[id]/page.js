@@ -3,8 +3,10 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Sidebar from '@/components/Sidebar';
 import { HOSPITALS } from '@/lib/hospitals';
+import { BOILER_TESTS, CHILLED_TESTS } from '@/lib/testGuide';
 
 function pHColor(ph) {
   if (ph === null || ph === undefined) return 'text-gray-400';
@@ -27,6 +29,7 @@ export default function HospitalPage() {
   const [entries, setEntries] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [activeTab, setActiveTab] = useState('entries');
+  const [testTab, setTestTab] = useState('boiler');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -66,6 +69,66 @@ export default function HospitalPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">{hospital.name}</h1>
           <p className="text-gray-500 mt-1">{hospital.code} · Water Chemistry Data</p>
+        </div>
+
+        {/* Hospital Image */}
+        <div className="mb-8 bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
+          <div className="relative w-full h-64 md:h-80 bg-gradient-to-br from-cyan-100 to-blue-100 flex items-center justify-center">
+            <div className="text-center text-gray-400">
+              <div className="text-6xl mb-2">🏥</div>
+              <p className="text-sm">{hospital.name}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Testing Guide Quick Reference */}
+        <div className="mb-8 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h2 className="text-xl font-bold text-gray-900 mb-4">🧪 Testing Procedures Quick Reference</h2>
+          
+          {/* Test Tabs */}
+          <div className="flex gap-4 border-b border-gray-200 mb-6">
+            {[
+              { id: 'boiler', label: '🔥 Boiler Water Tests' },
+              { id: 'chilled', label: '❄️ Chilled Water Tests' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setTestTab(tab.id)}
+                className={`px-4 py-2 font-medium border-b-2 transition-colors text-sm ${
+                  testTab === tab.id
+                    ? 'text-[#0072CE] border-[#0072CE]'
+                    : 'text-gray-600 border-transparent hover:text-gray-900'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Test Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {(testTab === 'boiler' ? BOILER_TESTS : CHILLED_TESTS).map((test, idx) => (
+              <div key={idx} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <div className="flex items-start gap-3 mb-2">
+                  <span className="text-2xl">{test.icon}</span>
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-gray-900 text-sm">{test.label}</h4>
+                    <p className="text-xs text-gray-600 mt-1">{test.description}</p>
+                  </div>
+                </div>
+                <div className="mt-3 space-y-2 text-xs">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Range:</span>
+                    <span className="font-mono text-gray-900">{test.target || `${test.min}–${test.max} ${test.unit}`}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Frequency:</span>
+                    <span className="font-semibold text-gray-900">{test.frequency || 'Every shift'}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Alerts Banner */}
