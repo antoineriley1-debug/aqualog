@@ -35,6 +35,7 @@ export default function HospitalSinglePage() {
   const [alerts, setAlerts] = useState([]);
   const [testTab, setTestTab] = useState('boiler');
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showTestGuide, setShowTestGuide] = useState(false);
   const [loading, setLoading] = useState(true);
   const [hydrated, setHydrated] = useState(false);
 
@@ -220,60 +221,9 @@ export default function HospitalSinglePage() {
           </div>
         </div>
 
-        {/* 3-Column Layout: Testing Guide | Entries+Trends | Alerts */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Column 1: Testing Procedures */}
-          <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
-            <div className="bg-blue-50 border-b border-blue-200 px-6 py-4">
-              <h2 className="text-lg font-bold text-gray-900">🧪 Testing Procedures</h2>
-            </div>
-            <div className="p-6">
-              {/* Test Tabs */}
-              <div className="flex gap-2 border-b border-gray-200 mb-6">
-                {[
-                  { id: 'boiler', label: '🔥 Boiler' },
-                  { id: 'chilled', label: '❄️ Chilled' },
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setTestTab(tab.id)}
-                    className={`px-3 py-2 font-semibold text-xs border-b-2 transition-colors ${
-                      testTab === tab.id
-                        ? 'text-[#0072CE] border-[#0072CE]'
-                        : 'text-gray-600 border-transparent hover:text-gray-900'
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
+        {/* 2-Column Layout: Entries+Trends | Alerts+CollapsibleTestGuide */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-              {/* Tests List */}
-              <div className="space-y-4">
-                {(testTab === 'boiler' ? BOILER_TESTS : CHILLED_TESTS).slice(0, 4).map((test, idx) => (
-                  <div key={idx} className="pb-4 border-b border-gray-100 last:border-0">
-                    <div className="flex items-start gap-3">
-                      <span className="text-xl flex-shrink-0">{test.icon}</span>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-gray-900 text-sm leading-tight">{test.label}</h4>
-                        <p className="text-xs text-gray-600 mt-1">{test.description}</p>
-                        <div className="mt-2 space-y-1 text-xs">
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">Range:</span>
-                            <span className="font-mono text-gray-900 font-semibold">{test.target || `${test.min}–${test.max}`}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">Freq:</span>
-                            <span className="text-gray-900">{test.frequency || 'Shift'}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
 
           {/* Column 2: Entries + Trends */}
           <div className="space-y-6">
@@ -401,6 +351,68 @@ export default function HospitalSinglePage() {
                   </div>
                 )}
               </div>
+            </div>
+
+            {/* Collapsible Testing Guide */}
+            <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+              <button
+                onClick={() => setShowTestGuide(!showTestGuide)}
+                className="w-full bg-blue-50 border-b border-blue-200 px-6 py-4 flex items-center justify-between hover:bg-blue-100 transition"
+              >
+                <h2 className="text-lg font-bold text-gray-900">🧪 Testing Procedures</h2>
+                <span className={`text-xl text-gray-600 transition-transform ${showTestGuide ? 'rotate-180' : ''}`}>
+                  ▼
+                </span>
+              </button>
+              
+              {showTestGuide && (
+                <div className="p-6">
+                  {/* Test Tabs */}
+                  <div className="flex gap-2 border-b border-gray-200 mb-6">
+                    {[
+                      { id: 'boiler', label: '🔥 Boiler' },
+                      { id: 'chilled', label: '❄️ Chilled' },
+                    ].map((tab) => (
+                      <button
+                        key={tab.id}
+                        onClick={() => setTestTab(tab.id)}
+                        className={`px-3 py-2 font-semibold text-xs border-b-2 transition-colors ${
+                          testTab === tab.id
+                            ? 'text-[#0072CE] border-[#0072CE]'
+                            : 'text-gray-600 border-transparent hover:text-gray-900'
+                        }`}
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Tests List */}
+                  <div className="space-y-4">
+                    {(testTab === 'boiler' ? BOILER_TESTS : CHILLED_TESTS).slice(0, 4).map((test, idx) => (
+                      <div key={idx} className="pb-4 border-b border-gray-100 last:border-0">
+                        <div className="flex items-start gap-3">
+                          <span className="text-xl flex-shrink-0">{test.icon}</span>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-gray-900 text-sm leading-tight">{test.label}</h4>
+                            <p className="text-xs text-gray-600 mt-1">{test.description}</p>
+                            <div className="mt-2 space-y-1 text-xs">
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">Range:</span>
+                                <span className="font-mono text-gray-900 font-semibold">{test.target || `${test.min}–${test.max}`}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">Freq:</span>
+                                <span className="text-gray-900">{test.frequency || 'Shift'}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Quick Links */}
