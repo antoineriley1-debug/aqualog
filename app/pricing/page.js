@@ -19,7 +19,7 @@ export default function PricingPage() {
         </div>
 
         <div className="mt-16 text-center text-sm text-gray-500">
-          All plans include a 14-day free trial. Cancel anytime.{' '}
+          All plans include a 14-day free trial. No credit card needed. Cancel anytime.{' '}
           <Link href="/login" className="text-[#0891B2] hover:underline">Already have an account?</Link>
         </div>
       </div>
