@@ -22,7 +22,8 @@ function timeSince(iso) {
 }
 
 export default function HospitalSinglePage() {
-  const { id } = useParams();
+  const params = useParams();
+  const id = params?.id;
   const [user, setUser] = useState(null);
   const [hospital, setHospital] = useState(null);
   const [entries, setEntries] = useState([]);
@@ -31,10 +32,12 @@ export default function HospitalSinglePage() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // Debug logging
   useEffect(() => {
-    // Guard: id must be defined (useParams may be async in some Next.js versions)
-    if (!id) return;
+    console.log('[HospitalSinglePage] params:', params, 'id:', id, 'hospital:', hospital);
+  }, [params, id, hospital]);
 
+  useEffect(() => {
     const raw = document.cookie.split(';').find((c) => c.trim().startsWith('FacilityH2O_user='));
     let currentUser = null;
     if (raw) {
@@ -45,16 +48,19 @@ export default function HospitalSinglePage() {
     }
 
     // Redirect to hospital-specific login if not authenticated
-    if (!currentUser) {
+    if (!currentUser && id) {
       window.location.href = `/hospital-single/login?hospital=${id}`;
       return;
     }
 
-    const h = HOSPITALS.find((x) => x.id === id);
-    if (!h) {
-      console.warn(`Hospital not found: id=${id}, HOSPITALS=${HOSPITALS.map((x) => x.id).join(', ')}`);
+    if (id) {
+      const h = HOSPITALS.find((x) => x.id === id);
+      if (h) {
+        setHospital(h);
+      } else {
+        console.warn(`Hospital not found: id=${id}, available=${HOSPITALS.map((x) => x.id).join(', ')}`);
+      }
     }
-    setHospital(h);
   }, [id]);
 
   useEffect(() => {
