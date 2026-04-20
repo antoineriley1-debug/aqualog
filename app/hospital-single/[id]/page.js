@@ -180,11 +180,13 @@ export default function HospitalSinglePage() {
             </div>
           </div>
 
-          {/* Column 2: Recent Entries */}
-          <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
-            <div className="bg-green-50 border-b border-green-200 px-6 py-4">
-              <h2 className="text-lg font-bold text-gray-900">📊 Recent Entries</h2>
-            </div>
+          {/* Column 2: Entries + Trends */}
+          <div className="space-y-6">
+            {/* Recent Entries */}
+            <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+              <div className="bg-green-50 border-b border-green-200 px-6 py-4">
+                <h2 className="text-lg font-bold text-gray-900">📊 Recent Entries</h2>
+              </div>
             <div className="divide-y divide-gray-100">
               {loading ? (
                 <div className="px-6 py-8 text-center text-gray-400">Loading...</div>
@@ -217,6 +219,58 @@ export default function HospitalSinglePage() {
                   </div>
                 ))
               )}
+              </div>
+            </div>
+
+            {/* Trends Preview */}
+            <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+              <div className="bg-purple-50 border-b border-purple-200 px-6 py-4">
+                <h2 className="text-lg font-bold text-gray-900">📈 Trends</h2>
+              </div>
+              <div className="p-6">
+                <div className="space-y-4 mb-6">
+                  {/* Boiler Trend */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-semibold text-gray-900">🔥 Boiler pH</span>
+                      <span className={`text-sm font-bold ${pHColor(lastBoilerPH)}`}>
+                        {lastBoilerPH ? `${lastBoilerPH}` : '—'}
+                      </span>
+                    </div>
+                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full ${pHColor(lastBoilerPH) === 'text-green-600' ? 'bg-green-500' : 'bg-red-500'}`}
+                        style={{ width: lastBoilerPH ? `${Math.max(20, Math.min(100, (lastBoilerPH / 14) * 100))}%` : '0%' }}
+                      />
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">Target: 8.5–10.5</div>
+                  </div>
+
+                  {/* Chilled Trend */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-semibold text-gray-900">❄️ Chilled pH</span>
+                      <span className={`text-sm font-bold ${pHColor(lastChilledPH)}`}>
+                        {lastChilledPH ? `${lastChilledPH}` : '—'}
+                      </span>
+                    </div>
+                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full ${pHColor(lastChilledPH) === 'text-green-600' ? 'bg-green-500' : 'bg-red-500'}`}
+                        style={{ width: lastChilledPH ? `${Math.max(20, Math.min(100, (lastChilledPH / 14) * 100))}%` : '0%' }}
+                      />
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">Target: 7.5–9.5</div>
+                  </div>
+                </div>
+
+                <Link
+                  href={`/trends?hospital=${id}`}
+                  className="block w-full text-center bg-purple-600 text-white px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-purple-700 transition"
+                >
+                  View Full Trends →
+                </Link>
+              </div>
             </div>
           </div>
 
