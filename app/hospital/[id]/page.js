@@ -84,20 +84,55 @@ export default function HospitalPage() {
           />
         </div>
 
-        {/* Testing Guide - Collapsible */}
-        <div className="mb-8 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          <button
-            onClick={() => setTestOpen(!testOpen)}
-            className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition"
-          >
-            <h2 className="text-lg font-bold text-gray-900">🧪 Testing Procedures Quick Reference</h2>
-            <span className={`text-2xl transition-transform ${testOpen ? 'rotate-180' : ''}`}>▼</span>
-          </button>
+        {/* Tabs + Testing Guide Header */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
+          <div className="flex gap-4 border-b border-gray-200 flex-1">
+            {[
+              { id: 'entries', label: '📊 Recent Entries' },
+              { id: 'trends', label: '📈 Trends' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-4 py-3 font-medium border-b-2 transition-colors ${
+                  activeTab === tab.id
+                    ? 'text-[#0072CE] border-[#0072CE]'
+                    : 'text-gray-600 border-transparent hover:text-gray-900'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+          
+          {/* Testing Guide Toggle + Alerts Link */}
+          <div className="flex gap-3 flex-shrink-0">
+            <button
+              onClick={() => setTestOpen(!testOpen)}
+              className="px-4 py-3 font-medium text-sm bg-blue-50 text-[#0072CE] border border-blue-200 rounded-lg hover:bg-blue-100 transition"
+            >
+              {testOpen ? '✓ Testing Guide' : '🧪 Testing Guide'}
+            </button>
+            {unacknowledgedAlerts.length > 0 && (
+              <Link
+                href="/alerts"
+                className="px-4 py-3 font-medium text-sm bg-red-50 text-red-600 border border-red-200 rounded-lg hover:bg-red-100 transition flex items-center gap-2"
+              >
+                🚨 {unacknowledgedAlerts.length} Alert{unacknowledgedAlerts.length !== 1 ? 's' : ''}
+              </Link>
+            )}
+          </div>
+        </div>
 
-          {testOpen && (
-            <div className="px-6 pb-6 border-t border-gray-100">
+        {/* Testing Guide - Collapsible */}
+        {testOpen && (
+          <div className="mb-8 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="px-6 py-4 bg-blue-50 border-b border-blue-200">
+              <h2 className="text-lg font-bold text-gray-900">🧪 Testing Procedures Quick Reference</h2>
+            </div>
+            <div className="px-6 pb-6 pt-4">
               {/* Test Tabs */}
-              <div className="flex gap-4 border-b border-gray-200 mb-6 mt-4">
+              <div className="flex gap-4 border-b border-gray-200 mb-6">
                 {[
                   { id: 'boiler', label: '🔥 Boiler Water Tests' },
                   { id: 'chilled', label: '❄️ Chilled Water Tests' },
@@ -141,18 +176,6 @@ export default function HospitalPage() {
                 ))}
               </div>
             </div>
-          )}
-        </div>
-
-        {/* Alerts Banner */}
-        {unacknowledgedAlerts.length > 0 && (
-          <div className="mb-6 bg-red-50 border border-red-200 rounded-xl p-4">
-            <div className="font-semibold text-red-700 mb-2">🚨 {unacknowledgedAlerts.length} Open Alert{unacknowledgedAlerts.length !== 1 ? 's' : ''}</div>
-            {unacknowledgedAlerts.slice(0, 3).map((a) => (
-              <div key={a.id} className="text-sm text-red-600">
-                {a.system === 'boiler' ? '🔥' : '❄️'} {a.shift} shift — {a.outOfRange?.map((o) => o.label).join(', ')}
-              </div>
-            ))}
           </div>
         )}
 
@@ -184,26 +207,6 @@ export default function HospitalPage() {
             </div>
             <div className="text-xs text-gray-400 mt-1">Unacknowledged</div>
           </div>
-        </div>
-
-        {/* Tabs */}
-        <div className="flex gap-4 border-b border-gray-200 mb-8">
-          {[
-            { id: 'entries', label: '📊 Recent Entries' },
-            { id: 'trends', label: '📈 Trends' },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-3 font-medium border-b-2 transition-colors ${
-                activeTab === tab.id
-                  ? 'text-[#0072CE] border-[#0072CE]'
-                  : 'text-gray-600 border-transparent hover:text-gray-900'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
         </div>
 
         {/* Content */}
