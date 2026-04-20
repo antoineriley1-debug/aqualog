@@ -133,8 +133,8 @@ export default function HospitalSinglePage() {
           </div>
         </div>
 
-        {/* 3-Column Layout: Testing Guide | Entries | Alerts */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* 3-Column Layout: Testing Guide | Entries+Trends | Alerts */}
+        <div className="grid gap-8" style={{gridTemplateColumns: 'repeat(3, 1fr)'}}>
           {/* Column 1: Testing Procedures */}
           <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
             <div className="bg-blue-50 border-b border-blue-200 px-6 py-4">
