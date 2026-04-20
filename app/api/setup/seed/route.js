@@ -1,15 +1,13 @@
 import { NextResponse } from 'next/server';
 import { addEntry, getAllEntries } from '@/lib/store';
 import { HOSPITALS } from '@/lib/hospitals';
-import fs from 'fs';
-import path from 'path';
 
-const SEED_FLAG_FILE = path.join(process.cwd(), 'data', '.seeded');
+let seeded = false;
 
 export async function GET(request) {
   try {
-    // Check if already seeded
-    if (fs.existsSync(SEED_FLAG_FILE)) {
+    // Check if already seeded (in-memory flag)
+    if (seeded) {
       return NextResponse.json({ message: 'Data already seeded', skipped: true });
     }
 
@@ -67,16 +65,8 @@ export async function GET(request) {
       }
     }
 
-    // Create seed flag
-    try {
-      const dataDir = path.join(process.cwd(), 'data');
-      if (!fs.existsSync(dataDir)) {
-        fs.mkdirSync(dataDir, { recursive: true });
-      }
-      fs.writeFileSync(SEED_FLAG_FILE, new Date().toISOString());
-    } catch (e) {
-      // File system may be read-only on Render
-    }
+    // Set in-memory flag
+    seeded = true;
 
     return NextResponse.json({ success: true, entriesCreated, totalEntries: getAllEntries().length });
   } catch (err) {
