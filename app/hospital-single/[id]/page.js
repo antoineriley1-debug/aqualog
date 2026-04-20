@@ -7,9 +7,9 @@ import Image from 'next/image';
 import { HOSPITALS } from '@/lib/hospitals';
 import { BOILER_TESTS, CHILLED_TESTS } from '@/lib/testGuide';
 
-// Fallback: ensure HOSPITALS is an array
-if (!Array.isArray(HOSPITALS)) {
-  console.error('HOSPITALS import failed or is not an array. Type:', typeof HOSPITALS);
+// CRITICAL: Ensure HOSPITALS is properly imported. If not, we have a serious issue.
+if (!Array.isArray(HOSPITALS) || HOSPITALS.length === 0) {
+  console.error('[CRITICAL] HOSPITALS import failed or empty.', { type: typeof HOSPITALS, length: HOSPITALS?.length });
 }
 
 function pHColor(ph) {
@@ -59,14 +59,19 @@ export default function HospitalSinglePage() {
       return;
     }
 
-    if (id) {
-      const h = HOSPITALS.find((x) => x.id === id);
-      if (h) {
-        setHospital(h);
-      } else {
-        // Log the mismatch for debugging
+    if (id && Array.isArray(HOSPITALS) && HOSPITALS.length > 0) {
+      // Defensive lookup with type checking
+      const h = HOSPITALS.find((x) => {
+        const xId = String(x?.id || '').toLowerCase().trim();
+        const searchId = String(id || '').toLowerCase().trim();
+        return xId === searchId;
+      });
+      
+      setHospital(h || null);
+      
+      if (!h) {
         const available = HOSPITALS.map((x) => x.id);
-        console.error(`[ERROR] Hospital lookup failed: id='${id}' vs available=['${available.join("','")}']`);
+        console.warn(`[WARN] No hospital found for id='${id}' (case-sensitive). Available: [${available.join(', ')}]`);
       }
     }
   }, [id]);
