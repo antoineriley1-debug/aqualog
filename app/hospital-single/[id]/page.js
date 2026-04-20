@@ -32,10 +32,18 @@ export default function HospitalSinglePage() {
 
   useEffect(() => {
     const raw = document.cookie.split(';').find((c) => c.trim().startsWith('FacilityH2O_user='));
+    let currentUser = null;
     if (raw) {
       try {
-        setUser(JSON.parse(decodeURIComponent(raw.split('=')[1])));
+        currentUser = JSON.parse(decodeURIComponent(raw.split('=')[1]));
+        setUser(currentUser);
       } catch {}
+    }
+
+    // Redirect to hospital-specific login if not authenticated
+    if (!currentUser) {
+      window.location.href = `/hospital-single/login?hospital=${id}`;
+      return;
     }
 
     const h = HOSPITALS.find((x) => x.id === id);

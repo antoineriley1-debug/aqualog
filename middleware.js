@@ -14,12 +14,17 @@ export function middleware(request) {
     pathname === '/login' ||
     pathname === '/reset-password' ||
     pathname === '/pricing' ||
-    pathname.startsWith('/hospital-single') ||
+    pathname.startsWith('/hospital-single/login') ||
     pathname.startsWith('/api/auth') ||
     pathname.startsWith('/api/reset-password') ||
     pathname.startsWith('/_next') ||
     pathname.startsWith('/favicon')
   ) {
+    return NextResponse.next();
+  }
+
+  // Hospital-single pages (with auth check in page)
+  if (pathname.match(/^\/hospital-single\/[a-z]+$/)) {
     return NextResponse.next();
   }
 
