@@ -7,6 +7,11 @@ import Image from 'next/image';
 import { HOSPITALS } from '@/lib/hospitals';
 import { BOILER_TESTS, CHILLED_TESTS } from '@/lib/testGuide';
 
+// Fallback: ensure HOSPITALS is an array
+if (!Array.isArray(HOSPITALS)) {
+  console.error('HOSPITALS import failed or is not an array. Type:', typeof HOSPITALS);
+}
+
 function pHColor(ph) {
   if (ph === null || ph === undefined) return 'text-gray-400';
   return (ph >= 7.5 && ph <= 10.5) ? 'text-green-600' : 'text-red-600';
@@ -54,12 +59,17 @@ export default function HospitalSinglePage() {
     }
 
     if (id) {
+      console.log(`[DEBUG] Looking up hospital. id=${id}, HOSPITALS.length=${Array.isArray(HOSPITALS) ? HOSPITALS.length : 'NOT_ARRAY'}`);
       const h = HOSPITALS.find((x) => x.id === id);
       if (h) {
+        console.log(`[DEBUG] Hospital found:`, h.name);
         setHospital(h);
       } else {
-        console.warn(`Hospital not found: id=${id}, available=${HOSPITALS.map((x) => x.id).join(', ')}`);
+        const available = Array.isArray(HOSPITALS) ? HOSPITALS.map((x) => x.id).join(', ') : 'HOSPITALS_NOT_ARRAY';
+        console.error(`[ERROR] Hospital not found: id='${id}', available='${available}'`);
       }
+    } else {
+      console.warn(`[WARN] id is falsy:`, id);
     }
   }, [id]);
 
@@ -75,7 +85,19 @@ export default function HospitalSinglePage() {
     }).catch(() => setLoading(false));
   }, [hospital]);
 
-  if (!hospital) return <div className="flex items-center justify-center min-h-screen text-red-500">Hospital not found</div>;
+  if (!hospital) return (
+    <div className="flex items-center justify-center min-h-screen bg-red-50 flex-col gap-4">
+      <div className="text-red-600 text-lg font-bold">Hospital not found</div>
+      <div className="text-gray-600 text-sm max-w-md text-center">
+        <p>Debug Info:</p>
+        <p className="font-mono text-xs bg-gray-100 p-2 rounded mt-2 text-left">
+          id={id ? `"${id}"` : 'undefined'}<br/>
+          loading={loading}<br/>
+          HOSPITALS={Array.isArray(HOSPITALS) ? HOSPITALS.length + ' items' : 'NOT_ARRAY'}
+        </p>
+      </div>
+    </div>
+  );
 
   const boilerEntries = entries.filter((e) => e.system === 'boiler');
   const chilledEntries = entries.filter((e) => e.system === 'chilled');
