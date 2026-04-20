@@ -1,10 +1,11 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Link from 'next/link';
 
-export default function HospitalLoginPage() {
+function HospitalLoginContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const hospitalId = searchParams.get('hospital') || 'whc';
@@ -118,5 +119,13 @@ export default function HospitalLoginPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function HospitalLoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <HospitalLoginContent />
+    </Suspense>
   );
 }
