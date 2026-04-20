@@ -13,6 +13,8 @@ export function middleware(request) {
   if (
     pathname === '/login' ||
     pathname === '/reset-password' ||
+    pathname === '/pricing' ||
+    pathname.startsWith('/hospital-single') ||
     pathname.startsWith('/api/auth') ||
     pathname.startsWith('/api/reset-password') ||
     pathname.startsWith('/_next') ||
