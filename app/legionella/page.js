@@ -11,6 +11,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
+import TierGate from '@/components/TierGate';
 import { HOSPITALS } from '@/lib/hospitals';
 import {
   LEGIONELLA_SYSTEMS, LEGIONELLA_PARAMETERS,
@@ -93,8 +94,9 @@ export default function LegionellaPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <Sidebar />
+    <TierGate requiredTier="professional" user={user}>
+      <div className="flex min-h-screen bg-gray-50">
+        <Sidebar />
       <main className="flex-1 w-full min-w-0 p-4 md:p-8 pt-16 md:pt-8">
 
         <div className="mb-6">
@@ -324,5 +326,6 @@ export default function LegionellaPage() {
         </form>
       </main>
     </div>
+    </TierGate>
   );
 }
