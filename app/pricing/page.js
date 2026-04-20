@@ -13,9 +13,9 @@ export default function PricingPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-          <PricingCard plan="starter" name="Starter" price={49} features={['1 facility','Up to 5 users','Boiler + chilled water tracking','Shift-based entry (3x/day)','Email alerts','2-year history','CSV export']} ctaHref="/signup?plan=starter" />
-          <PricingCard plan="professional" name="Professional" price={149} highlighted features={['Up to 5 facilities','Unlimited users','Everything in Starter','Trend analysis & charts','Cross-facility reports','Compliance scoring','Priority support']} ctaHref="/signup?plan=professional" />
-          <PricingCard plan="enterprise" name="Enterprise" price={299} features={['Unlimited facilities','Unlimited users','Everything in Pro','Custom chemistry parameters','API access','Dedicated onboarding','SLA guarantee','White-label option']} ctaHref="/signup?plan=enterprise" />
+          <PricingCard plan="starter" name="Starter" price={349} features={['1 facility','Up to 5 users','Boiler + chilled water tracking','Shift-based entry (3x/day)','Email alerts','2-year history','CSV export']} ctaHref="/signup?plan=starter" />
+          <PricingCard plan="professional" name="Professional" price={599} highlighted features={['Up to 5 facilities','Unlimited users','Everything in Starter','Trend analysis & charts','Cross-facility reports','Compliance scoring','Priority support']} ctaHref="/signup?plan=professional" />
+          <PricingCard plan="enterprise" name="Enterprise" price={null} features={['Unlimited facilities','Unlimited users','Everything in Pro','Custom chemistry parameters','API access','Dedicated onboarding','SLA guarantee','White-label option']} ctaHref="/signup?plan=enterprise" />
         </div>
 
         <div className="mt-16 text-center text-sm text-gray-500">

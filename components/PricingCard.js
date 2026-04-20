@@ -23,10 +23,18 @@ export default function PricingCard({ plan, name, price, features, highlighted, 
           {name}
         </h3>
         <div className="flex items-end gap-1">
-          <span className={`text-4xl font-extrabold ${highlighted ? 'text-white' : 'text-cyan-700'}`}>
-            ${price}
-          </span>
-          <span className={`text-sm pb-1 ${highlighted ? 'text-cyan-200' : 'text-gray-500'}`}>/month</span>
+          {price !== null ? (
+            <>
+              <span className={`text-4xl font-extrabold ${highlighted ? 'text-white' : 'text-cyan-700'}`}>
+                ${price}
+              </span>
+              <span className={`text-sm pb-1 ${highlighted ? 'text-cyan-200' : 'text-gray-500'}`}>/month</span>
+            </>
+          ) : (
+            <span className={`text-2xl font-semibold ${highlighted ? 'text-white' : 'text-cyan-700'}`}>
+              Custom pricing
+            </span>
+          )}
         </div>
       </div>
 
