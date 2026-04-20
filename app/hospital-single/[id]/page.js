@@ -125,7 +125,7 @@ export default function HospitalSinglePage() {
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
         {/* Hospital Image */}
-        <div className="mb-8 bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+        <div className="mb-8 bg-white rounded-xl overflow-hidden shadow-md border border-gray-100 relative">
           <img 
             src={`/hospitals/${id}.jpg`}
             alt={hospital.name}
@@ -134,6 +134,11 @@ export default function HospitalSinglePage() {
               e.target.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 300%22%3E%3Crect fill=%22%23e5f0f7%22 width=%22800%22 height=%22300%22/%3E%3Ctext x=%22400%22 y=%22150%22 font-size=%2280%22 text-anchor=%22middle%22 fill=%22%238b9dae%22%3E🏥%3C/text%3E%3C/svg%3E';
             }}
           />
+          {/* Hospital Name Overlay */}
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+            <h2 className="text-2xl font-bold text-white">{hospital.name}</h2>
+            <p className="text-gray-300 text-sm">{hospital.code}</p>
+          </div>
         </div>
 
         {/* Quick Stats Row */}
