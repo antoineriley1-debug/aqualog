@@ -32,6 +32,9 @@ export default function HospitalSinglePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Guard: id must be defined (useParams may be async in some Next.js versions)
+    if (!id) return;
+
     const raw = document.cookie.split(';').find((c) => c.trim().startsWith('FacilityH2O_user='));
     let currentUser = null;
     if (raw) {
@@ -48,6 +51,9 @@ export default function HospitalSinglePage() {
     }
 
     const h = HOSPITALS.find((x) => x.id === id);
+    if (!h) {
+      console.warn(`Hospital not found: id=${id}, HOSPITALS=${HOSPITALS.map((x) => x.id).join(', ')}`);
+    }
     setHospital(h);
   }, [id]);
 
