@@ -36,11 +36,12 @@ export default function HospitalSinglePage() {
   const [testTab, setTestTab] = useState('boiler');
   const [showDropdown, setShowDropdown] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [hydrated, setHydrated] = useState(false);
 
-  // Debug logging
+  // Mark as hydrated on mount (client-side)
   useEffect(() => {
-    console.log('[HospitalSinglePage] params:', params, 'id:', id, 'hospital:', hospital);
-  }, [params, id, hospital]);
+    setHydrated(true);
+  }, []);
 
   useEffect(() => {
     const raw = document.cookie.split(';').find((c) => c.trim().startsWith('FacilityH2O_user='));
@@ -85,19 +86,23 @@ export default function HospitalSinglePage() {
     }).catch(() => setLoading(false));
   }, [hospital]);
 
-  if (!hospital) return (
-    <div className="flex items-center justify-center min-h-screen bg-red-50 flex-col gap-4">
-      <div className="text-red-600 text-lg font-bold">Hospital not found</div>
-      <div className="text-gray-600 text-sm max-w-md text-center">
-        <p>Debug Info:</p>
-        <p className="font-mono text-xs bg-gray-100 p-2 rounded mt-2 text-left">
-          id={id ? `"${id}"` : 'undefined'}<br/>
-          loading={loading}<br/>
-          HOSPITALS={Array.isArray(HOSPITALS) ? HOSPITALS.length + ' items' : 'NOT_ARRAY'}
-        </p>
+  // Don't render error until hydrated (useParams won't work during SSR)
+  if (!hydrated || !id) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-gray-400">Loading...</div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  if (!hospital) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-red-50 flex-col gap-4">
+        <div className="text-red-600 text-lg font-bold">Hospital not found</div>
+        <div className="text-gray-600 text-sm">ID: {id} | Available: {HOSPITALS.map(h => h.id).join(', ')}</div>
+      </div>
+    );
+  }
 
   const boilerEntries = entries.filter((e) => e.system === 'boiler');
   const chilledEntries = entries.filter((e) => e.system === 'chilled');
