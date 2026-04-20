@@ -70,6 +70,8 @@ export default function HospitalSinglePage() {
   const lastBoilerPH = boilerEntries[0]?.values?.ph;
   const lastChilledPH = chilledEntries[0]?.values?.ph;
 
+  const [showDropdown, setShowDropdown] = useState(false);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-50">
       {/* Header */}
@@ -81,8 +83,43 @@ export default function HospitalSinglePage() {
             </Link>
             {user && <span className="text-xs text-gray-400">{user.name}</span>}
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">{hospital.name}</h1>
-          <p className="text-gray-500 mt-1">{hospital.code} · Water Chemistry Operator Portal</p>
+          
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <h1 className="text-3xl font-bold text-gray-900">{hospital.name}</h1>
+              <p className="text-gray-500 mt-1">{hospital.code} · Water Chemistry Operator Portal</p>
+            </div>
+            
+            {/* Hospital Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg font-semibold text-sm transition border border-gray-300"
+              >
+                🏥 Switch Hospital ▼
+              </button>
+              
+              {showDropdown && (
+                <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                  <div className="max-h-96 overflow-y-auto">
+                    {HOSPITALS.map((h) => (
+                      <Link
+                        key={h.id}
+                        href={`/hospital-single/${h.id}`}
+                        className={`block px-4 py-3 text-sm border-b border-gray-100 hover:bg-gray-50 transition ${
+                          h.id === id ? 'bg-blue-50 text-blue-900 font-semibold' : 'text-gray-900'
+                        }`}
+                        onClick={() => setShowDropdown(false)}
+                      >
+                        <div className="font-semibold">{h.name}</div>
+                        <div className="text-xs text-gray-500">{h.code}</div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
