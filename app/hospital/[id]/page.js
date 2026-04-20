@@ -30,6 +30,7 @@ export default function HospitalPage() {
   const [alerts, setAlerts] = useState([]);
   const [activeTab, setActiveTab] = useState('entries');
   const [testTab, setTestTab] = useState('boiler');
+  const [testOpen, setTestOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -73,62 +74,74 @@ export default function HospitalPage() {
 
         {/* Hospital Image */}
         <div className="mb-8 bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
-          <div className="relative w-full h-64 md:h-80 bg-gradient-to-br from-cyan-100 to-blue-100 flex items-center justify-center">
-            <div className="text-center text-gray-400">
-              <div className="text-6xl mb-2">🏥</div>
-              <p className="text-sm">{hospital.name}</p>
-            </div>
-          </div>
+          <img 
+            src={`/hospitals/${id}.jpg`}
+            alt={hospital.name}
+            className="w-full h-64 md:h-80 object-cover"
+            onError={(e) => {
+              e.target.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 300%22%3E%3Crect fill=%22%23e5f0f7%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%22200%22 y=%22150%22 font-size=%2240%22 text-anchor=%22middle%22 fill=%22%238b9dae%22%3E🏥%3C/text%3E%3C/svg%3E';
+            }}
+          />
         </div>
 
-        {/* Testing Guide Quick Reference */}
-        <div className="mb-8 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">🧪 Testing Procedures Quick Reference</h2>
-          
-          {/* Test Tabs */}
-          <div className="flex gap-4 border-b border-gray-200 mb-6">
-            {[
-              { id: 'boiler', label: '🔥 Boiler Water Tests' },
-              { id: 'chilled', label: '❄️ Chilled Water Tests' },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setTestTab(tab.id)}
-                className={`px-4 py-2 font-medium border-b-2 transition-colors text-sm ${
-                  testTab === tab.id
-                    ? 'text-[#0072CE] border-[#0072CE]'
-                    : 'text-gray-600 border-transparent hover:text-gray-900'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
+        {/* Testing Guide - Collapsible */}
+        <div className="mb-8 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <button
+            onClick={() => setTestOpen(!testOpen)}
+            className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition"
+          >
+            <h2 className="text-lg font-bold text-gray-900">🧪 Testing Procedures Quick Reference</h2>
+            <span className={`text-2xl transition-transform ${testOpen ? 'rotate-180' : ''}`}>▼</span>
+          </button>
 
-          {/* Test Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {(testTab === 'boiler' ? BOILER_TESTS : CHILLED_TESTS).map((test, idx) => (
-              <div key={idx} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <div className="flex items-start gap-3 mb-2">
-                  <span className="text-2xl">{test.icon}</span>
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900 text-sm">{test.label}</h4>
-                    <p className="text-xs text-gray-600 mt-1">{test.description}</p>
-                  </div>
-                </div>
-                <div className="mt-3 space-y-2 text-xs">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Range:</span>
-                    <span className="font-mono text-gray-900">{test.target || `${test.min}–${test.max} ${test.unit}`}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Frequency:</span>
-                    <span className="font-semibold text-gray-900">{test.frequency || 'Every shift'}</span>
-                  </div>
-                </div>
+          {testOpen && (
+            <div className="px-6 pb-6 border-t border-gray-100">
+              {/* Test Tabs */}
+              <div className="flex gap-4 border-b border-gray-200 mb-6 mt-4">
+                {[
+                  { id: 'boiler', label: '🔥 Boiler Water Tests' },
+                  { id: 'chilled', label: '❄️ Chilled Water Tests' },
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setTestTab(tab.id)}
+                    className={`px-4 py-2 font-medium border-b-2 transition-colors text-sm ${
+                      testTab === tab.id
+                        ? 'text-[#0072CE] border-[#0072CE]'
+                        : 'text-gray-600 border-transparent hover:text-gray-900'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
               </div>
-            ))}
-          </div>
+
+              {/* Test Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {(testTab === 'boiler' ? BOILER_TESTS : CHILLED_TESTS).map((test, idx) => (
+                  <div key={idx} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                    <div className="flex items-start gap-3 mb-2">
+                      <span className="text-2xl">{test.icon}</span>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-900 text-sm">{test.label}</h4>
+                        <p className="text-xs text-gray-600 mt-1">{test.description}</p>
+                      </div>
+                    </div>
+                    <div className="mt-3 space-y-2 text-xs">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Range:</span>
+                        <span className="font-mono text-gray-900">{test.target || `${test.min}–${test.max} ${test.unit}`}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Frequency:</span>
+                        <span className="font-semibold text-gray-900">{test.frequency || 'Every shift'}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Alerts Banner */}
