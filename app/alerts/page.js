@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Sidebar from '@/components/Sidebar';
 import { HOSPITALS } from '@/lib/hospitals';
 
@@ -149,13 +150,22 @@ export default function AlertsPage() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="text-sm font-semibold text-gray-900">{hospitalName(a.hospitalId)}</span>
+                      <Link href={`/hospital-single/${a.hospitalId}`} className="text-sm font-semibold text-[#0072CE] hover:text-[#005fa3] transition">
+                        {hospitalName(a.hospitalId)}
+                      </Link>
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                         a.system === 'boiler' ? 'bg-orange-100 text-orange-700' : 'bg-blue-100 text-blue-700'
                       }`}>
                         {a.system === 'boiler' ? '🔥 Boiler' : '❄️ Chilled'}
                       </span>
-                      <span className="text-xs text-gray-500">{a.shift} shift · {a.date}</span>
+                      <span className="text-xs text-gray-500">
+                        {a.shift} shift · {a.date}
+                        {a.createdAt && (
+                          <>
+                            {' '}· {new Date(a.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                          </>
+                        )}
+                      </span>
                     </div>
                     <div className="text-sm text-gray-600 mb-3">
                       Operator: <span className="font-medium">{a.operatorName}</span>

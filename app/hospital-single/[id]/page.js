@@ -244,7 +244,11 @@ export default function HospitalSinglePage() {
                 </div>
               ) : (
                 entries.slice(0, 6).map((e) => (
-                  <div key={e.id} className="px-6 py-3 hover:bg-gray-50 transition">
+                  <Link
+                    key={e.id}
+                    href={`/entry/${e.id}`}
+                    className="px-6 py-3 hover:bg-gray-50 transition block cursor-pointer"
+                  >
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <span className="font-semibold text-sm text-gray-900">
                         {e.system === 'boiler' ? '🔥' : '❄️'} {e.shift}
@@ -261,7 +265,7 @@ export default function HospitalSinglePage() {
                         ⚠️ Out of Range
                       </span>
                     )}
-                  </div>
+                  </Link>
                 ))
               )}
               </div>
@@ -333,23 +337,51 @@ export default function HospitalSinglePage() {
                   <div className="text-sm text-green-700">All readings within range</div>
                 ) : (
                   <div className="space-y-3">
-                    {unacknowledgedAlerts.slice(0, 4).map((a) => (
-                      <div key={a.id} className="bg-red-50 border border-red-200 rounded-lg p-3">
-                        <div className="text-sm font-semibold text-red-900">
-                          {a.system === 'boiler' ? '🔥' : '❄️'} {a.shift}
-                        </div>
-                        <div className="text-xs text-red-700 mt-1">
-                          {a.outOfRange?.map((o) => o.label).join(', ')}
-                        </div>
-                      </div>
-                    ))}
+                    {unacknowledgedAlerts.slice(0, 4).map((a) => {
+                      const alertTime = a.createdAt ? new Date(a.createdAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : a.date;
+                      return (
+                        <Link
+                          key={a.id}
+                          href={`/alerts?id=${a.id}`}
+                          className="bg-red-50 border border-red-200 rounded-lg p-3 hover:bg-red-100 transition cursor-pointer block"
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <div>
+                              <div className="text-sm font-semibold text-red-900">
+                                {a.system === 'boiler' ? '🔥' : '❄️'} {a.shift}
+                              </div>
+                              <div className="text-xs text-red-700 mt-1">
+                                {a.outOfRange?.map((o) => o.label).join(', ')}
+                              </div>
+                            </div>
+                            <span className="text-xs text-red-600 whitespace-nowrap font-semibold">{alertTime}</span>
+                          </div>
+                        </Link>
+                      );
+                    })}
                     {unacknowledgedAlerts.length > 4 && (
-                      <div className="text-xs text-gray-500 text-center pt-2">
-                        +{unacknowledgedAlerts.length - 4} more
-                      </div>
+                      <Link href="/alerts" className="text-xs text-gray-500 text-center pt-2 block hover:text-gray-700">
+                        +{unacknowledgedAlerts.length - 4} more →
+                      </Link>
                     )}
                   </div>
                 )}
+              </div>
+            </div>
+
+            {/* Chain of Custody Card */}
+            <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+              <div className="bg-orange-50 border-b border-orange-200 px-6 py-4">
+                <h2 className="text-lg font-bold text-gray-900">📋 Chain of Custody</h2>
+              </div>
+              <div className="p-6">
+                <p className="text-sm text-gray-600 mb-4">Generate a chain of custody form for lab samples. Print and send with your sample containers.</p>
+                <Link
+                  href="/coc"
+                  className="block w-full text-center bg-orange-600 text-white px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-orange-700 transition"
+                >
+                  Generate COC Form →
+                </Link>
               </div>
             </div>
 

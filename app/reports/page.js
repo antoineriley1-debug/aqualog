@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Sidebar from '@/components/Sidebar';
 
 import { HOSPITALS } from '@/lib/hospitals';
@@ -195,7 +196,9 @@ export default function ReportsPage() {
                 {hospitalStats.map((h) => (
                   <tr key={h.id} className="hover:bg-gray-50">
                     <td className="px-5 py-4">
-                      <div className="font-medium text-gray-800">{h.name}</div>
+                      <Link href={`/hospital-single/${h.id}`} className="font-medium text-[#0072CE] hover:text-[#005fa3] transition">
+                        {h.name}
+                      </Link>
                       <div className="text-xs text-gray-400">{h.code}</div>
                     </td>
                     <td className="px-4 py-4 text-center">

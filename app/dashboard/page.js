@@ -214,7 +214,7 @@ export default function DashboardPage() {
               return (
                 <Link
                   key={h.id}
-                  href={`/hospital/${h.id}`}
+                  href={`/hospital-single/${h.id}`}
                   className={`bg-white rounded-xl p-5 shadow-sm border hover:shadow-md transition-shadow cursor-pointer ${
                     overdue ? 'border-orange-200' : 'border-gray-100'
                   }`}
