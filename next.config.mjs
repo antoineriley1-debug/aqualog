@@ -34,9 +34,15 @@ const nextConfig = {
   async headers() {
     // Build CSP — Next.js requires 'unsafe-inline' for its runtime scripts.
     // Tighten further (nonces) once the app is on a stable release.
-    const supabaseHost = process.env.NEXT_PUBLIC_SUPABASE_URL
-      ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname
-      : '*.supabase.co';
+    let supabaseHost = '*.supabase.co';
+    try {
+      if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_URL.startsWith('http')) {
+        supabaseHost = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname;
+      }
+    } catch (e) {
+      // Fallback if URL parsing fails
+      supabaseHost = '*.supabase.co';
+    }
 
     const csp = [
       "default-src 'self'",
