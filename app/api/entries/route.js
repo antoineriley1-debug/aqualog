@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getUserFromRequest } from '@/lib/auth';
-import { getAllEntries, getEntriesForHospital, addEntry, logAudit, addAlert } from '@/lib/store';
+import { getAllEntries, getEntriesForHospital, addEntry, logAudit, addAlert, updateAlertNotification } from '@/lib/store';
+import { sendEmail, sendSMS, getEnvEmails } from '@/lib/notify';
 import { getOutOfRangeParams, CHEMISTRY_RANGES } from '@/lib/chemistryRanges';
 import { detectDrift } from '@/lib/driftDetection';
 import { getHospital, getHospitalVendor } from '@/lib/hospitals';
@@ -36,48 +37,11 @@ function getNotificationContacts(hospitalId, level) {
   } catch { return []; }
 }
 
-function getEnvEmails() {
-  const to = process.env.ALERT_EMAIL_TO || '';
-  return to.split(',').map(e => e.trim()).filter(Boolean);
-}
-
-// ── Send email via Resend ────────────────────────────────────────────────────
-async function sendEmail({ to, subject, text, html }) {
-  if (!process.env.RESEND_API_KEY) return;
-  const allTo = Array.isArray(to) ? to : [to];
-  if (!allTo.length) return;
-  try {
-    const { Resend } = await import('resend');
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    const from = process.env.ALERT_EMAIL_FROM || 'alerts@medstarh20log.com';
-    await resend.emails.send({ from, to: allTo, subject, text, html });
-  } catch (err) {
-    console.warn('[email] Failed:', err.message);
-  }
-}
-
-// ── Send SMS via Twilio ──────────────────────────────────────────────────────
-async function sendSMS(numbers, message) {
-  if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN || !process.env.TWILIO_FROM_NUMBER) return;
-  if (!numbers?.length) return;
-  try {
-    const twilio = require('twilio');
-    const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-    for (const num of numbers) {
-      if (!num) continue;
-      await client.messages.create({
-        body: message,
-        from: process.env.TWILIO_FROM_NUMBER,
-        to: num,
-      });
-    }
-  } catch (err) {
-    console.warn('[sms] Failed:', err.message);
-  }
-}
+// Email/SMS senders + getEnvEmails now come from '@/lib/notify' (imported above).
+// They RETURN delivery results and log failures loudly, instead of swallowing them.
 
 // ── Dispatch OOR alert notifications (with smart throttle/quiet hours) ──────
-async function dispatchAlertNotifications({ hospitalId, hospitalName, system, shift, date, operatorName, oor, vendor }) {
+async function dispatchAlertNotifications({ alertId, hospitalId, hospitalName, system, shift, date, operatorName, oor, vendor }) {
   const alertLevel = determineLevel('oor', oor);
 
   const paramList = oor.map(p => `  • ${p.label}: ${p.value}${p.unit} (range: ${p.min}–${p.max}${p.unit})`).join('\n');
@@ -88,13 +52,23 @@ async function dispatchAlertNotifications({ hospitalId, hospitalName, system, sh
   const html = `<div style="font-family:sans-serif;max-width:600px"><div style="background:#c0392b;color:white;padding:16px;border-radius:8px 8px 0 0"><h2 style="margin:0">🚨 Out-of-Range Alert</h2></div><div style="border:1px solid #e0e0e0;border-top:none;padding:20px;border-radius:0 0 8px 8px"><p><strong>Facility:</strong> ${hospitalName}<br><strong>System:</strong> ${system === 'boiler' ? '🔥 Boiler Water' : '❄️ Chilled Water'}<br><strong>Shift:</strong> ${shift} | <strong>Date:</strong> ${date}<br><strong>Logged By:</strong> ${operatorName}</p><h3 style="color:#c0392b">Out-of-Range Parameters:</h3><ul>${oor.map(p => `<li><strong>${p.label}:</strong> ${p.value}${p.unit} <em>(acceptable: ${p.min}–${p.max}${p.unit})</em></li>`).join('')}</ul>${vendor ? `<p style="color:#666;font-size:12px">Vendor: ${vendor.company} | Emergency: ${vendor.emergency || 'N/A'}</p>` : ''}<hr style="border:none;border-top:1px solid #eee;margin:16px 0"><p style="color:#999;font-size:11px">MedStar H2O Alert System</p></div></div>`;
   const smsText = `🚨 OOR Alert: ${hospitalName} ${system} ${shift} on ${date}. Params: ${oor.map(p => `${p.label}=${p.value}`).join(', ')}. See portal for details.`;
 
+  // Track every delivery so a swallowed failure becomes visible on the alert.
+  const emailSent = new Set();
+  const smsSent = new Set();
+  const errors = [];
+  let attemptedEmail = false;
+  let attemptedSms = false;
+
   // Use smart dispatch per contact
   const contacts = getContactsForLevel(hospitalId, alertLevel);
   const envEmails = getEnvEmails();
 
-  // For env-configured emails, always send (these are legacy fallback)
+  // For env-configured emails, always send (durable fallback recipients)
   if (envEmails.length) {
-    await sendEmail({ to: envEmails, subject, text, html });
+    attemptedEmail = true;
+    const r = await sendEmail({ to: envEmails, subject, text, html });
+    if (r.ok) (r.recipients || []).forEach(e => emailSent.add(e));
+    else if (!r.skipped || r.error !== 'No recipients') errors.push(`email(env): ${r.error}`);
   }
 
   for (const contact of contacts) {
@@ -106,10 +80,16 @@ async function dispatchAlertNotifications({ hospitalId, hospitalName, system, sh
     const alertData = { hospitalId, hospitalName, system, shift, date, operatorName, oor, level: alertLevel, contact, subject, text, html, smsText };
 
     if (decision.sendEmail && contact.email) {
-      await sendEmail({ to: contact.email, subject, text, html });
+      attemptedEmail = true;
+      const r = await sendEmail({ to: contact.email, subject, text, html });
+      if (r.ok) emailSent.add(contact.email);
+      else errors.push(`email(${contact.email}): ${r.error}`);
     }
     if (decision.sendSms && contact.sms) {
-      await sendSMS([contact.sms], smsText);
+      attemptedSms = true;
+      const r = await sendSMS([contact.sms], smsText);
+      if (r.ok) smsSent.add(contact.sms);
+      else errors.push(`sms(${contact.sms}): ${r.error}`);
     }
 
     // Record sent timestamps for throttle tracking
@@ -122,6 +102,26 @@ async function dispatchAlertNotifications({ hospitalId, hospitalName, system, sh
       queueDigestAlert(alertData);
     }
   }
+
+  const emailResult = { ok: emailSent.size > 0, sent: [...emailSent], attempted: attemptedEmail };
+  const smsResult = { ok: smsSent.size > 0, sent: [...smsSent], attempted: attemptedSms };
+  const deliveredSomewhere = emailResult.ok || smsResult.ok;
+
+  // Persist delivery outcome onto the alert record (visible in API/dashboard).
+  if (alertId) {
+    updateAlertNotification(alertId, { email: emailResult, sms: smsResult, errors });
+  }
+
+  // LIFE-SAFETY: a real out-of-range alert that reached NO ONE must be loud.
+  if (!deliveredSomewhere) {
+    console.error(
+      `[notify] CRITICAL — OOR alert for ${hospitalName} (${system}/${shift}/${date}) was NOT delivered to anyone.`,
+      `Contacts found: ${contacts.length}, env recipients: ${envEmails.length}.`,
+      errors.length ? `Errors: ${errors.join(' | ')}` : 'No recipients configured and/or RESEND_API_KEY unset.'
+    );
+  }
+
+  return { emailResult, smsResult, errors, deliveredSomewhere };
 }
 
 // ── Dispatch drift warning notifications (with smart throttle) ──────────────
@@ -238,10 +238,11 @@ export async function POST(request) {
       const vendor   = getHospitalVendor(hospitalId);
       // Fire-and-forget — don't block the response
       dispatchAlertNotifications({
+        alertId: alert.id,
         hospitalId,
         hospitalName: hospital?.name || hospitalId,
         system, shift, date, operatorName, oor, vendor,
-      }).catch(err => console.warn('[notify] OOR dispatch error:', err.message));
+      }).catch(err => console.error('[notify] OOR dispatch error:', err.message));
     }
 
     // ── Drift detection ─────────────────────────────────────────────────────
