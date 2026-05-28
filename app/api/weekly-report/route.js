@@ -136,7 +136,7 @@ export async function GET(request) {
         const { Resend } = await import('resend');
         const resend = new Resend(process.env.RESEND_API_KEY);
         await resend.emails.send({
-          from: process.env.ALERT_EMAIL_FROM || 'aqualog@MedStar H2O.com',
+          from: process.env.ALERT_EMAIL_FROM || 'alerts@medstarh20log.com',
           to: process.env.ALERT_EMAIL_TO,
           subject: `MedStar H2O Weekly Report — Week of ${weekDateLabel}`,
           html: htmlEmail,
