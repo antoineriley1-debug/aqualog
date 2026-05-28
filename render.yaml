@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: facilityh2o
+    name: aqualog
     runtime: node
     buildCommand: npm install && npm run build
     startCommand: npm start
@@ -10,40 +10,53 @@ services:
       - key: PORT
         value: 3000
       - key: CRON_SECRET
-        value: facilityh2o_cron_2026
+        value: aqualog_cron_2026
 
   - type: cron
-    name: facilityh2o-check-day-shift
+    name: aqualog-check-day-shift
     runtime: node
     buildCommand: npm install
     startCommand: node scripts/check-missed-shifts.js
     schedule: "0 18 * * 1-5"
     envVars:
       - key: NEXT_PUBLIC_APP_URL
-        value: https://facilityh2o.onrender.com
+        value: https://medstarh20log.com
       - key: CRON_SECRET
-        value: facilityh2o_cron_2026
+        value: aqualog_cron_2026
 
   - type: cron
-    name: facilityh2o-check-evening-shift
+    name: aqualog-check-evening-shift
     runtime: node
     buildCommand: npm install
     startCommand: node scripts/check-missed-shifts.js
     schedule: "0 2 * * 2-6"
     envVars:
       - key: NEXT_PUBLIC_APP_URL
-        value: https://facilityh2o.onrender.com
+        value: https://medstarh20log.com
       - key: CRON_SECRET
-        value: facilityh2o_cron_2026
+        value: aqualog_cron_2026
 
   - type: cron
-    name: facilityh2o-check-night-shift
+    name: aqualog-check-night-shift
     runtime: node
     buildCommand: npm install
     startCommand: node scripts/check-missed-shifts.js
     schedule: "0 10 * * 1-6"
     envVars:
       - key: NEXT_PUBLIC_APP_URL
-        value: https://facilityh2o.onrender.com
+        value: https://medstarh20log.com
       - key: CRON_SECRET
-        value: facilityh2o_cron_2026
+        value: aqualog_cron_2026
+
+  # End-of-day report: full prior day (missed + out-of-range), 6:00 AM ET daily.
+  - type: cron
+    name: aqualog-daily-report
+    runtime: node
+    buildCommand: npm install
+    startCommand: node scripts/daily-report.js
+    schedule: "0 10 * * *"
+    envVars:
+      - key: NEXT_PUBLIC_APP_URL
+        value: https://medstarh20log.com
+      - key: CRON_SECRET
+        value: aqualog_cron_2026
