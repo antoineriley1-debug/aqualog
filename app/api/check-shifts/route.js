@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { getAllEntries } from '@/lib/store';
 import { HOSPITALS } from '@/lib/hospitals';
+import { sendEmail, getEnvEmails, getNotifyStatus } from '@/lib/notify';
 
 // Shift windows (ET):
 // 1st Shift: 5:00 AM – 1:30 PM  → check at 2:00 PM
@@ -97,23 +98,15 @@ export async function GET(request) {
   // Build summary email
   const emailBody = buildEmailBody(shiftToCheck, checkDate, missing);
 
-  // Send email if configured
-  let emailSent = false;
-  if (process.env.RESEND_API_KEY && process.env.ALERT_EMAIL_TO) {
-    try {
-      const { Resend } = await import('resend');
-      const resend = new Resend(process.env.RESEND_API_KEY);
-      await resend.emails.send({
-        from: 'MedStar H2O Alerts <alerts@medstarh20log.com>',
-        to: process.env.ALERT_EMAIL_TO,
-        subject: `⚠️ MedStar H2O: ${missing.length} Missed ${shiftToCheck} Shift Reading${missing.length > 1 ? 's' : ''} — ${checkDate}`,
-        html: emailBody,
-      });
-      emailSent = true;
-    } catch (err) {
-      console.error('Failed to send missed shift email:', err.message);
-    }
-  }
+  // Send email through the shared notify pipeline (same path as the working
+  // daily report) — env-driven verified "from" address, real error reporting.
+  const recipients = getEnvEmails();
+  const emailResult = await sendEmail({
+    to: recipients,
+    subject: `⚠️ MedStar H2O: ${missing.length} Missed ${shiftToCheck} Shift Reading${missing.length > 1 ? 's' : ''} — ${checkDate}`,
+    html: emailBody,
+  });
+  const status = getNotifyStatus();
 
   return NextResponse.json({
     ok: true,
@@ -121,8 +114,12 @@ export async function GET(request) {
     date: checkDate,
     missedCount: missing.length,
     missing,
-    emailSent,
-    emailBody: !emailSent ? emailBody : undefined,
+    emailSent: emailResult.ok,
+    email: emailResult,
+    config: { resend_configured: status.resendConfigured, from: status.from, recipients },
+    verdict: emailResult.ok
+      ? `Missed-shift alert emailed to: ${emailResult.recipients?.join(', ')}`
+      : `Alert did NOT email — ${emailResult.error}. ${!status.resendConfigured ? 'Set RESEND_API_KEY in Render.' : 'Check ALERT_EMAIL_FROM matches a Resend-verified domain and ALERT_EMAIL_TO is set.'}`,
   });
 }
 
