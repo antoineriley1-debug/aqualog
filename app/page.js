@@ -14,7 +14,6 @@ export default function LandingPage() {
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
             <a href="#features" className="hover:text-[#0072CE] transition">Features</a>
             <a href="#compliance" className="hover:text-[#0072CE] transition">Compliance</a>
-            <a href="#pricing" className="hover:text-[#0072CE] transition">Pricing</a>
             <a href="#demo" className="hover:text-[#0072CE] transition">Request Demo</a>
           </div>
           <Link
@@ -136,32 +135,22 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* PRICING */}
-      <section id="pricing" className="py-24 px-6 bg-white">
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-3">Simple, Transparent Pricing</h2>
-          <p className="text-gray-500 text-lg mb-12">Per-facility monthly lease. No long-term contracts. Cancel anytime.</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { name: 'Starter', price: '$250', per: '/facility/mo', features: ['Up to 2 facilities', 'Shift logging', 'Basic alerts', 'History & trends', 'Email support'], highlight: false },
-              { name: 'Professional', price: '$499', per: '/facility/mo', features: ['Unlimited facilities', 'ST108 compliance module', 'Legionella tracking', 'Audit log', 'Custom branding', 'Priority support'], highlight: true },
-              { name: 'Enterprise', price: 'Custom', per: '', features: ['Volume pricing', 'Dedicated onboarding', 'SLA guarantee', 'Custom integrations', 'HIPAA BAA available', 'Phone support'], highlight: false },
-            ].map(p => (
-              <div key={p.name} className={`rounded-2xl p-8 border-2 flex flex-col ${p.highlight ? 'border-[#0072CE] shadow-lg bg-[#F0F9FF]' : 'border-gray-200'}`}>
-                {p.highlight && <div className="text-xs font-bold text-[#0072CE] uppercase tracking-widest mb-2">Most Popular</div>}
-                <div className="text-2xl font-bold text-gray-900 mb-1">{p.name}</div>
-                <div className="mb-6">
-                  <span className="text-4xl font-extrabold text-[#003366]">{p.price}</span>
-                  <span className="text-gray-400 text-sm">{p.per}</span>
-                </div>
-                <ul className="space-y-3 text-sm text-gray-600 flex-1 mb-8">
-                  {p.features.map(f => <li key={f} className="flex items-center gap-2"><span className="text-green-500">✓</span>{f}</li>)}
-                </ul>
-                <Link href={p.name === 'Enterprise' ? '#demo' : '/login'} className={`block w-full text-center font-semibold py-3 rounded-xl transition ${p.highlight ? 'bg-[#0072CE] text-white hover:bg-[#005fa3]' : 'border border-gray-300 text-gray-700 hover:border-[#0072CE] hover:text-[#0072CE]'}`}>
-                  {p.name === 'Enterprise' ? 'Contact Us' : 'Get Started'}
-                </Link>
-              </div>
-            ))}
+      {/* PRICING — COMING SOON */}
+      <section id="pricing" className="py-24 px-6 bg-gradient-to-b from-slate-50 to-white">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">Pricing & Plans</h2>
+          <div className="bg-amber-50 border-2 border-amber-300 rounded-2xl p-12">
+            <div className="text-6xl mb-4">🔜</div>
+            <h3 className="text-2xl font-bold text-amber-900 mb-3">Coming Soon</h3>
+            <p className="text-lg text-amber-800 mb-6 leading-relaxed">
+              Flexible, transparent pricing plans are being finalized. We're committed to affordable water compliance for facilities of all sizes — from single campuses to multi-state health systems.
+            </p>
+            <p className="text-base text-amber-700 mb-8">
+              Early adopters and pilot programs: <a href="mailto:sales@medstarh20log.com" className="font-bold text-amber-900 underline hover:text-amber-950">Contact Sales</a>
+            </p>
+            <Link href="#demo" className="inline-block bg-amber-600 hover:bg-amber-700 text-white font-bold px-8 py-3 rounded-lg transition">
+              Request Early Access →
+            </Link>
           </div>
         </div>
       </section>
