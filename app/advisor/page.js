@@ -28,6 +28,7 @@ export default function AdvisorPage() {
   const [question, setQuestion] = useState('');
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [council, setCouncil] = useState(true);
   const [error, setError] = useState('');
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -60,7 +61,7 @@ export default function AdvisorPage() {
       const res = await fetch('/api/advisor', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ hospitalId: hospital, question: q, history }),
+        body: JSON.stringify({ hospitalId: hospital, question: q, history, council }),
       });
 
       if (!res.ok) {
@@ -82,10 +83,13 @@ export default function AdvisorPage() {
 
         const chunk = decoder.decode(value, { stream: true });
         assistantContent += chunk;
-        const currentContent = assistantContent;
+        const MARK = '⟦COUNCIL_REVIEW⟧';
+        const parts = assistantContent.split(MARK);
+        const visible = parts[0];
+        const critique = parts.length > 1 ? parts[1].trim() : '';
         setMessages((prev) => {
           const updated = [...prev];
-          updated[updated.length - 1] = { role: 'assistant', content: currentContent };
+          updated[updated.length - 1] = { role: 'assistant', content: visible.trimEnd(), critique: critique || undefined };
           return updated;
         });
       }
@@ -136,6 +140,10 @@ export default function AdvisorPage() {
               </p>
             </div>
             <div className="flex items-center gap-3">
+              <label className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 cursor-pointer select-none whitespace-nowrap" title="Every answer is drafted, anonymously peer-reviewed by a second AI pass, then synthesized">
+                <input type="checkbox" checked={council} onChange={(e) => setCouncil(e.target.checked)} className="accent-[#0072CE]" />
+                ⚖️ Council
+              </label>
               <select
                 value={hospital}
                 onChange={(e) => { setHospital(e.target.value); clearChat(); }}
@@ -207,9 +215,20 @@ export default function AdvisorPage() {
                 }`}
               >
                 {msg.role === 'assistant' && (
-                  <div className="text-xs text-blue-600 dark:text-blue-400 font-semibold mb-1">🧪 Advisor</div>
+                  <div className="flex items-center gap-2 text-xs font-semibold mb-1">
+                    <span className="text-blue-600 dark:text-blue-400">🧪 Advisor</span>
+                    {msg.critique && (
+                      <span className="text-emerald-600 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-700 rounded-full px-2 py-0.5">⚖️ Council-reviewed</span>
+                    )}
+                  </div>
                 )}
                 <div className="whitespace-pre-wrap">{msg.content}</div>
+                {msg.critique && (
+                  <details className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                    <summary className="cursor-pointer font-semibold text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">View anonymous peer review</summary>
+                    <div className="whitespace-pre-wrap mt-1.5 border-l-2 border-emerald-300 dark:border-emerald-700 pl-2">{msg.critique}</div>
+                  </details>
+                )}
               </div>
             </div>
           ))}
@@ -234,7 +253,7 @@ export default function AdvisorPage() {
         {/* Disclaimer */}
         <div className="px-4 sm:px-6 pb-1">
           <p className="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 text-center">
-            AI-powered advisory — always verify with your water treatment vendor before making changes
+            AI-powered advisory — always verify with your water treatment vendor before making changes · Council mode: drafted, anonymously peer-reviewed, then synthesized
           </p>
         </div>
 

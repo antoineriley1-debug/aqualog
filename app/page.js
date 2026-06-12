@@ -135,75 +135,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* PRICING — COMING SOON */}
-      <section id="pricing" className="py-24 px-6 bg-gradient-to-b from-slate-50 to-white">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Pricing & Plans</h2>
-          <div className="bg-amber-50 border-2 border-amber-300 rounded-2xl p-12">
-            <div className="text-6xl mb-4">🔜</div>
-            <h3 className="text-2xl font-bold text-amber-900 mb-3">Coming Soon</h3>
-            <p className="text-lg text-amber-800 mb-6 leading-relaxed">
-              Flexible, transparent pricing plans are being finalized. We're committed to affordable water compliance for facilities of all sizes — from single campuses to multi-state health systems.
-            </p>
-            <p className="text-base text-amber-700 mb-8">
-              Early adopters and pilot programs: <a href="mailto:sales@medstarh20log.com" className="font-bold text-amber-900 underline hover:text-amber-950">Contact Sales</a>
-            </p>
-            <Link href="#demo" className="inline-block bg-amber-600 hover:bg-amber-700 text-white font-bold px-8 py-3 rounded-lg transition">
-              Request Early Access →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* DEMO / CTA */}
-      <section id="demo" className="py-24 px-6 bg-gradient-to-br from-[#003366] to-[#0072CE] text-white">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left: pitch */}
-          <div>
-            <div className="inline-block text-xs font-bold text-yellow-300 uppercase tracking-widest bg-white/10 px-4 py-1.5 rounded-full mb-6">Get Started</div>
-            <h2 className="text-3xl font-bold mb-4">Your Next Inspection Is Coming.<br />Be Ready.</h2>
-            <p className="text-blue-100 mb-6 leading-relaxed">
-              Don't wait for a citation to fix your water management program. Request a demo today and see how FacilityH2O transforms compliance from a liability into a competitive advantage.
-            </p>
-            <ul className="space-y-3 text-sm text-blue-100">
-              {[
-                '30-minute live walkthrough',
-                'Tailored to your hospital count and systems',
-                'No commitment required',
-              ].map(item => (
-                <li key={item} className="flex items-center gap-2"><span className="text-yellow-300 font-bold">✓</span>{item}</li>
-              ))}
-            </ul>
-          </div>
-          {/* Right: contact form */}
-          <div className="bg-white rounded-2xl p-8 shadow-xl">
-            <h3 className="text-[#003366] font-bold text-xl mb-6">Request a Demo</h3>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Full Name</label>
-                <input type="text" placeholder="Your Name" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 text-sm focus:outline-none focus:border-[#0072CE]" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Job Title</label>
-                <input type="text" placeholder="Facilities Director" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 text-sm focus:outline-none focus:border-[#0072CE]" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Organization</label>
-                <input type="text" placeholder="Your Organization" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 text-sm focus:outline-none focus:border-[#0072CE]" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Work Email</label>
-                <input type="email" placeholder="you@organization.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 text-sm focus:outline-none focus:border-[#0072CE]" />
-              </div>
-              <a href="mailto:info@facilityh2o.com?subject=Demo Request" className="block w-full text-center bg-[#0072CE] hover:bg-[#005fa3] text-white font-bold py-3 rounded-xl transition mt-2">
-                Send Demo Request →
-              </a>
-              <p className="text-xs text-gray-400 text-center">Or email directly: <a href="mailto:info@facilityh2o.com" className="text-[#0072CE]">info@facilityh2o.com</a></p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* FOOTER */}
       <footer className="bg-gray-900 text-gray-400 py-12 px-6 text-center text-sm">
         <div className="flex items-center justify-center gap-2 text-white font-bold text-lg mb-3">
@@ -212,7 +143,6 @@ export default function LandingPage() {
         <p className="text-gray-500 mb-1">Water Chemistry Compliance. Built for Facilities.</p>
         <div className="flex items-center justify-center gap-6 flex-wrap mb-4">
           <Link href="/login" className="hover:text-white transition">Sign In</Link>
-          <a href="#demo" className="hover:text-white transition">Request Demo</a>
           <Link href="/terms" className="hover:text-white transition">Terms of Service</Link>
           <Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link>
           <a href="mailto:info@facilityh2o.com" className="hover:text-white transition">info@facilityh2o.com</a>

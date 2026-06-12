@@ -215,6 +215,7 @@ export async function POST(request) {
 
     const body = await request.json();
     const { hospitalId, question, history } = body;
+    const council = body.council !== false; // council review (draft → anonymous peer review → synthesis) on by default
 
     if (!hospitalId || !question) {
       return Response.json({ error: 'Hospital and question are required.' }, { status: 400 });
@@ -269,12 +270,66 @@ Guidelines:
     }
     messages.push({ role: 'user', content: question });
 
-    // Stream the response
+    // ---- Council mode: independent draft → anonymous peer review → streamed chairman synthesis ----
+    const MODEL = 'claude-sonnet-4-20250514';
+    let streamSystem = systemPrompt;
+    let streamMessages = messages;
+    let critiqueText = '';
+
+    if (council) {
+      try {
+        const draft = await client.messages.create({
+          model: MODEL,
+          max_tokens: 900,
+          system: systemPrompt,
+          messages,
+        });
+        const draftText = (draft.content || [])
+          .filter((b) => b.type === 'text')
+          .map((b) => b.text)
+          .join('\n')
+          .trim();
+
+        const review = await client.messages.create({
+          model: MODEL,
+          max_tokens: 500,
+          system:
+            'You are an anonymous peer reviewer on a hospital water-chemistry advisory council. You did NOT write the draft. Verify every claim strictly against the facility data provided. Flag anything unsupported by the data, list concrete corrections or omissions as a short numbered list, confirm safety-critical advice defers to the water treatment vendor, and end with a one-line verdict. Be blunt and specific.',
+          messages: [
+            {
+              role: 'user',
+              content: `FACILITY CONTEXT AND DATA:\n${systemPrompt}\n\nOPERATOR QUESTION:\n${question}\n\nDRAFT ANSWER UNDER REVIEW:\n${draftText}`,
+            },
+          ],
+        });
+        critiqueText = (review.content || [])
+          .filter((b) => b.type === 'text')
+          .map((b) => b.text)
+          .join('\n')
+          .trim();
+
+        streamSystem =
+          'You are the council chairman for a hospital water-chemistry advisory council. Produce the final answer for the operator ONLY — no preamble, no mention of the draft or the review process. Incorporate every valid correction from the peer review. Keep the same practical, plain-language style and defer safety-critical changes to the treatment vendor.';
+        streamMessages = [
+          {
+            role: 'user',
+            content: `FACILITY CONTEXT AND DATA:\n${systemPrompt}\n\nOPERATOR QUESTION:\n${question}\n\nDRAFT:\n${draftText}\n\nANONYMOUS PEER REVIEW:\n${critiqueText}`,
+          },
+        ];
+      } catch (councilErr) {
+        console.error('Council stages failed, falling back to single-pass:', councilErr);
+        critiqueText = '';
+        streamSystem = systemPrompt;
+        streamMessages = messages;
+      }
+    }
+
+    // Stream the (final) response
     const stream = await client.messages.stream({
-      model: 'claude-sonnet-4-20250514',
+      model: MODEL,
       max_tokens: 1024,
-      system: systemPrompt,
-      messages,
+      system: streamSystem,
+      messages: streamMessages,
     });
 
     // Create a ReadableStream to pipe chunks back
@@ -286,6 +341,9 @@ Guidelines:
             if (event.type === 'content_block_delta' && event.delta?.text) {
               controller.enqueue(encoder.encode(event.delta.text));
             }
+          }
+          if (critiqueText) {
+            controller.enqueue(encoder.encode('\n⟦COUNCIL_REVIEW⟧\n' + critiqueText));
           }
           controller.close();
         } catch (err) {
