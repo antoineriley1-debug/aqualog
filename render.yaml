@@ -10,7 +10,6 @@ services:
       - key: PORT
         value: 3000
       - key: CRON_SECRET
-        value: aqualog_cron_2026
 
   - type: cron
     name: aqualog-check-day-shift
@@ -22,7 +21,6 @@ services:
       - key: NEXT_PUBLIC_APP_URL
         value: https://medstarh20log.com
       - key: CRON_SECRET
-        value: aqualog_cron_2026
 
   - type: cron
     name: aqualog-check-evening-shift
@@ -34,7 +32,6 @@ services:
       - key: NEXT_PUBLIC_APP_URL
         value: https://medstarh20log.com
       - key: CRON_SECRET
-        value: aqualog_cron_2026
 
   - type: cron
     name: aqualog-check-night-shift
@@ -46,7 +43,6 @@ services:
       - key: NEXT_PUBLIC_APP_URL
         value: https://medstarh20log.com
       - key: CRON_SECRET
-        value: aqualog_cron_2026
 
   # End-of-day report: full prior day (missed + out-of-range), 6:00 AM ET daily.
   - type: cron
@@ -59,4 +55,3 @@ services:
       - key: NEXT_PUBLIC_APP_URL
         value: https://medstarh20log.com
       - key: CRON_SECRET
-        value: aqualog_cron_2026
