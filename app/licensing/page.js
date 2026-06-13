@@ -47,7 +47,7 @@ export default function LicensingPage() {
   useEffect(() => {
     const u = getUser();
     if (!u) { router.push('/login'); return; }
-    if (u.id !== 'usr_ariley') { setForbidden(true); setLoading(false); return; }
+    if (u.id !== 'usr_ariley' && u.username !== 'ariley') { setForbidden(true); setLoading(false); return; }
     load();
   }, [router]);
 
