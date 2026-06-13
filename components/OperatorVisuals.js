@@ -22,6 +22,23 @@ export const RANGES = {
     iron:{label:'Iron',min:0,max:2,unit:'ppm'}, tds:{label:'TDS',min:0,max:2000,unit:'ppm'},
     molybdate:{label:'Molybdate',min:5,max:30,unit:'ppm'}, bacteria:{label:'Bacteria',min:0,max:1000,unit:'CFU/mL'},
   },
+  cooling_tower: {
+    ph:{label:'pH',min:8.0,max:9.0}, conductivity:{label:'Conductivity',min:1000,max:3000,unit:'µS'},
+    free_chlorine:{label:'Free Cl',min:0.2,max:1.0,unit:'ppm'}, inhibitor:{label:'Inhibitor',min:8,max:12,unit:'ppm'},
+    hardness:{label:'Hardness',min:0,max:400,unit:'ppm'}, bacteria:{label:'Bacteria',min:0,max:10000,unit:'CFU/mL'},
+  },
+  condensate: {
+    ph:{label:'pH',min:7.5,max:9.0}, iron:{label:'Iron',min:0,max:1.0,unit:'ppm'},
+    conductivity:{label:'Conductivity',min:0,max:100,unit:'µS'}, amine:{label:'Amine',min:0,max:10,unit:'ppm'},
+  },
+  softener: {
+    hardness:{label:'Hardness',min:0,max:0,unit:'ppm'}, conductivity:{label:'Conductivity',min:0,max:1500,unit:'µS'},
+  },
+};
+
+const SYSTEM_LABELS = {
+  boiler: '🔥 Boiler', chilled: '❄️ Chilled', cooling_tower: '🌫️ Cooling Tower',
+  condensate: '💧 Condensate', softener: '🧂 Softener',
 };
 
 const inRange = (v, r) => v != null && Number.isFinite(+v) && +v >= r.min && +v <= r.max;
@@ -59,7 +76,7 @@ export function HealthGauge({ entries, system }) {
           <span className="text-[11px] font-semibold tracking-wide" style={{ color }}>{label}</span>
         </div>
       </div>
-      <div className="text-xs text-gray-500 mt-1 font-medium">{system === 'boiler' ? '🔥 Boiler' : '❄️ Chilled'} health</div>
+      <div className="text-xs text-gray-500 mt-1 font-medium">{SYSTEM_LABELS[system] || system} health</div>
     </div>
   );
 }
