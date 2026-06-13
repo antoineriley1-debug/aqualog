@@ -13,6 +13,7 @@ export default function LandingPage() {
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
             <a href="#features" className="hover:text-[#0072CE] transition">Features</a>
+            <a href="#reports" className="hover:text-[#0072CE] transition">Reports</a>
             <a href="#compliance" className="hover:text-[#0072CE] transition">Compliance</a>
             <a href="/demo.html" className="hover:text-[#0072CE] transition">Request Demo</a>
           </div>
@@ -48,7 +49,7 @@ export default function LandingPage() {
       {/* TRUST STRIP */}
       <section className="bg-[#0072CE] text-white py-4 px-6">
         <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-6 text-sm font-medium text-blue-100">
-          {['✓ ASHRAE 188 Compliant', '✓ Joint Commission Ready', '✓ CMS QSO17-30', '✓ ANSI/AAMI ST108', '✓ Shift-Based Logging', '✓ Audit Trail Built-In', '✓ Multi-Facility Dashboard'].map(item => (
+          {['✓ ASHRAE 188 Compliant', '✓ Joint Commission Ready', '✓ CMS QSO17-30', '✓ ANSI/AAMI ST108', '✓ Shift-Based Logging', '✓ Audit Trail Built-In', '✓ Multi-Facility Dashboard', '✓ AI-Reviewed Reports'].map(item => (
             <span key={item}>{item}</span>
           ))}
         </div>
@@ -63,15 +64,18 @@ export default function LandingPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { icon: '📋', title: 'Shift-Based Logging', desc: 'Log boiler and chilled water readings by shift — day, evening, night. Every reading timestamped with operator name, time, and system.' },
-              { icon: '📈', title: 'Trend Analysis', desc: 'Interactive charts for any parameter over any time range. Spot drift early before it becomes a compliance failure or equipment issue.' },
+              { icon: '📋', title: 'Shift-Based Logging', desc: 'Log readings by shift — 1st, 2nd, 3rd. Every reading timestamped with operator name, time, and system. Set each facility\'s shift hours and timezone.' },
+              { icon: '🛠️', title: 'Five Systems, Not Just Two', desc: 'Track boiler, chilled water, cooling tower, condensate, and softener — each with its own parameters and safe ranges. Turn on only the systems a facility runs.' },
+              { icon: '📈', title: 'Live Trends & System Health', desc: 'Animated health gauges and interactive charts for any parameter over any time range. Spot drift early — before it becomes a compliance failure.' },
               { icon: '🔔', title: 'Instant Out-of-Range Alerts', desc: 'When a reading falls outside acceptable limits, your team is notified immediately. Every alert tracked with an acknowledge workflow.' },
+              { icon: '⏱️', title: 'Missed-Reading Detection', desc: 'When a shift ends without a logged reading, it automatically becomes an alert — so a skipped round never slips through unnoticed.' },
+              { icon: '⚑', title: 'Reading Consistency Check', desc: 'An advisory signal flags shifts whose readings look suspiciously identical compared to other shifts — a prompt to spot-verify before an auditor does.' },
               { icon: '🏢', title: 'Multi-Facility Dashboard', desc: 'Manage all your buildings from one screen. Each facility isolated — operators see only their site, admins see everything.' },
               { icon: '✅', title: 'ST108 Compliance Tracking', desc: 'Built-in ST108 water log compliance with audit trail and one-click compliance reports. Joint Commission inspection ready.' },
               { icon: '🧫', title: 'Legionella Program Tracking', desc: 'Log and track your Legionella water management program entries. Full audit history for regulatory submissions.' },
+              { icon: '🧪', title: 'Chain-of-Custody Forms', desc: 'Generate chain-of-custody forms for lab samples in one click. Print and send with your sample containers — no separate paperwork.' },
               { icon: '🔍', title: 'Tamper-Evident Audit Log', desc: 'Every login, every entry, every change is permanently logged with timestamp, user, and IP. SHA-256 sealed — immutable chain of custody.' },
               { icon: '👥', title: 'Role-Based Access', desc: 'Admin accounts see all facilities and reports. Operator accounts are scoped to their assigned building only. No configuration needed.' },
-              { icon: '🎨', title: 'Custom Branding', desc: 'Set your color scheme, dark/light mode, and site-wide theme. Make FacilityH2O look like it belongs to your organization.' },
             ].map(f => (
               <div key={f.title} className="bg-[#F0F9FF] rounded-2xl p-6 border border-blue-100 hover:shadow-md transition">
                 <div className="text-3xl mb-4">{f.icon}</div>
@@ -80,6 +84,42 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* AI REPORT REVIEW */}
+      <section id="reports" className="py-24 px-6 bg-white">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-14">
+            <div className="inline-block text-xs font-bold text-[#0891B2] uppercase tracking-widest bg-cyan-50 px-4 py-1.5 rounded-full mb-4">Audit-Ready Reporting</div>
+            <h2 className="text-3xl font-bold text-gray-900">Every report is reviewed before it reaches you</h2>
+            <p className="text-gray-500 mt-3 text-lg max-w-2xl mx-auto">
+              Your monthly compliance summaries don't come from a single pass. Each one runs through a three-stage AI review — drafted, independently critiqued against your actual data, then finalized — so the numbers hold up under scrutiny.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-[#F0F9FF] rounded-2xl p-7 border border-blue-100">
+              <div className="text-3xl mb-3">✍️</div>
+              <div className="text-xs font-bold text-[#0072CE] mb-1">STAGE 1 · DRAFT</div>
+              <h3 className="font-bold text-gray-900 text-lg mb-2">Drafted from your data</h3>
+              <p className="text-gray-500 text-sm leading-relaxed">An executive summary is written using only the readings and exceedances on record for the month — no invented numbers.</p>
+            </div>
+            <div className="bg-[#F0F9FF] rounded-2xl p-7 border border-blue-100">
+              <div className="text-3xl mb-3">🔎</div>
+              <div className="text-xs font-bold text-[#0072CE] mb-1">STAGE 2 · REVIEW</div>
+              <h3 className="font-bold text-gray-900 text-lg mb-2">Independently critiqued</h3>
+              <p className="text-gray-500 text-sm leading-relaxed">A separate reviewer pass verifies every figure against your data, flags anything unsupported, and confirms treatment changes are deferred to your vendor.</p>
+            </div>
+            <div className="bg-[#F0F9FF] rounded-2xl p-7 border border-blue-100">
+              <div className="text-3xl mb-3">✅</div>
+              <div className="text-xs font-bold text-[#0072CE] mb-1">STAGE 3 · FINALIZE</div>
+              <h3 className="font-bold text-gray-900 text-lg mb-2">Corrected & finalized</h3>
+              <p className="text-gray-500 text-sm leading-relaxed">A final pass folds in every valid correction and produces the clean, professional summary you hand to leadership or an inspector.</p>
+            </div>
+          </div>
+          <p className="text-center text-xs text-gray-400 mt-8 max-w-2xl mx-auto">
+            The review checks internal consistency and grounding against your logged data. It does not replace professional judgment or your water-treatment vendor's recommendations.
+          </p>
         </div>
       </section>
 
