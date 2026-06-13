@@ -154,9 +154,10 @@ export default function AlertsPage() {
                         {hospitalName(a.hospitalId)}
                       </Link>
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                        a.kind === 'missed_reading' ? 'bg-amber-100 text-amber-800' :
                         a.system === 'boiler' ? 'bg-orange-100 text-orange-700' : 'bg-blue-100 text-blue-700'
                       }`}>
-                        {a.system === 'boiler' ? '🔥 Boiler' : '❄️ Chilled'}
+                        {a.kind === 'missed_reading' ? `⏱️ ${a.systemLabel || a.system}` : (a.system === 'boiler' ? '🔥 Boiler' : '❄️ Chilled')}
                       </span>
                       <span className="text-xs text-gray-500">
                         {a.shift} shift · {a.date}
@@ -167,30 +168,41 @@ export default function AlertsPage() {
                         )}
                       </span>
                     </div>
-                    <div className="text-sm text-gray-600 mb-3">
-                      Operator: <span className="font-medium">{a.operatorName}</span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {(a.outOfRange || a.outOfRangeParams || []).map((oor) => (
-                        <div
-                          key={oor.param}
-                          className="bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs"
-                        >
-                          <span className="font-semibold text-red-700">{oor.label}</span>
-                          <span className="text-red-500 ml-1">
-                            {oor.value} (range: {oor.min}–{oor.max})
-                          </span>
+                    {a.kind === 'missed_reading' ? (
+                      <div className="text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                        🚨 {a.message || 'Reading not logged for this shift.'} — log it to clear this alert.
+                      </div>
+                    ) : (
+                      <>
+                        <div className="text-sm text-gray-600 mb-3">
+                          Operator: <span className="font-medium">{a.operatorName}</span>
                         </div>
-                      ))}
-                    </div>
+                        <div className="flex flex-wrap gap-2">
+                          {(a.outOfRange || a.outOfRangeParams || []).map((oor) => (
+                            <div
+                              key={oor.param}
+                              className="bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-xs"
+                            >
+                              <span className="font-semibold text-red-700">{oor.label}</span>
+                              <span className="text-red-500 ml-1">
+                                {oor.value} (range: {oor.min}–{oor.max})
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    )}
                   </div>
-                  {!a.acknowledged && (
+                  {!a.acknowledged && a.kind !== 'missed_reading' && (
                     <button
                       onClick={() => acknowledge(a.id)}
                       className="flex-shrink-0 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs px-3 py-2 rounded-lg transition-colors"
                     >
                       ✓ Acknowledge
                     </button>
+                  )}
+                  {a.kind === 'missed_reading' && (
+                    <Link href="/entry" className="flex-shrink-0 bg-amber-100 hover:bg-amber-200 text-amber-800 text-xs px-3 py-2 rounded-lg transition-colors font-semibold">Log reading →</Link>
                   )}
                   {a.acknowledged && (
                     <span className="flex-shrink-0 text-xs text-green-600 font-medium">✅ Acknowledged</span>
