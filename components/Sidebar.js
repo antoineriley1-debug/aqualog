@@ -149,6 +149,14 @@ export default function Sidebar() {
         )}
 
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+          {pathname !== '/dashboard' && (
+            <button
+              onClick={() => router.back()}
+              className="flex items-center gap-2 w-full px-3 py-2.5 mb-1 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-800/50 hover:text-white transition-colors"
+            >
+              ← Back
+            </button>
+          )}
           {navItems.map(({ href, label, badge }) => (
             <NavLink key={href} href={href} label={label} badge={badge} />
           ))}
@@ -169,6 +177,17 @@ export default function Sidebar() {
 
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-[#003366] text-white flex items-center justify-between px-4 py-3 shadow-lg">
         <div className="flex items-center gap-3">
+          {pathname !== '/dashboard' && (
+            <button
+              onClick={() => router.back()}
+              className="p-1.5 rounded-lg hover:bg-blue-800/50 transition"
+              aria-label="Back"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+          )}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="p-1.5 rounded-lg hover:bg-blue-800/50 transition"
