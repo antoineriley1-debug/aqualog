@@ -1,12 +1,13 @@
 'use client';
 /**
- * ShiftTimers — live, per-facility shift status shown on the dashboard.
- * Reads each facility's schedule + timezone and today's entries to show:
- *   🟢 logged · 🟡 open (countdown) · 🔴 missed (closed, no reading) · ⚪ off/upcoming
- * Computed fresh on load and ticks every minute. No cron needed for this view.
+ * ShiftTimers — live, per-facility shift status on the dashboard.
+ * For each facility it checks ONLY the systems that facility actually has
+ * (from its equipment profile). A shift is "logged" only when every system
+ * the facility has was logged for that shift; otherwise open (countdown) or missed.
  */
 import { useEffect, useState } from 'react';
 import { shiftStatus, nowInZone, normalizeSchedule, SHIFT_NAMES } from '@/lib/shiftSchedule';
+import { SYSTEM_META } from '@/lib/systemFields';
 
 function fmtLeft(mins) {
   if (mins == null) return '';
@@ -15,52 +16,57 @@ function fmtLeft(mins) {
 }
 
 export default function ShiftTimers() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(null);       // shift schedules + facilities
+  const [equip, setEquip] = useState(null);     // equipment profiles
   const [entries, setEntries] = useState([]);
   const [, setTick] = useState(0);
 
   useEffect(() => {
     Promise.all([
       fetch('/api/shift-schedules', { credentials:'include' }).then(r => r.ok ? r.json() : null),
+      fetch('/api/equipment-profile', { credentials:'include' }).then(r => r.ok ? r.json() : null),
       fetch('/api/entries', { credentials:'include' }).then(r => r.json()),
-    ]).then(([sch, ent]) => { setData(sch); setEntries(ent.entries || []); }).catch(()=>{});
-    const t = setInterval(() => setTick(x => x+1), 60000); // re-render every minute
+    ]).then(([sch, eq, ent]) => { setData(sch); setEquip(eq); setEntries(ent.entries || []); }).catch(()=>{});
+    const t = setInterval(() => setTick(x => x+1), 60000);
     return () => clearInterval(t);
   }, []);
 
   if (!data || !data.facilities?.length) return null;
 
+  // facilityId -> [systemKeys it has]
+  const systemsByFacility = {};
+  if (equip && equip.facilities) {
+    for (const f of equip.facilities) {
+      systemsByFacility[f.id] = Object.keys(f.profile || {}).filter(k => k !== 'custom' && f.profile[k]);
+    }
+  }
+
   const hasReading = (fid, system, shift, dateStr) =>
     entries.some(e => e.hospitalId === fid && e.system === system && e.shift === shift && e.date === dateStr);
 
-  // Build rows only for facilities that have at least one enabled shift
   const rows = data.facilities.map(f => {
     const sch = normalizeSchedule(data.schedules[f.id]);
     const { date } = nowInZone(sch.timezone);
+    const facSystems = systemsByFacility[f.id] || ['boiler','chilled']; // sane default if profile not loaded
     const shiftCells = SHIFT_NAMES.filter(n => sch.shifts[n].enabled).map(name => {
       const st = shiftStatus(sch.shifts[name], sch.timezone);
-      // a shift "needs" both systems; consider it logged if BOTH boiler+chilled are in
-      const boiler = hasReading(f.id, 'boiler', name, date);
-      const chilled = hasReading(f.id, 'chilled', name, date);
-      const bothLogged = boiler && chilled;
+      // logged only if EVERY system the facility has was logged for this shift
+      const missingSystems = facSystems.filter(sys => !hasReading(f.id, sys, name, date));
+      const allLogged = facSystems.length > 0 && missingSystems.length === 0;
       let status, label, tone;
       if (st.state === 'open') {
-        status = bothLogged ? 'logged' : 'open';
-        if (bothLogged) { label = 'Logged'; tone = 'green'; }
-        else { label = fmtLeft(st.minutesUntilClose); tone = 'amber'; }
+        if (allLogged) { status='logged'; label='Logged'; tone='green'; }
+        else { status='open'; label=fmtLeft(st.minutesUntilClose); tone='amber'; }
       } else if (st.state === 'closed' || st.morningClosed) {
-        status = bothLogged ? 'logged' : 'missed';
-        label = bothLogged ? 'Logged' : 'Missed'; tone = bothLogged ? 'green' : 'red';
-      } else { // upcoming
-        status = 'upcoming'; label = 'Upcoming'; tone = 'gray';
-      }
-      // partial logging note
-      const partial = !bothLogged && (boiler || chilled) ? (boiler ? 'chilled missing' : 'boiler missing') : '';
+        if (allLogged) { status='logged'; label='Logged'; tone='green'; }
+        else { status='missed'; label='Missed'; tone='red'; }
+      } else { status='upcoming'; label='Upcoming'; tone='gray'; }
+      const partial = (!allLogged && missingSystems.length && missingSystems.length < facSystems.length)
+        ? missingSystems.map(s => SYSTEM_META[s]?.label || s).join(', ') + ' missing' : '';
       return { name, status, label, tone, partial };
     });
     const anyMissed = shiftCells.some(c => c.status === 'missed');
-    const anyOpen = shiftCells.some(c => c.status === 'open');
-    return { f, shiftCells, anyMissed, anyOpen };
+    return { f, shiftCells, anyMissed, facSystems };
   });
 
   const toneClass = {
@@ -80,11 +86,11 @@ export default function ShiftTimers() {
           : <span className="text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-full px-3 py-1">✓ All caught up</span>}
       </div>
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm divide-y divide-gray-50">
-        {rows.map(({f, shiftCells, anyMissed}) => (
+        {rows.map(({f, shiftCells, anyMissed, facSystems}) => (
           <div key={f.id} className={`px-4 py-3 flex items-center gap-3 flex-wrap ${anyMissed?'bg-red-50/40':''}`}>
             <div className="w-48 flex-shrink-0 min-w-0">
               <div className="text-sm font-semibold text-gray-900 truncate">{f.name}</div>
-              <div className="text-xs text-gray-400">{f.code}</div>
+              <div className="text-xs text-gray-400">{facSystems.map(s=>SYSTEM_META[s]?.icon||'').join(' ')}</div>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
               {shiftCells.length === 0 && <span className="text-xs text-gray-400">No shifts configured</span>}
