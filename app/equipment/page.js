@@ -14,6 +14,8 @@ export default function EquipmentPage() {
   const [facilities, setFacilities] = useState([]);
   const [systems, setSystems] = useState([]);
   const [profiles, setProfiles] = useState({});
+  const [library, setLibrary] = useState([]);
+  const [customEnabled, setCustomEnabled] = useState(false);
   const [savingId, setSavingId] = useState(null);
   const [savedId, setSavedId] = useState(null);
 
@@ -22,7 +24,14 @@ export default function EquipmentPage() {
     .then(d => {
       if (d) {
         setFacilities(d.facilities||[]); setSystems(d.systems||[]);
-        const map = {}; (d.facilities||[]).forEach(f => { map[f.id] = { ...f.profile }; });
+        setLibrary(d.library||[]); setCustomEnabled(!!d.customEquipmentEnabled);
+        const map = {};
+        (d.facilities||[]).forEach(f => {
+          const prof = { ...f.profile };
+          // normalize custom (stored as [{key,...}]) → array of keys for the picker
+          prof.customKeys = Array.isArray(f.profile?.custom) ? f.profile.custom.map(c => (typeof c==='string'?c:c.key)) : [];
+          map[f.id] = prof;
+        });
         setProfiles(map);
       }
       setLoading(false);
@@ -31,13 +40,18 @@ export default function EquipmentPage() {
   useEffect(() => { load(); }, []);
 
   const toggle = (fid, key) => setProfiles(prev => ({ ...prev, [fid]: { ...prev[fid], [key]: !prev[fid][key] } }));
+  const toggleCustom = (fid, key) => setProfiles(prev => {
+    const cur = prev[fid]?.customKeys || [];
+    const next = cur.includes(key) ? cur.filter(k => k!==key) : [...cur, key];
+    return { ...prev, [fid]: { ...prev[fid], customKeys: next } };
+  });
 
   const save = async (fid) => {
     setSavingId(fid); setSavedId(null);
     try {
       const res = await fetch('/api/equipment-profile', {
         method:'POST', credentials:'include', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ facilityId: fid, profile: profiles[fid] }),
+        body: JSON.stringify({ facilityId: fid, profile: { ...profiles[fid], custom: (profiles[fid]?.customKeys || []) } }),
       });
       if (res.ok) { setSavedId(fid); setTimeout(()=>setSavedId(null), 2500); }
       else { const e = await res.json(); alert(e.error || 'Save failed'); }
@@ -84,6 +98,31 @@ export default function EquipmentPage() {
                     );
                   })}
                 </div>
+
+                {/* Enterprise: specialized equipment library */}
+                {customEnabled && library.length > 0 && (
+                  <div className="px-6 pb-6">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-sm font-bold text-gray-900">➕ Additional Equipment</span>
+                      <span className="text-[10px] font-bold text-[#0891B2] bg-cyan-50 px-2 py-0.5 rounded-full uppercase tracking-wide">Enterprise</span>
+                    </div>
+                    <p className="text-xs text-gray-400 mb-3">Specialized equipment with standards-based parameters. Turn on the items this facility runs. Always verify thresholds against your own equipment manuals and standards.</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {library.map(item => {
+                        const on = (prof.customKeys || []).includes(item.key);
+                        return (
+                          <label key={item.key} className={`flex items-start justify-between gap-3 rounded-xl border p-3 cursor-pointer transition ${on ? 'border-[#0891B2] bg-cyan-50/40' : 'border-gray-200 bg-gray-50'} ${!editable && 'cursor-default opacity-80'}`}>
+                            <span>
+                              <span className={`text-sm font-semibold block ${on?'text-gray-900':'text-gray-500'}`}>{item.icon} {item.label}</span>
+                              <span className="text-[11px] text-gray-400">{item.standard}</span>
+                            </span>
+                            <input type="checkbox" disabled={!editable} checked={on} onChange={()=>toggleCustom(f.id, item.key)} className="accent-[#0891B2] w-4 h-4 mt-0.5" />
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
                 {editable && (
                   <div className="px-6 py-4 border-t border-gray-100 flex items-center gap-3">
                     <button onClick={()=>save(f.id)} disabled={savingId===f.id}
