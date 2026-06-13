@@ -4,7 +4,7 @@
  * Three tiers, monthly + annual (1-year commitment) columns, and a full feature-comparison table.
  * PRICES ARE INTENTIONALLY BLANK — fill the PRICES object below when ready.
  */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 
@@ -21,7 +21,7 @@ const TIERS = [
   { key:'professional', name:'Professional', blurb:'For growing multi-site operations.', highlight:true,
     bullets:['Up to 10 facilities','Up to 25 users','Everything in Starter','AI Chemistry Advisor','Falsification detection','ST108 + Legionella modules'] },
   { key:'enterprise', name:'Enterprise', blurb:'For health systems and large portfolios.', highlight:false,
-    bullets:['Unlimited facilities','Unlimited users','Everything in Professional','Council-reviewed reports','API access','Priority support & onboarding'] },
+    bullets:['Unlimited facilities','Unlimited users','Everything in Professional','Specialized equipment library','Council-reviewed reports','API access','Priority support & onboarding'] },
 ];
 
 const FEATURE_MATRIX = [
@@ -30,6 +30,7 @@ const FEATURE_MATRIX = [
     ['Live system health gauges & trends', true, true, true],
     ['Out-of-range & missed-reading alerts', true, true, true],
     ['Multi-facility dashboard', '1 site', 'Up to 10', 'Unlimited'],
+    ['Specialized equipment library (sterilizers, dialysis water, RO/DI, Legionella temps & more)', false, false, true],
   ]},
   { group:'Compliance', rows:[
     ['PDF compliance reports', true, true, true],
@@ -59,6 +60,12 @@ function Cell({ v }) {
 
 export default function PricingPage() {
   const [annual, setAnnual] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      setLoggedIn(document.cookie.split(';').some(c => c.trim().startsWith('FacilityH2O_user=')));
+    }
+  }, []);
   const priceFor = (k) => {
     const p = PRICES[k]?.[annual ? 'annual' : 'monthly'];
     return p && p.trim() ? p : null;
@@ -66,6 +73,12 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      {loggedIn && (
+        <div className="sticky top-0 z-50 bg-[#003366] text-white px-4 py-2.5 flex items-center justify-between text-sm shadow">
+          <a href="/dashboard" className="inline-flex items-center gap-2 font-semibold hover:text-blue-200 transition">← Back to FacilityH2O app</a>
+          <a href="/dashboard" className="text-blue-200 hover:text-white text-xs">You're viewing the public pricing page</a>
+        </div>
+      )}
       <Navbar />
 
       {/* HERO */}
@@ -121,7 +134,7 @@ export default function PricingPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-[#003366] text-white">
-                <th className="text-left px-5 py-4 font-semibold">Feature</th>
+                <th className="px-4 py-4 text-left font-semibold">Feature</th>
                 <th className="px-4 py-4 font-semibold text-center">Starter</th>
                 <th className="px-4 py-4 font-semibold text-center bg-[#0891B2]">Professional</th>
                 <th className="px-4 py-4 font-semibold text-center">Enterprise</th>
@@ -130,15 +143,15 @@ export default function PricingPage() {
             <tbody>
               {FEATURE_MATRIX.map(section => (
                 <>
-                  <tr key={section.group} className="bg-[#F0F9FF]">
-                    <td colSpan={4} className="px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-[#164E63]">{section.group}</td>
+                  <tr key={section.group} className="bg-gray-50">
+                    <td colSpan={4} className="px-4 py-2 font-bold text-gray-700 text-xs uppercase tracking-wide">{section.group}</td>
                   </tr>
-                  {section.rows.map((r, i) => (
+                  {section.rows.map((row, i) => (
                     <tr key={section.group + i} className="border-t border-gray-100">
-                      <td className="px-5 py-3 text-gray-700">{r[0]}</td>
-                      <td className="px-4 py-3 text-center"><Cell v={r[1]} /></td>
-                      <td className="px-4 py-3 text-center bg-[#0891B2]/5"><Cell v={r[2]} /></td>
-                      <td className="px-4 py-3 text-center"><Cell v={r[3]} /></td>
+                      <td className="px-4 py-3 text-gray-700">{row[0]}</td>
+                      <td className="px-4 py-3 text-center"><Cell v={row[1]} /></td>
+                      <td className="px-4 py-3 text-center bg-[#0891B2]/5"><Cell v={row[2]} /></td>
+                      <td className="px-4 py-3 text-center"><Cell v={row[3]} /></td>
                     </tr>
                   ))}
                 </>
@@ -146,16 +159,14 @@ export default function PricingPage() {
             </tbody>
           </table>
         </div>
-        <div className="text-center mt-10">
-          <Link href="/signup" className="inline-block bg-[#0891B2] text-white font-bold px-8 py-3.5 rounded-xl hover:bg-[#0E7490] transition">Start Your 14-Day Trial →</Link>
-          <p className="text-xs text-gray-400 mt-3">No credit card required to start. All plans billed annually on a one-year term.</p>
-        </div>
       </section>
 
-      <footer className="bg-gray-900 text-gray-400 py-10 px-6 text-center text-sm">
-        <div className="text-white font-bold text-lg mb-2">💧 FacilityH2O</div>
-        <p className="text-gray-600">© 2026 FacilityH2O. All rights reserved.</p>
-      </footer>
+      {/* CTA */}
+      <section className="bg-gray-50 py-16 px-6 text-center">
+        <h2 className="text-2xl font-bold text-gray-900">Ready to get compliant?</h2>
+        <p className="text-gray-500 mt-2 mb-6">Start a 14-day trial. No credit card required.</p>
+        <Link href="/signup" className="inline-block bg-[#0891B2] text-white font-semibold px-8 py-3 rounded-xl hover:bg-[#0E7490] transition">Start Free Trial →</Link>
+      </section>
     </div>
   );
 }
