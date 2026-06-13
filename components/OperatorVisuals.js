@@ -44,8 +44,8 @@ const SYSTEM_LABELS = {
 const inRange = (v, r) => v != null && Number.isFinite(+v) && +v >= r.min && +v <= r.max;
 
 /* ---------- at-a-glance system health gauge (animated SVG arc) ---------- */
-export function HealthGauge({ entries, system }) {
-  const ranges = RANGES[system] || {};
+export function HealthGauge({ entries, system, ranges: rangesOverride }) {
+  const ranges = rangesOverride || RANGES[system] || {};
   const score = useMemo(() => {
     const recent = entries.filter(e => e.system === system).slice(0, 8);
     if (!recent.length) return null;
@@ -113,8 +113,8 @@ export function RangePosition({ value, range }) {
 }
 
 /* ---------- animated trend line with safe-band shading ---------- */
-export function TrendChart({ entries, system, field }) {
-  const ranges = RANGES[system] || {};
+export function TrendChart({ entries, system, field, ranges: rangesOverride }) {
+  const ranges = rangesOverride || RANGES[system] || {};
   const r = ranges[field];
   const data = useMemo(() => {
     if (!r) return [];
