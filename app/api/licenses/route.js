@@ -7,9 +7,11 @@ import { NextResponse } from 'next/server';
 import { getUserFromRequest, SUPER_ADMIN_ID } from '@/lib/auth';
 import { getLicenses, addLicense, updateLicense, deleteLicense, logAudit } from '@/lib/store';
 
+function isOwner(u) { return !!u && (u.id === SUPER_ADMIN_ID || u.username === 'ariley'); }
+
 async function gate(request) {
   const user = await getUserFromRequest(request);
-  if (!user || user.id !== SUPER_ADMIN_ID) return null; // owner-only console
+  if (!isOwner(user)) return null; // owner-only console
   return user;
 }
 
