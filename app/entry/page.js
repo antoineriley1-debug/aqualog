@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 
 import { HOSPITALS as ALL_HOSPITALS } from '@/lib/hospitals';
+import { SYSTEM_FIELDS, SYSTEM_META, SYSTEM_ORDER } from '@/lib/systemFields';
 const HOSPITALS = ALL_HOSPITALS.map((h) => ({ id: h.id, name: h.name }));
 
 const BOILER_FIELDS = [
@@ -132,6 +133,7 @@ function EntryForm() {
   const nowTime = new Date().toTimeString().slice(0, 5);
   const [hospital, setHospital] = useState('');
   const [system, setSystem] = useState('boiler');
+  const [facilitySystems, setFacilitySystems] = useState(null);
   const [shift, setShift] = useState('1st Shift');
   const [date, setDate] = useState(today);
   const [time, setTime] = useState(nowTime);
@@ -171,7 +173,8 @@ function EntryForm() {
     }
   }, []);
 
-  const fields = system === 'boiler' ? BOILER_FIELDS : CHILLED_FIELDS;
+  const fields = SYSTEM_FIELDS[system] || [];
+  const availableSystems = (facilitySystems && facilitySystems.length) ? facilitySystems : SYSTEM_ORDER;
 
   const hasOOR = fields.some((f) => {
     const v = values[f.key];
@@ -185,7 +188,23 @@ function EntryForm() {
     }
   }, [hasOOR]);
 
-  const allFilled = hospital && operatorName && testerName && time && fields.every((f) => values[f.key] !== undefined && values[f.key] !== '');
+  // Load which systems the selected facility has; keep `system` valid for it.
+  useEffect(() => {
+    if (!hospital) { setFacilitySystems(null); return; }
+    fetch('/api/equipment-profile', { credentials: 'include' })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (!d) { setFacilitySystems(SYSTEM_ORDER); return; }
+        const fac = (d.facilities || []).find(f => f.id === hospital);
+        const has = fac ? SYSTEM_ORDER.filter(k => fac.profile && fac.profile[k]) : SYSTEM_ORDER;
+        const list = has.length ? has : SYSTEM_ORDER;
+        setFacilitySystems(list);
+        setSystem(prev => list.includes(prev) ? prev : list[0]);
+      })
+      .catch(() => setFacilitySystems(SYSTEM_ORDER));
+  }, [hospital]);
+
+    const allFilled = hospital && operatorName && testerName && time && fields.every((f) => values[f.key] !== undefined && values[f.key] !== '');
 
   const getMissingFields = () => {
     const missing = [];
@@ -356,7 +375,7 @@ function EntryForm() {
           {wizardStep === 1 && (
             <WizardStep title="Select System" subtitle="What type of water system?">
               <div className="space-y-3">
-                {[['boiler', '🔥 Boiler Water'], ['chilled', '❄️ Chilled Water']].map(([val, label]) => (
+                {availableSystems.map((val) => { const label = (SYSTEM_META[val]?.icon||'') + ' ' + (SYSTEM_META[val]?.label||val); return (
                   <button
                     key={val}
                     type="button"
@@ -369,7 +388,7 @@ function EntryForm() {
                   >
                     {label}
                   </button>
-                ))}
+                ); })}
               </div>
             </WizardStep>
           )}
@@ -512,7 +531,7 @@ function EntryForm() {
                     {HOSPITALS.find((h) => h.id === hospital)?.name}
                   </div>
                   <div className="text-xs text-gray-500">
-                    {system === 'boiler' ? '🔥 Boiler' : '❄️ Chilled'} · {shift} · {date} @ {time}
+                    {(SYSTEM_META[system]?.icon||'')} {(SYSTEM_META[system]?.label||system)} · {shift} · {date} @ {time}
                   </div>
                 </div>
                 <div className="divide-y divide-gray-100">
@@ -672,7 +691,7 @@ function EntryForm() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">System</label>
                 <div className="grid grid-cols-2 gap-3">
-                  {[['boiler', '🔥 Boiler Water'], ['chilled', '❄️ Chilled Water']].map(([val, label]) => (
+                  {availableSystems.map((val) => { const label = (SYSTEM_META[val]?.icon||'') + ' ' + (SYSTEM_META[val]?.label||val); return (
                     <button
                       key={val}
                       type="button"
@@ -685,7 +704,7 @@ function EntryForm() {
                     >
                       {label}
                     </button>
-                  ))}
+                  ); })}
                 </div>
               </div>
 
@@ -747,7 +766,7 @@ function EntryForm() {
               {/* Chemistry fields */}
               <div>
                 <div className="text-sm font-semibold text-gray-700 mb-3">
-                  {system === 'boiler' ? '🔥 Boiler Water' : '❄️ Chilled Water'} Chemistry Values
+                  {(SYSTEM_META[system]?.icon||'')} {(SYSTEM_META[system]?.label||system)} Chemistry Values
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {fields.map((f) => {
