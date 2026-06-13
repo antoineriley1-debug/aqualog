@@ -70,7 +70,7 @@ export default function Sidebar() {
     ...(user?.role === 'admin'
       ? [
           { href: '/alerts', label: '🔔 Alerts', shortLabel: 'Alerts', badge: alertCount },
-          ...((user?.id === 'usr_ariley' || user?.username === 'ariley') ? [{ href: '/settings', label: '🎨 Site Settings', shortLabel: 'Settings' }, { href: '/licensing', label: '💼 Licensing & Sales', shortLabel: 'Licensing' }] : []),
+          ...((user?.id === 'usr_ariley' || user?.username === 'ariley') ? [{ href: '/settings', label: '🎨 Site Settings', shortLabel: 'Settings' }, { href: '/licensing', label: '💼 Licensing & Sales', shortLabel: 'Licensing' }, { href: '/contract', label: '📄 New Contract', shortLabel: 'Contract' }, { href: '/pricing', label: '🏷️ Pricing Page', shortLabel: 'Pricing' }] : []),
           { href: '/reports', label: '📊 Reports', shortLabel: 'Reports' },
           { href: '/compliance', label: '📈 Compliance', shortLabel: 'Compliance' },
           { href: '/compare', label: '📊 Compare Facilities', shortLabel: 'Compare' },
