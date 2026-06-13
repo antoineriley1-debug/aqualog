@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { HOSPITALS } from '@/lib/hospitals';
 import { BOILER_TESTS, CHILLED_TESTS } from '@/lib/testGuide';
+import { HealthGauge, RangePosition, TrendChart, FalsificationBadge, RANGES } from '@/components/OperatorVisuals';
 
 // CRITICAL: Ensure HOSPITALS is properly imported. If not, we have a serious issue.
 if (!Array.isArray(HOSPITALS) || HOSPITALS.length === 0) {
@@ -38,6 +39,7 @@ export default function HospitalSinglePage() {
   const [showTestGuide, setShowTestGuide] = useState(false);
   const [loading, setLoading] = useState(true);
   const [hydrated, setHydrated] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   // Mark as hydrated on mount (client-side)
   useEffect(() => {
@@ -171,13 +173,21 @@ export default function HospitalSinglePage() {
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
         {/* Hospital Image */}
-        <div className="mb-8 bg-white rounded-xl overflow-hidden shadow-md border border-gray-100 relative">
+        <div className="mb-8 bg-gradient-to-br from-slate-100 to-blue-50 rounded-xl overflow-hidden shadow-md border border-gray-100 relative min-h-[18rem]">
           <img 
-            src={`/hospitals/${id}.jpg`}
+            src={`/hospitals_optimized/${id}.jpg`}
             alt={hospital.name}
-            className="w-full h-72 object-cover"
+            decoding="async"
+            fetchPriority="high"
+            width="1600" height="1067"
+            onLoad={() => setImgLoaded(true)}
+            className={`w-full h-72 object-cover transition-opacity duration-500 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
             onError={(e) => {
+              // fall back to the original full-size file if an optimized one is missing, then to a placeholder
+              if (!e.target.dataset.fallback) { e.target.dataset.fallback = '1'; e.target.src = `/hospitals/${id}.jpg`; return; }
+              e.target.onerror = null;
               e.target.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 300%22%3E%3Crect fill=%22%23e5f0f7%22 width=%22800%22 height=%22300%22/%3E%3Ctext x=%22400%22 y=%22150%22 font-size=%2280%22 text-anchor=%22middle%22 fill=%22%238b9dae%22%3E🏥%3C/text%3E%3C/svg%3E';
+              setImgLoaded(true);
             }}
           />
           {/* Hospital Name Overlay */}
@@ -218,6 +228,38 @@ export default function HospitalSinglePage() {
                 View →
               </Link>
             )}
+          </div>
+        </div>
+
+        {/* ===== LIVE VISUAL COMMAND STRIP ===== */}
+        <div className="mb-8 bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+          <div className="bg-gradient-to-r from-[#0072CE] to-cyan-500 px-6 py-4 flex items-center justify-between">
+            <h2 className="text-lg font-bold text-white">⚡ Live System Health</h2>
+            <span className="text-xs text-cyan-50">animated · last readings</span>
+          </div>
+          <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {['boiler','chilled'].map((sys) => {
+              const sysEntries = entries.filter(e => e.system === sys);
+              const latest = sysEntries[0];
+              const keyFields = sys === 'boiler' ? ['ph','phosphate','sulfite','conductivity'] : ['ph','inhibitor','conductivity','molybdate'];
+              return (
+                <div key={sys} className="flex flex-col">
+                  <div className="flex items-center gap-6">
+                    <HealthGauge entries={entries} system={sys} />
+                    <div className="flex-1 space-y-3">
+                      {keyFields.map(f => (
+                        <RangePosition key={f} value={latest?.values?.[f]} range={RANGES[sys][f]} />
+                      ))}
+                    </div>
+                  </div>
+                  <div className="mt-5 pt-4 border-t border-gray-100">
+                    <div className="text-xs font-semibold text-gray-500 mb-2">{sys === 'boiler' ? '🔥 Boiler' : '❄️ Chilled'} pH trend · last 30</div>
+                    <TrendChart entries={entries} system={sys} field="ph" />
+                  </div>
+                  <FalsificationBadge entries={entries} system={sys} />
+                </div>
+              );
+            })}
           </div>
         </div>
 
