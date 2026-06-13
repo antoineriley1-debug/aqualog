@@ -37,6 +37,7 @@ export default function HospitalSinglePage() {
   const [alerts, setAlerts] = useState([]);
   const [testTab, setTestTab] = useState('boiler');
   const [facilitySystems, setFacilitySystems] = useState(SYSTEM_ORDER);
+  const [customEquip, setCustomEquip] = useState([]); // [{key,label,icon,ranges:{param:{min,max,unit,label}}}] — Enterprise only
   const [showDropdown, setShowDropdown] = useState(false);
   const [showTestGuide, setShowTestGuide] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -104,6 +105,18 @@ export default function HospitalSinglePage() {
         if (fac && fac.profile) {
           const has = SYSTEM_ORDER.filter(k => fac.profile[k]);
           if (has.length) { setFacilitySystems(has); setTestTab(prev => has.includes(prev) ? prev : has[0]); }
+          // Enterprise custom equipment — build a ranges object per item for the visuals.
+          if (d.customEquipmentEnabled && Array.isArray(fac.profile.custom) && fac.profile.custom.length) {
+            const items = fac.profile.custom.map(c => {
+              const params = Array.isArray(c.params) ? c.params : [];
+              const ranges = {};
+              for (const pr of params) ranges[pr.key] = { min: pr.min, max: pr.max, unit: pr.unit, label: pr.label };
+              return { key: c.key, label: c.label || c.key, icon: c.icon || '🔧', ranges };
+            }).filter(it => Object.keys(it.ranges).length);
+            setCustomEquip(items);
+          } else {
+            setCustomEquip([]); // feature off or none selected → hide entirely (downgrade behavior)
+          }
         }
       }).catch(() => {});
   }, [id]);
@@ -283,6 +296,44 @@ export default function HospitalSinglePage() {
             })}
           </div>
         </div>
+
+        {/* ===== ADDITIONAL EQUIPMENT (Enterprise custom equipment) ===== */}
+        {customEquip.length > 0 && (
+          <div className="mb-8 bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+            <div className="bg-gradient-to-r from-[#0891B2] to-teal-500 px-6 py-4 flex items-center justify-between">
+              <h2 className="text-lg font-bold text-white">➕ Additional Equipment</h2>
+              <span className="text-xs text-teal-50">specialized · last readings</span>
+            </div>
+            <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {customEquip.map((eq) => {
+                const eqEntries = entries.filter(e => e.system === eq.key);
+                const latest = eqEntries[0];
+                const allKeys = Object.keys(eq.ranges);
+                const keyFields = allKeys.slice(0, 4);
+                const trendField = allKeys[0];
+                const trendLabel = eq.ranges[trendField]?.label || trendField;
+                return (
+                  <div key={eq.key} className="flex flex-col">
+                    <div className="flex items-center gap-6">
+                      <HealthGauge entries={entries} system={eq.key} ranges={eq.ranges} />
+                      <div className="flex-1 space-y-3">
+                        {keyFields.map(f => (
+                          eq.ranges[f] ? <RangePosition key={f} value={latest?.values?.[f]} range={eq.ranges[f]} /> : null
+                        ))}
+                      </div>
+                    </div>
+                    <div className="mt-5 pt-4 border-t border-gray-100">
+                      <div className="text-xs font-semibold text-gray-500 mb-2">{eq.icon} {eq.label} · {trendLabel} trend · last 30</div>
+                      {trendField
+                        ? <TrendChart entries={entries} system={eq.key} field={trendField} ranges={eq.ranges} />
+                        : <div className="text-xs text-gray-400 py-8 text-center">No parameters configured</div>}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* 2-Column Layout: Entries+Trends | Alerts+CollapsibleTestGuide */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
