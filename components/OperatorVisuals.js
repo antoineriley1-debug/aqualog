@@ -45,7 +45,7 @@ const inRange = (v, r) => v != null && Number.isFinite(+v) && +v >= r.min && +v 
 
 /* ---------- at-a-glance system health gauge (animated SVG arc) ---------- */
 export function HealthGauge({ entries, system }) {
-  const ranges = RANGES[system];
+  const ranges = RANGES[system] || {};
   const score = useMemo(() => {
     const recent = entries.filter(e => e.system === system).slice(0, 8);
     if (!recent.length) return null;
@@ -114,14 +114,16 @@ export function RangePosition({ value, range }) {
 
 /* ---------- animated trend line with safe-band shading ---------- */
 export function TrendChart({ entries, system, field }) {
-  const ranges = RANGES[system];
+  const ranges = RANGES[system] || {};
   const r = ranges[field];
   const data = useMemo(() => {
+    if (!r) return [];
     return entries.filter(e => e.system === system && e.values?.[field] != null)
       .slice(0, 30).reverse()
       .map(e => ({ date: (e.date || '').slice(5), value: +e.values[field], shift: e.shift, ok: inRange(e.values[field], r) }));
   }, [entries, system, field, r]);
 
+  if (!r) return <div className="text-xs text-gray-400 py-8 text-center">No trend for this parameter</div>;
   if (!data.length) return <div className="text-xs text-gray-400 py-8 text-center">No {r.label} readings yet</div>;
   const vals = data.map(d => d.value);
   const yMin = Math.min(r.min, ...vals), yMax = Math.max(r.max, ...vals), pad = (yMax - yMin) * 0.1 || 1;
@@ -155,7 +157,8 @@ export function TrendChart({ entries, system, field }) {
    readings. Pattern-of-interest → "double-check", never an accusation.
    ============================================================ */
 export function analyzeFalsification(entries, system) {
-  const ranges = RANGES[system];
+  const ranges = RANGES[system] || {};
+  if (!ranges.ph) return null;
   const keys = Object.keys(ranges);
   const sys = entries.filter(e => e.system === system && e.values);
   if (sys.length < 6) return null;
