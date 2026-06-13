@@ -1,13 +1,14 @@
 /**
  * Equipment Profile API
- * GET  → { facilities:[{id,name,code,orgId,canEdit, profile}], systems:[{key,label,icon}] }
- * POST → { facilityId, profile } saves which built-in systems a facility has (permission enforced).
+ * GET  → { facilities:[{id,name,code,orgId,canEdit, profile}], systems:[{key,label,icon}], library, customEquipmentEnabled }
+ * POST → { facilityId, profile } saves which built-in systems a facility has + (Enterprise) custom equipment.
  */
 import { NextResponse } from 'next/server';
 import { getUserFromRequest } from '@/lib/auth';
-import { getEquipmentProfile, saveEquipmentProfile, canEditFacility, getFacilities, BUILTIN_SYSTEM_KEYS } from '@/lib/store';
+import { getEquipmentProfile, saveEquipmentProfile, canEditFacility, getFacilities, BUILTIN_SYSTEM_KEYS, hasCustomEquipmentFeature } from '@/lib/store';
 import { HOSPITALS } from '@/lib/hospitals';
 import { SYSTEM_META } from '@/lib/systemFields';
+import { EQUIPMENT_LIBRARY } from '@/lib/equipmentLibrary';
 
 function facilitiesForUser(user) {
   const isOwner = user.username === 'ariley' || user.id === 'usr_ariley';
@@ -25,7 +26,12 @@ export async function GET(request) {
     ...f, canEdit: canEditFacility(user, f), profile: getEquipmentProfile(f.id),
   }));
   const systems = BUILTIN_SYSTEM_KEYS.map(k => ({ key: k, label: SYSTEM_META[k]?.label || k, icon: SYSTEM_META[k]?.icon || '•' }));
-  return NextResponse.json({ facilities: facs, systems });
+  // Enterprise specialized-equipment library — only exposed to orgs that have the feature.
+  const customEquipmentEnabled = hasCustomEquipmentFeature(user);
+  const library = customEquipmentEnabled
+    ? EQUIPMENT_LIBRARY.map(e => ({ key: e.key, label: e.label, icon: e.icon, standard: e.standard, summary: e.summary, verifyNote: e.verifyNote, params: e.params }))
+    : [];
+  return NextResponse.json({ facilities: facs, systems, library, customEquipmentEnabled });
 }
 
 export async function POST(request) {
@@ -37,9 +43,27 @@ export async function POST(request) {
   if (!facility || !canEditFacility(user, facility)) {
     return NextResponse.json({ error: 'You do not have permission to edit this facility.' }, { status: 403 });
   }
-  // only persist known boolean system keys (Stage A) — custom comes in Stage B
+  // persist known boolean system keys (built-ins)
   const clean = {};
   for (const k of BUILTIN_SYSTEM_KEYS) if (profile[k] !== undefined) clean[k] = !!profile[k];
+
+  // Stage B: persist custom equipment selections — gated on the Enterprise feature.
+  if (hasCustomEquipmentFeature(user)) {
+    if (Array.isArray(profile.custom)) {
+      const validKeys = new Set(EQUIPMENT_LIBRARY.map(e => e.key));
+      // store just the keys the facility has turned on; drop anything not in the curated library
+      clean.custom = profile.custom
+        .map(c => (typeof c === 'string' ? c : c?.key))
+        .filter(k => validKeys.has(k))
+        .map(k => {
+          const item = EQUIPMENT_LIBRARY.find(e => e.key === k);
+          return { key: item.key, label: item.label, icon: item.icon, params: item.params.map(p => ({ key: p.key, label: p.label, unit: p.unit, min: p.min, max: p.max })) };
+        });
+    }
+  }
+  // NOTE: if the org lacks the feature we simply don't touch `custom` — existing selections are
+  // preserved in storage (dormant), so a later re-upgrade restores them automatically.
+
   const saved = saveEquipmentProfile(facilityId, clean);
   return NextResponse.json({ ok: true, profile: saved });
 }
