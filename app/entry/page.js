@@ -134,6 +134,7 @@ function EntryForm() {
   const [hospital, setHospital] = useState('');
   const [system, setSystem] = useState('boiler');
   const [facilitySystems, setFacilitySystems] = useState(null);
+  const [customLib, setCustomLib] = useState({}); // key -> { label, icon, fields:[{key,label,min,max,unit}] }
   const [shift, setShift] = useState('1st Shift');
   const [date, setDate] = useState(today);
   const [time, setTime] = useState(nowTime);
@@ -173,7 +174,15 @@ function EntryForm() {
     }
   }, []);
 
-  const fields = SYSTEM_FIELDS[system] || [];
+  // Fields for the selected system — built-in from SYSTEM_FIELDS, or custom from the equipment library.
+  const fieldsFor = (sys) => {
+    if (SYSTEM_FIELDS[sys]) return SYSTEM_FIELDS[sys];
+    if (customLib[sys]) return customLib[sys].fields;
+    return [];
+  };
+  const labelFor = (sys) => (SYSTEM_META[sys]?.label) || customLib[sys]?.label || sys;
+  const iconFor  = (sys) => (SYSTEM_META[sys]?.icon)  || customLib[sys]?.icon  || '🔧';
+  const fields = fieldsFor(system);
   const availableSystems = (facilitySystems && facilitySystems.length) ? facilitySystems : SYSTEM_ORDER;
 
   const hasOOR = fields.some((f) => {
@@ -197,11 +206,29 @@ function EntryForm() {
         if (!d) { setFacilitySystems(SYSTEM_ORDER); return; }
         const fac = (d.facilities || []).find(f => f.id === hospital);
         const has = fac ? SYSTEM_ORDER.filter(k => fac.profile && fac.profile[k]) : SYSTEM_ORDER;
-        const list = has.length ? has : SYSTEM_ORDER;
+        // Enterprise custom equipment this facility has turned on (only present when feature enabled).
+        const customItems = (d.customEquipmentEnabled && fac && Array.isArray(fac.profile?.custom)) ? fac.profile.custom : [];
+        const libMap = {};
+        const customKeys = [];
+        for (const c of customItems) {
+          const key = typeof c === 'string' ? c : c.key;
+          if (!key) continue;
+          // prefer the stored params; otherwise pull from the library payload
+          const libDef = (d.library || []).find(l => l.key === key);
+          const params = (c.params && c.params.length ? c.params : (libDef?.params || []));
+          libMap[key] = {
+            label: c.label || libDef?.label || key,
+            icon: c.icon || libDef?.icon || '🔧',
+            fields: params.map(p => ({ key: p.key, label: p.label + (p.unit ? ` (${p.unit})` : ''), min: p.min, max: p.max, unit: p.unit, targetZero: (p.min === 0 && p.max === 0) })),
+          };
+          customKeys.push(key);
+        }
+        setCustomLib(libMap);
+        const list = [...(has.length ? has : SYSTEM_ORDER), ...customKeys];
         setFacilitySystems(list);
         setSystem(prev => list.includes(prev) ? prev : list[0]);
       })
-      .catch(() => setFacilitySystems(SYSTEM_ORDER));
+      .catch(() => { setFacilitySystems(SYSTEM_ORDER); setCustomLib({}); });
   }, [hospital]);
 
     const allFilled = hospital && operatorName && testerName && time && fields.every((f) => values[f.key] !== undefined && values[f.key] !== '');
@@ -375,7 +402,7 @@ function EntryForm() {
           {wizardStep === 1 && (
             <WizardStep title="Select System" subtitle="What type of water system?">
               <div className="space-y-3">
-                {availableSystems.map((val) => { const label = (SYSTEM_META[val]?.icon||'') + ' ' + (SYSTEM_META[val]?.label||val); return (
+                {availableSystems.map((val) => { const label = iconFor(val) + ' ' + labelFor(val); return (
                   <button
                     key={val}
                     type="button"
@@ -531,7 +558,7 @@ function EntryForm() {
                     {HOSPITALS.find((h) => h.id === hospital)?.name}
                   </div>
                   <div className="text-xs text-gray-500">
-                    {(SYSTEM_META[system]?.icon||'')} {(SYSTEM_META[system]?.label||system)} · {shift} · {date} @ {time}
+                    {iconFor(system)} {labelFor(system)} · {shift} · {date} @ {time}
                   </div>
                 </div>
                 <div className="divide-y divide-gray-100">
@@ -691,7 +718,7 @@ function EntryForm() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">System</label>
                 <div className="grid grid-cols-2 gap-3">
-                  {availableSystems.map((val) => { const label = (SYSTEM_META[val]?.icon||'') + ' ' + (SYSTEM_META[val]?.label||val); return (
+                  {availableSystems.map((val) => { const label = iconFor(val) + ' ' + labelFor(val); return (
                     <button
                       key={val}
                       type="button"
@@ -766,7 +793,7 @@ function EntryForm() {
               {/* Chemistry fields */}
               <div>
                 <div className="text-sm font-semibold text-gray-700 mb-3">
-                  {(SYSTEM_META[system]?.icon||'')} {(SYSTEM_META[system]?.label||system)} Chemistry Values
+                  {iconFor(system)} {labelFor(system)} Chemistry Values
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {fields.map((f) => {
