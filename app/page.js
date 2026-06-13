@@ -14,7 +14,7 @@ export default function LandingPage() {
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
             <a href="#features" className="hover:text-[#0072CE] transition">Features</a>
             <a href="#compliance" className="hover:text-[#0072CE] transition">Compliance</a>
-            <a href="#demo" className="hover:text-[#0072CE] transition">Request Demo</a>
+            <a href="/demo.html" className="hover:text-[#0072CE] transition">Request Demo</a>
           </div>
           <Link
             href="/login"
@@ -38,7 +38,7 @@ export default function LandingPage() {
             <Link href="/login" className="bg-white text-[#003366] font-bold px-8 py-3.5 rounded-xl hover:bg-blue-50 transition shadow-lg text-base">
               Sign In to Your Portal →
             </Link>
-            <a href="#demo" className="border border-white/40 text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-white/10 transition text-base">
+            <a href="/demo.html" className="border border-white/40 text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-white/10 transition text-base">
               Request a Demo
             </a>
           </div>
