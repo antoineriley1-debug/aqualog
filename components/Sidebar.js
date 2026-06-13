@@ -12,7 +12,6 @@ export default function Sidebar() {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    // Sync toggle state with current theme
     setIsDark(document.documentElement.classList.contains('dark'));
   }, []);
 
@@ -53,7 +52,6 @@ export default function Sidebar() {
     }
   }, [user]);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
@@ -72,7 +70,7 @@ export default function Sidebar() {
     ...(user?.role === 'admin'
       ? [
           { href: '/alerts', label: '🔔 Alerts', shortLabel: 'Alerts', badge: alertCount },
-          ...(user?.id === 'usr_ariley' ? [{ href: '/settings', label: '🎨 Site Settings', shortLabel: 'Settings' }, { href: '/licensing', label: '💼 Licensing & Sales', shortLabel: 'Licensing' }] : []),
+          ...((user?.id === 'usr_ariley' || user?.username === 'ariley') ? [{ href: '/settings', label: '🎨 Site Settings', shortLabel: 'Settings' }, { href: '/licensing', label: '💼 Licensing & Sales', shortLabel: 'Licensing' }] : []),
           { href: '/reports', label: '📊 Reports', shortLabel: 'Reports' },
           { href: '/compliance', label: '📈 Compliance', shortLabel: 'Compliance' },
           { href: '/compare', label: '📊 Compare Facilities', shortLabel: 'Compare' },
@@ -81,13 +79,10 @@ export default function Sidebar() {
           { href: '/settings/notifications', label: '⚙️ Notification Settings', shortLabel: 'Notif Settings' },
           { href: '/users', label: '👥 Users', shortLabel: 'Users' },
           { href: '/directory', label: '📞 Directory', shortLabel: 'Directory' },
-          // ── AAMI ST108 Section ──
           { href: '/st108', label: '💧 ST108 Water Log', shortLabel: 'ST108' },
           { href: '/st108/report', label: '📋 ST108 Report', shortLabel: 'ST108 Report' },
           { href: '/st108/audit', label: '✅ ST108 Self-Audit', shortLabel: 'ST108 Audit' },
-          // ── Legionella / WMP ──
           { href: '/legionella', label: '🦠 Legionella / WMP', shortLabel: 'Legionella' },
-          // ── Lab Chain of Custody ──
           { href: '/coc', label: '🧪 Chain of Custody', shortLabel: 'COC' },
         ]
       : []),
@@ -132,15 +127,12 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* ── DESKTOP SIDEBAR (hidden on mobile) ── */}
       <aside className="hidden md:flex w-64 min-h-screen bg-[#003366] text-white flex-col flex-shrink-0">
-        {/* Logo */}
         <div className="px-6 py-5 border-b border-blue-800">
           <div className="text-2xl font-bold">💧 FacilityH2O</div>
           <div className="text-xs text-blue-300 mt-1">FacilityH2O Inc.</div>
         </div>
 
-        {/* User Info */}
         {user && (
           <div className="px-6 py-4 border-b border-blue-800 bg-blue-900/30">
             <div className="text-sm font-semibold">{user.name}</div>
@@ -154,20 +146,14 @@ export default function Sidebar() {
           </div>
         )}
 
-        {/* Nav */}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
           {navItems.map(({ href, label, badge }) => (
             <NavLink key={href} href={href} label={label} badge={badge} />
           ))}
-
         </nav>
 
-        {/* Theme + Logout */}
         <div className="px-3 py-4 border-t border-blue-800 space-y-1">
-          <button
-            onClick={toggleTheme}
-            className="theme-toggle"
-          >
+          <button onClick={toggleTheme} className="theme-toggle">
             {isDark ? '☀️ Day Mode' : '🌙 Night Mode'}
           </button>
           <button
@@ -179,7 +165,6 @@ export default function Sidebar() {
         </div>
       </aside>
 
-      {/* ── MOBILE TOP BAR ── */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-[#003366] text-white flex items-center justify-between px-4 py-3 shadow-lg">
         <div className="flex items-center gap-3">
           <button
@@ -211,15 +196,12 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* ── MOBILE SLIDE-OUT DRAWER ── */}
       {mobileOpen && (
         <>
-          {/* Backdrop */}
           <div
             className="md:hidden fixed inset-0 z-40 bg-black/50"
             onClick={() => setMobileOpen(false)}
           />
-          {/* Drawer */}
           <div className="md:hidden fixed top-0 left-0 bottom-0 z-50 w-72 bg-[#003366] text-white flex flex-col shadow-2xl">
             <div className="px-6 py-5 border-b border-blue-800 flex items-center justify-between">
               <div>
@@ -246,14 +228,10 @@ export default function Sidebar() {
               {navItems.map(({ href, label, badge }) => (
                 <NavLink key={href} href={href} label={label} badge={badge} onClick={() => setMobileOpen(false)} />
               ))}
-
             </nav>
 
             <div className="px-3 py-4 border-t border-blue-800 space-y-1">
-              <button
-                onClick={toggleTheme}
-                className="theme-toggle"
-              >
+              <button onClick={toggleTheme} className="theme-toggle">
                 {isDark ? '☀️ Day Mode' : '🌙 Night Mode'}
               </button>
               <button
@@ -267,7 +245,6 @@ export default function Sidebar() {
         </>
       )}
 
-      {/* ── MOBILE SPACER (pushes content below top bar) ── */}
       <div className="md:hidden h-14 flex-shrink-0" />
     </>
   );
