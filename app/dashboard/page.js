@@ -122,23 +122,6 @@ export default function DashboardPage() {
   const [entries, setEntries] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [revenue, setRevenue] = useState(null);
-
-  // Owner-only: pull licensing rollup for the revenue strip
-  useEffect(() => {
-    if (!(user?.id === 'usr_ariley' || user?.username === 'ariley')) return;
-    fetch('/api/licenses', { credentials: 'include' })
-      .then(r => r.ok ? r.json() : { licenses: [] })
-      .then(d => {
-        const L = d.licenses || [];
-        const active = L.filter(x => x.status === 'active');
-        const trial = L.filter(x => x.status === 'trial');
-        const mrr = active.reduce((a,x) => a + (Number(x.monthlyValue)||0), 0);
-        const pipeline = trial.reduce((a,x) => a + (Number(x.monthlyValue)||0), 0);
-        setRevenue({ clients: L.length, active: active.length, trial: trial.length, mrr, arr: mrr*12, pipeline });
-      }).catch(() => {});
-  }, [user]);
-
   useEffect(() => {
     const u = getUser();
     setUser(u);
@@ -218,23 +201,6 @@ export default function DashboardPage() {
               <div className="text-sm text-gray-500 mt-1">Open Alerts</div>
             </div>
           </div>
-
-          {/* OWNER-ONLY REVENUE STRIP */}
-          {revenue && (
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-2">
-                <h2 className="text-sm font-bold text-gray-700">💼 Sales & Revenue <span className="text-xs font-normal text-gray-400">(visible only to you)</span></h2>
-                <a href="/licensing" className="text-xs text-[#0891B2] font-semibold hover:underline">Open Licensing console →</a>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                <div className="rounded-xl p-4 text-white bg-gradient-to-br from-green-500 to-emerald-600"><div className="text-xs opacity-90">MRR</div><div className="text-xl font-extrabold mt-0.5">${revenue.mrr.toLocaleString()}</div></div>
-                <div className="rounded-xl p-4 text-white bg-gradient-to-br from-cyan-500 to-blue-600"><div className="text-xs opacity-90">Annual Run-Rate</div><div className="text-xl font-extrabold mt-0.5">${revenue.arr.toLocaleString()}</div></div>
-                <div className="rounded-xl p-4 text-white bg-gradient-to-br from-blue-500 to-indigo-600"><div className="text-xs opacity-90">Trial Pipeline</div><div className="text-xl font-extrabold mt-0.5">${revenue.pipeline.toLocaleString()}</div></div>
-                <div className="rounded-xl p-4 bg-white border border-gray-100"><div className="text-xs text-gray-400">Active Clients</div><div className="text-xl font-extrabold mt-0.5 text-gray-900">{revenue.active}</div></div>
-                <div className="rounded-xl p-4 bg-white border border-gray-100"><div className="text-xs text-gray-400">In Trial</div><div className="text-xl font-extrabold mt-0.5 text-amber-600">{revenue.trial}</div></div>
-              </div>
-            </div>
-          )}
 
           {/* Live shift reading status */}
           <ShiftTimers />
