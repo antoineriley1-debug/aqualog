@@ -59,12 +59,34 @@ export default function ShiftSchedulesPage() {
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
       <main className="flex-1 w-full min-w-0 p-4 md:p-8 pt-16 md:pt-8">
-        <div className="mb-6">
+        <button onClick={() => router.back()} className="text-sm text-gray-500 hover:text-gray-900 mb-4 inline-flex items-center gap-1">← Back</button>
+        <div className="mb-5">
           <h1 className="text-2xl font-bold text-gray-900">⏱️ Shift Schedules</h1>
           <p className="text-gray-500 text-sm mt-1">Set each facility's shift hours and timezone. Readings not logged by a shift's end become missed-reading alerts.</p>
         </div>
 
-        {facilities.length === 0 && <div className="text-gray-400 text-sm">No facilities available to edit.</div>}
+        {/* HOW THIS WORKS */}
+        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 mb-6 max-w-3xl">
+          <div className="font-bold text-blue-900 mb-2 flex items-center gap-2">📘 How shift schedules work</div>
+          <ol className="list-decimal list-inside space-y-1.5 text-sm text-blue-900/90">
+            <li><b>Each facility has three shifts</b> (1st, 2nd, 3rd). For every shift you set a <b>Start</b> and <b>End</b> time — the window operators are expected to log a reading in.</li>
+            <li><b>Set the timezone</b> (top-right of each facility card) so shift windows follow that facility's local clock. Daylight saving is handled automatically.</li>
+            <li><b>Turn a shift off</b> with its checkbox if a facility doesn't run it (for example, no overnight coverage). An off shift is greyed out and <b>will never be flagged as a missed reading</b>.</li>
+            <li><b>The 3rd shift can cross midnight</b> (e.g. <b>21:00 → 05:30</b>). That's expected — just enter the times and the system understands it spans two days.</li>
+            <li><b>Click "Save Schedule"</b> on a facility card to apply your changes. You'll see a green ✓ Saved confirmation. Changes take effect immediately.</li>
+          </ol>
+          <div className="text-xs text-blue-800/70 mt-3 pt-3 border-t border-blue-200">
+            <b>Why it matters:</b> once a shift's End time passes, if no reading was logged for a system that facility runs, it appears as an amber <b>missed-reading alert</b> on the Alerts page until someone logs it.
+          </div>
+        </div>
+
+        {facilities.length === 0 && (
+          <div className="bg-white border border-gray-200 rounded-2xl p-8 text-center max-w-3xl">
+            <div className="text-3xl mb-2">🏥</div>
+            <div className="font-semibold text-gray-900">No facilities available to edit</div>
+            <div className="text-sm text-gray-500 mt-1">Your account doesn't have any facilities assigned yet. If you expect to see facilities here, check that you're signed in to the right account, or contact your administrator.</div>
+          </div>
+        )}
 
         <div className="space-y-5 max-w-3xl">
           {facilities.map(f => {
