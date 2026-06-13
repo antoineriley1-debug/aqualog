@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { HOSPITALS } from '@/lib/hospitals';
-import { BOILER_TESTS, CHILLED_TESTS } from '@/lib/testGuide';
+import { BOILER_TESTS, CHILLED_TESTS, TESTS_BY_SYSTEM } from '@/lib/testGuide';
+import { SYSTEM_META, SYSTEM_ORDER } from '@/lib/systemFields';
 import { HealthGauge, RangePosition, TrendChart, FalsificationBadge, RANGES } from '@/components/OperatorVisuals';
 
 // CRITICAL: Ensure HOSPITALS is properly imported. If not, we have a serious issue.
@@ -35,6 +36,7 @@ export default function HospitalSinglePage() {
   const [entries, setEntries] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [testTab, setTestTab] = useState('boiler');
+  const [facilitySystems, setFacilitySystems] = useState(SYSTEM_ORDER);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showTestGuide, setShowTestGuide] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -90,6 +92,21 @@ export default function HospitalSinglePage() {
       setLoading(false);
     }).catch(() => setLoading(false));
   }, [hospital]);
+
+  // Which systems does THIS facility have? (defaults to all five). Runs on id; safe before any early return.
+  useEffect(() => {
+    if (!id) return;
+    fetch('/api/equipment-profile', { credentials: 'include' })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (!d) return;
+        const fac = (d.facilities || []).find(f => f.id === id);
+        if (fac && fac.profile) {
+          const has = SYSTEM_ORDER.filter(k => fac.profile[k]);
+          if (has.length) { setFacilitySystems(has); setTestTab(prev => has.includes(prev) ? prev : has[0]); }
+        }
+      }).catch(() => {});
+  }, [id]);
 
   // Don't render error until hydrated (useParams won't work during SSR)
   if (!hydrated || !id) {
@@ -238,10 +255,10 @@ export default function HospitalSinglePage() {
             <span className="text-xs text-cyan-50">animated · last readings</span>
           </div>
           <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {['boiler','chilled'].map((sys) => {
+            {facilitySystems.map((sys) => {
               const sysEntries = entries.filter(e => e.system === sys);
               const latest = sysEntries[0];
-              const keyFields = sys === 'boiler' ? ['ph','phosphate','sulfite','conductivity'] : ['ph','inhibitor','conductivity','molybdate'];
+              const keyFields = Object.keys(RANGES[sys] || {}).slice(0, 4);
               return (
                 <div key={sys} className="flex flex-col">
                   <div className="flex items-center gap-6">
@@ -253,7 +270,7 @@ export default function HospitalSinglePage() {
                     </div>
                   </div>
                   <div className="mt-5 pt-4 border-t border-gray-100">
-                    <div className="text-xs font-semibold text-gray-500 mb-2">{sys === 'boiler' ? '🔥 Boiler' : '❄️ Chilled'} pH trend · last 30</div>
+                    <div className="text-xs font-semibold text-gray-500 mb-2">{(SYSTEM_META[sys]?.icon||'')} {(SYSTEM_META[sys]?.label||sys)} pH trend · last 30</div>
                     <TrendChart entries={entries} system={sys} field="ph" />
                   </div>
                   <FalsificationBadge entries={entries} system={sys} />
@@ -442,11 +459,8 @@ export default function HospitalSinglePage() {
               {showTestGuide && (
                 <div className="p-6">
                   {/* Test Tabs */}
-                  <div className="flex gap-2 border-b border-gray-200 mb-6">
-                    {[
-                      { id: 'boiler', label: '🔥 Boiler' },
-                      { id: 'chilled', label: '❄️ Chilled' },
-                    ].map((tab) => (
+                  <div className="flex gap-2 border-b border-gray-200 mb-6 flex-wrap">
+                    {facilitySystems.map((sysKey) => ({ id: sysKey, label: (SYSTEM_META[sysKey]?.icon||'') + ' ' + (SYSTEM_META[sysKey]?.label||sysKey) })).map((tab) => (
                       <button
                         key={tab.id}
                         onClick={() => setTestTab(tab.id)}
@@ -463,7 +477,7 @@ export default function HospitalSinglePage() {
 
                   {/* Tests List */}
                   <div className="space-y-4">
-                    {(testTab === 'boiler' ? BOILER_TESTS : CHILLED_TESTS).slice(0, 4).map((test, idx) => (
+                    {(TESTS_BY_SYSTEM[testTab] || []).slice(0, 6).map((test, idx) => (
                       <div key={idx} className="pb-4 border-b border-gray-100 last:border-0">
                         <div className="flex items-start gap-3">
                           <span className="text-xl flex-shrink-0">{test.icon}</span>
