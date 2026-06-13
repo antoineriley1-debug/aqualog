@@ -255,23 +255,27 @@ export default function HospitalSinglePage() {
             <span className="text-xs text-cyan-50">animated · last readings</span>
           </div>
           <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {facilitySystems.map((sys) => {
+            {facilitySystems.filter(sys => RANGES[sys]).map((sys) => {
               const sysEntries = entries.filter(e => e.system === sys);
               const latest = sysEntries[0];
-              const keyFields = Object.keys(RANGES[sys] || {}).slice(0, 4);
+              const sysRanges = RANGES[sys] || {};
+              const allKeys = Object.keys(sysRanges);
+              const keyFields = allKeys.slice(0, 4);
+              const trendField = sysRanges.ph ? 'ph' : allKeys[0];           // softener has no pH → use its first param
+              const trendLabel = sysRanges[trendField]?.label || trendField;
               return (
                 <div key={sys} className="flex flex-col">
                   <div className="flex items-center gap-6">
                     <HealthGauge entries={entries} system={sys} />
                     <div className="flex-1 space-y-3">
                       {keyFields.map(f => (
-                        <RangePosition key={f} value={latest?.values?.[f]} range={RANGES[sys][f]} />
+                        sysRanges[f] ? <RangePosition key={f} value={latest?.values?.[f]} range={sysRanges[f]} /> : null
                       ))}
                     </div>
                   </div>
                   <div className="mt-5 pt-4 border-t border-gray-100">
-                    <div className="text-xs font-semibold text-gray-500 mb-2">{(SYSTEM_META[sys]?.icon||'')} {(SYSTEM_META[sys]?.label||sys)} pH trend · last 30</div>
-                    <TrendChart entries={entries} system={sys} field="ph" />
+                    <div className="text-xs font-semibold text-gray-500 mb-2">{(SYSTEM_META[sys]?.icon||'')} {(SYSTEM_META[sys]?.label||sys)} {trendLabel} trend · last 30</div>
+                    <TrendChart entries={entries} system={sys} field={trendField} />
                   </div>
                   <FalsificationBadge entries={entries} system={sys} />
                 </div>
