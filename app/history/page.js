@@ -3,29 +3,17 @@ import { useEffect, useState } from 'react';
 import Sidebar from '@/components/Sidebar';
 
 import { HOSPITALS as ALL_HOSPITALS } from '@/lib/hospitals';
+import { SYSTEM_FIELDS, SYSTEM_META, SYSTEM_ORDER } from '@/lib/systemFields';
 const HOSPITALS = ALL_HOSPITALS.map((h) => ({ id: h.id, name: h.name }));
 
-const BOILER_FIELDS = [
-  { key: 'ph', label: 'pH', min: 8.5, max: 10.5 },
-  { key: 'phosphate', label: 'Phosphate', min: 20, max: 60 },
-  { key: 'sulfite', label: 'Sulfite', min: 20, max: 80 },
-  { key: 'hardness', label: 'Hardness', min: 0, max: 0, targetZero: true },
-  { key: 'conductivity', label: 'Conductivity', min: 0, max: 3500 },
-  { key: 'alkalinity', label: 'Alkalinity', min: 100, max: 700 },
-  { key: 'tds', label: 'TDS', min: 0, max: 3000 },
-  { key: 'amine', label: 'Amine', min: 0, max: 10 },
-];
-
-const CHILLED_FIELDS = [
-  { key: 'ph', label: 'pH', min: 7.5, max: 9.5 },
-  { key: 'conductivity', label: 'Conductivity', min: 0, max: 2000 },
-  { key: 'inhibitor', label: 'Inhibitor', min: 50, max: 300 },
-  { key: 'hardness', label: 'Hardness', min: 0, max: 200 },
-  { key: 'iron', label: 'Iron', min: 0, max: 2 },
-  { key: 'tds', label: 'TDS', min: 0, max: 2000 },
-  { key: 'molybdate', label: 'Molybdate', min: 5, max: 30 },
-  { key: 'bacteria', label: 'Bacteria', min: 0, max: 1000 },
-];
+// Badge color per system (icon + label come from SYSTEM_META). All five built-in systems supported.
+const SYS_BADGE = {
+  boiler:        'bg-orange-100 text-orange-700',
+  chilled:       'bg-blue-100 text-blue-700',
+  cooling_tower: 'bg-cyan-100 text-cyan-700',
+  condensate:    'bg-sky-100 text-sky-700',
+  softener:      'bg-slate-100 text-slate-700',
+};
 
 function getUser() {
   if (typeof document === 'undefined') return null;
@@ -72,7 +60,7 @@ export default function HistoryPage() {
   };
 
   const countOOR = (entry) => {
-    const fields = entry.system === 'boiler' ? BOILER_FIELDS : CHILLED_FIELDS;
+    const fields = SYSTEM_FIELDS[entry.system] || [];
     return fields.filter((f) => {
       const v = entry.values?.[f.key];
       if (v === undefined || v === null || v === '') return false;
@@ -130,8 +118,9 @@ export default function HistoryPage() {
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0072CE]"
           >
             <option value="">All Systems</option>
-            <option value="boiler">Boiler Water</option>
-            <option value="chilled">Chilled Water</option>
+            {SYSTEM_ORDER.map((sys) => (
+              <option key={sys} value={sys}>{SYSTEM_META[sys]?.label || sys}</option>
+            ))}
           </select>
           <select
             value={filterShift}
@@ -188,7 +177,7 @@ export default function HistoryPage() {
                   {filtered.map((e) => {
                     const oor = countOOR(e);
                     const isExpanded = expanded === e.id;
-                    const fields = e.system === 'boiler' ? BOILER_FIELDS : CHILLED_FIELDS;
+                    const fields = SYSTEM_FIELDS[e.system] || [];
                     return (
                       <>
                         <tr
@@ -203,10 +192,8 @@ export default function HistoryPage() {
                             <td className="px-4 py-3 text-gray-600 max-w-[180px] truncate">{hospitalName(e.hospitalId)}</td>
                           )}
                           <td className="px-4 py-3">
-                            <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-                              e.system === 'boiler' ? 'bg-orange-100 text-orange-700' : 'bg-blue-100 text-blue-700'
-                            }`}>
-                              {e.system === 'boiler' ? '🔥 Boiler' : '❄️ Chilled'}
+                            <span className={`text-xs px-2 py-1 rounded-full font-medium ${SYS_BADGE[e.system] || 'bg-gray-100 text-gray-700'}`}>
+                              {SYSTEM_META[e.system]?.icon || '•'} {SYSTEM_META[e.system]?.label || e.system}
                             </span>
                           </td>
                           <td className="px-4 py-3 text-gray-700">{e.testerName || e.operatorName}</td>
