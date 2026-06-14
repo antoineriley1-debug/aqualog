@@ -72,7 +72,7 @@ export default function Sidebar() {
           { href: '/alerts', label: '🔔 Alerts', shortLabel: 'Alerts', badge: alertCount },
           { href: '/shift-schedules', label: '⏱️ Shift Schedules', shortLabel: 'Shifts' },
           { href: '/equipment', label: '🛠️ Facility Equipment', shortLabel: 'Equipment' },
-          ...((user?.id === 'usr_ariley' || user?.username === 'ariley') ? [{ href: '/revenue', label: '💰 Revenue & Sales', shortLabel: 'Revenue' }, { href: '/settings', label: '🎨 Site Settings', shortLabel: 'Settings' }, { href: '/licensing', label: '💼 Licensing & Sales', shortLabel: 'Licensing' }, { href: '/contract', label: '📄 New Contract', shortLabel: 'Contract' }, { href: '/pricing', label: '🏷️ Pricing Page', shortLabel: 'Pricing' }] : []),
+          ...((user?.id === 'usr_ariley' || user?.username === 'ariley') ? [{ href: '/settings', label: '🎨 Site Settings', shortLabel: 'Settings' }, { href: '/licensing', label: '💰 Licensing & Sales', shortLabel: 'Sales' }, { href: '/contract', label: '📄 New Contract', shortLabel: 'Contract' }, { href: '/pricing', label: '🏷️ Pricing Page', shortLabel: 'Pricing' }] : []),
           { href: '/reports', label: '📊 Reports', shortLabel: 'Reports' },
           { href: '/compliance', label: '📈 Compliance', shortLabel: 'Compliance' },
           { href: '/compare', label: '📊 Compare Facilities', shortLabel: 'Compare' },
