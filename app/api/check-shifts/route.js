@@ -3,6 +3,7 @@ import { getSession } from '@/lib/auth';
 import { getAllEntries } from '@/lib/store';
 import { HOSPITALS } from '@/lib/hospitals';
 import { sendEmail, getEnvEmails, getNotifyStatus } from '@/lib/notify';
+import { BRAND } from '@/lib/branding';
 
 // Shift windows (ET):
 // 1st Shift: 5:00 AM – 1:30 PM  → check at 2:00 PM
@@ -103,7 +104,7 @@ export async function GET(request) {
   const recipients = getEnvEmails();
   const emailResult = await sendEmail({
     to: recipients,
-    subject: `⚠️ MedStar H2O: ${missing.length} Missed ${shiftToCheck} Shift Reading${missing.length > 1 ? 's' : ''} — ${checkDate}`,
+    subject: `⚠️ ${BRAND.name}: ${missing.length} Missed ${shiftToCheck} Shift Reading${missing.length > 1 ? 's' : ''} — ${checkDate}`,
     html: emailBody,
   });
   const status = getNotifyStatus();
@@ -149,9 +150,9 @@ function buildEmailBody(shift, date, missing) {
 <html>
 <body style="font-family:Arial,sans-serif;background:#f8f9fa;margin:0;padding:20px">
   <div style="max-width:700px;margin:0 auto;background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
-    <div style="background:#003366;padding:20px 28px">
-      <div style="color:white;font-size:22px;font-weight:bold">💧 MedStar H2O</div>
-      <div style="color:#90c4f0;font-size:13px;margin-top:4px">MedStar Health · Water Chemistry Portal</div>
+    <div style="background:${BRAND.headerColor};padding:20px 28px">
+      <div style="color:white;font-size:22px;font-weight:bold">💧 ${BRAND.name}</div>
+      <div style="color:${BRAND.accentColor};font-size:13px;margin-top:4px">${BRAND.tagline}</div>
     </div>
     <div style="padding:24px 28px">
       <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:16px 20px;margin-bottom:24px">
@@ -171,7 +172,7 @@ function buildEmailBody(shift, date, missing) {
         <tbody>${rows}</tbody>
       </table>
       <div style="margin-top:24px;padding-top:16px;border-top:1px solid #eee;font-size:12px;color:#999;text-align:center">
-        MedStar H2O · MedStar Health · Managed by MedStar H2O
+        ${BRAND.name} · Managed by ${BRAND.name}
       </div>
     </div>
   </div>
