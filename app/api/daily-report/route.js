@@ -1,5 +1,5 @@
 /**
- * MedStar H2O — End-of-Day Report
+ * FacilityH2O — End-of-Day Report
  * One email per day covering the FULL prior day across all facilities:
  *   1) MISSED readings — which hospital/shift/system had no entry
  *   2) OUT-OF-RANGE readings — hospital/shift/parameter/value/acceptable range
@@ -102,7 +102,7 @@ export async function GET(request) {
   // ── Build the email ───────────────────────────────────────────────────────
   const html = buildHtml(reportDate, missed, outOfRange);
   const text = buildText(reportDate, missed, outOfRange);
-  const subject = `📋 MedStar H2O End-of-Day Report — ${reportDate} | ${missed.length} missed, ${outOfRange.length} out-of-range`;
+  const subject = `📋 FacilityH2O End-of-Day Report — ${reportDate} | ${missed.length} missed, ${outOfRange.length} out-of-range`;
 
   const recipients = getEnvEmails();
   const emailResult = await sendEmail({ to: recipients, subject, text, html });
@@ -124,7 +124,7 @@ export async function GET(request) {
 }
 
 function buildText(date, missed, oor) {
-  let out = `MEDSTAR H2O — END-OF-DAY REPORT\nDate: ${date}\n\n`;
+  let out = `FACILITYH2O — END-OF-DAY REPORT\nDate: ${date}\n\n`;
   out += `MISSED READINGS (${missed.length}):\n`;
   if (!missed.length) out += '  None — all shifts logged.\n';
   else missed.forEach((m) => {
@@ -140,7 +140,7 @@ function buildText(date, missed, oor) {
       out += `      ${p.label}: ${p.value}${p.unit} (acceptable: ${range}${p.unit})\n`;
     });
   });
-  out += `\n— MedStar H2O Alert System`;
+  out += `\n— FacilityH2O Alert System`;
   return out;
 }
 
@@ -163,8 +163,8 @@ function buildHtml(date, missed, oor) {
   return `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;background:#f8f9fa;margin:0;padding:20px">
   <div style="max-width:740px;margin:0 auto;background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
     <div style="background:#003366;padding:20px 28px">
-      <div style="color:white;font-size:22px;font-weight:bold">💧 MedStar H2O — End-of-Day Report</div>
-      <div style="color:#90c4f0;font-size:13px;margin-top:4px">${date} · MedStar Health · Water Chemistry Portal</div>
+      <div style="color:white;font-size:22px;font-weight:bold">💧 FacilityH2O — End-of-Day Report</div>
+      <div style="color:#90c4f0;font-size:13px;margin-top:4px">${date} · FacilityH2O · Water Chemistry Portal</div>
     </div>
     <div style="padding:24px 28px">
       <div style="display:flex;gap:12px;margin-bottom:24px">
@@ -191,7 +191,7 @@ function buildHtml(date, missed, oor) {
       </table>
 
       <div style="margin-top:24px;padding-top:16px;border-top:1px solid #eee;font-size:12px;color:#999;text-align:center">
-        MedStar H2O · MedStar Health · Automated end-of-day report
+        FacilityH2O · Automated end-of-day report
       </div>
     </div>
   </div>
