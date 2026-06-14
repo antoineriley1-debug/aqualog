@@ -29,6 +29,7 @@ export const RANGES = {
   },
   condensate: {
     ph:{label:'pH',min:7.5,max:9.0}, iron:{label:'Iron',min:0,max:1.0,unit:'ppm'},
+    hardness:{label:'Hardness',min:0,max:0,unit:'ppm'},
     conductivity:{label:'Conductivity',min:0,max:100,unit:'µS'}, amine:{label:'Amine',min:0,max:10,unit:'ppm'},
   },
   softener: {
