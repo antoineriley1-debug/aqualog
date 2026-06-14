@@ -41,6 +41,9 @@
   .topbar .brand{font-size:19px;font-weight:800}
   .topbar .brand span{color:var(--cyan2)}
   .topbar .demobadge{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:rgba(255,255,255,.13);padding:5px 12px;border-radius:20px;color:#bae6fd}
+  .topbar .leftgrp{display:flex;align-items:center;gap:14px}
+  .topbar .backbtn{color:#bae6fd;font-size:13px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:9px;border:1px solid rgba(255,255,255,.2);transition:background .15s,border-color .15s;white-space:nowrap;cursor:pointer}
+  .topbar .backbtn:hover{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.4)}
 
   .hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,#06283d 100%);color:#fff;padding:60px 0 70px;text-align:center}
   .hero h1{font-size:38px;font-weight:800;letter-spacing:-1px;line-height:1.15}
@@ -146,7 +149,10 @@
 <!-- ============ DEMO ============ -->
 <div id="demo">
   <div class="topbar"><div class="wrap">
-    <div class="brand">💧 Facility<span>H2O</span></div>
+    <div class="leftgrp">
+      <a href="/" class="backbtn" onclick="if(history.length>1){history.back();return false;}">← Back</a>
+      <div class="brand">💧 Facility<span>H2O</span></div>
+    </div>
     <div class="demobadge">Product Tour</div>
   </div></div>
 
