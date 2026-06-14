@@ -5,7 +5,7 @@
  */
 import { NextResponse } from 'next/server';
 import { getUserFromRequest } from '@/lib/auth';
-import { getEquipmentProfile, saveEquipmentProfile, canEditFacility, getFacilities, BUILTIN_SYSTEM_KEYS, hasCustomEquipmentFeature } from '@/lib/store';
+import { getEquipmentProfile, saveEquipmentProfile, canEditFacility, getFacilities, BUILTIN_SYSTEM_KEYS, hasCustomEquipmentFeature, getLicenses } from '@/lib/store';
 import { HOSPITALS } from '@/lib/hospitals';
 import { SYSTEM_META } from '@/lib/systemFields';
 import { EQUIPMENT_LIBRARY } from '@/lib/equipmentLibrary';
@@ -15,19 +15,36 @@ function facilitiesForUser(user) {
   const legacy = HOSPITALS.map(h => ({ id: h.id, name: h.name, code: h.code, orgId: null }));
   const orgFacs = (getFacilities() || []).map(f => ({ id: f.id, name: f.name, code: f.code || '', orgId: f.orgId || null }));
   if (isOwner) return [...legacy, ...orgFacs];
+  // Operators get READ access to just their own assigned facility (so they can log its equipment).
+  if (user.role === 'operator') return [...legacy, ...orgFacs].filter(f => f.id === user.hospital);
   if (!user.orgId) return legacy;
   return orgFacs.filter(f => f.orgId === user.orgId);
 }
 
+// Is the specialized-equipment feature active for a given facility?
+// Legacy facilities (no org) are the owner's own install → always entitled.
+// Org facilities require an active/trial license that includes 'custom_equipment'
+// (this is what makes downgrade hide custom equipment for SaaS clients).
+function facilityCustomEnabled(facility) {
+  if (!facility) return false;
+  if (!facility.orgId) return true;
+  const lic = (getLicenses() || []).find(l => l.orgId === facility.orgId);
+  if (!lic) return false;
+  const okStatus = lic.status === 'active' || lic.status === 'trial';
+  return okStatus && Array.isArray(lic.features) && lic.features.includes('custom_equipment');
+}
+
 export async function GET(request) {
   const user = await getUserFromRequest(request);
-  if (!user || user.role !== 'admin') return NextResponse.json({ error: 'Admins only.' }, { status: 403 });
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });  // admins, owner, and operators (read-only) all allowed
   const facs = facilitiesForUser(user).map(f => ({
     ...f, canEdit: canEditFacility(user, f), profile: getEquipmentProfile(f.id),
   }));
   const systems = BUILTIN_SYSTEM_KEYS.map(k => ({ key: k, label: SYSTEM_META[k]?.label || k, icon: SYSTEM_META[k]?.icon || '•' }));
-  // Enterprise specialized-equipment library — only exposed to orgs that have the feature.
-  const customEquipmentEnabled = hasCustomEquipmentFeature(user);
+  // Custom equipment is enabled for this requester if they're the owner, or any facility they can
+  // see is entitled (covers org admins via license AND operators logging at their own facility).
+  const isOwner = user.username === 'ariley' || user.id === 'usr_ariley';
+  const customEquipmentEnabled = isOwner || facs.some(f => facilityCustomEnabled(f));
   const library = customEquipmentEnabled
     ? EQUIPMENT_LIBRARY.map(e => ({ key: e.key, label: e.label, icon: e.icon, standard: e.standard, summary: e.summary, verifyNote: e.verifyNote, params: e.params }))
     : [];
