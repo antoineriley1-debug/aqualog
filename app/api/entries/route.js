@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getUserFromRequest } from '@/lib/auth';
-import { getAllEntries, getEntriesForHospital, addEntry, logAudit, addAlert, updateAlertNotification } from '@/lib/store';
+import { getAllEntries, getEntriesForHospital, addEntry, logAudit, addAlert, updateAlertNotification, getEquipmentProfile } from '@/lib/store';
 import { sendEmail, sendSMS, getEnvEmails } from '@/lib/notify';
 import { getOutOfRangeParams, CHEMISTRY_RANGES } from '@/lib/chemistryRanges';
 import { detectDrift } from '@/lib/driftDetection';
@@ -16,6 +16,37 @@ import {
   isInQuietHours,
   readRules,
 } from '@/lib/alertThrottle';
+
+// ── Enterprise custom-equipment ranges ───────────────────────────────────────
+// Built-in systems live in CHEMISTRY_RANGES. Custom equipment (steam sterilizers,
+// dialysis water, etc.) stores its own params on the facility's equipment profile.
+// These helpers let out-of-range alerting + drift detection work for custom equipment too.
+function customRangesFor(hospitalId, system) {
+  if (CHEMISTRY_RANGES[system]) return {};            // built-in → handled by CHEMISTRY_RANGES
+  try {
+    const profile = getEquipmentProfile(hospitalId);
+    const custom = Array.isArray(profile?.custom) ? profile.custom : [];
+    const item = custom.find(c => (typeof c === 'string' ? c : c?.key) === system);
+    if (!item || !Array.isArray(item.params)) return {};
+    const ranges = {};
+    for (const pr of item.params) {
+      ranges[pr.key] = { min: pr.min, max: pr.max, unit: pr.unit, label: pr.label, targetZero: (pr.min === 0 && pr.max === 0) };
+    }
+    return ranges;
+  } catch { return {}; }
+}
+function oorFromRanges(ranges, values) {
+  const oor = [];
+  for (const [key, range] of Object.entries(ranges)) {
+    const val = values[key];
+    if (val === undefined || val === null || val === '') continue;
+    const num = parseFloat(val);
+    if (isNaN(num)) continue;
+    const out = range.targetZero ? num !== 0 : (num < range.min || num > range.max);
+    if (out) oor.push({ param: key, label: range.label, value: num, min: range.min, max: range.max, unit: range.unit, targetZero: !!range.targetZero });
+  }
+  return oor;
+}
 
 // ── Load notification contacts from rules file ───────────────────────────────
 function getNotificationContacts(hospitalId, level) {
@@ -230,7 +261,11 @@ export async function POST(request) {
     });
 
     // ── Out-of-range check ──────────────────────────────────────────────────
-    const oor = getOutOfRangeParams(system, values);
+    // Built-in systems use CHEMISTRY_RANGES; Enterprise custom equipment uses its stored param ranges.
+    const customRanges = customRangesFor(hospitalId, system);
+    const oor = CHEMISTRY_RANGES[system]
+      ? getOutOfRangeParams(system, values)
+      : oorFromRanges(customRanges, values);
     let alert = null;
     if (oor.length > 0) {
       alert = addAlert({ entryId: entry.id, hospitalId, system, shift, date, operatorName, outOfRangeParams: oor });
@@ -248,7 +283,7 @@ export async function POST(request) {
     // ── Drift detection ─────────────────────────────────────────────────────
     const driftWarnings = [];
     const allEntries    = getAllEntries();
-    const systemRanges  = CHEMISTRY_RANGES[system] || {};
+    const systemRanges  = CHEMISTRY_RANGES[system] || customRanges;
     for (const [param, range] of Object.entries(systemRanges)) {
       const drift = detectDrift(allEntries, hospitalId, system, param, range);
       if (drift) {
