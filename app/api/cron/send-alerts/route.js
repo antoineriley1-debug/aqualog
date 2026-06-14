@@ -1,8 +1,8 @@
 /**
- * MedStar H2O — Alert Dispatch Cron Job
+ * FacilityH2O — Alert Dispatch Cron Job
  * Call this every 5 minutes from Render or EasyCron
  * 
- * URL: https://medstarh20log.com/api/cron/send-alerts
+ * URL: https://facilityh2o.com/api/cron/send-alerts
  * Secret: Pass as ?secret=YOUR_CRON_SECRET (set in .env)
  * 
  * This endpoint:
@@ -14,6 +14,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { BRAND } from '@/lib/branding';
 
 async function sendEmail({ to, subject, text }) {
   if (!process.env.RESEND_API_KEY) return { ok: false, error: 'No RESEND_API_KEY' };
@@ -24,7 +25,7 @@ async function sendEmail({ to, subject, text }) {
   try {
     const { Resend } = await import('resend');
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const from = process.env.ALERT_EMAIL_FROM || 'alerts@medstarh20log.com';
+    const from = process.env.ALERT_EMAIL_FROM || BRAND.fromEmail;
     
     const result = await resend.emails.send({ from, to: allTo, subject, text });
     return { ok: true, messageId: result?.id };
@@ -102,13 +103,13 @@ export async function GET(request) {
     // Example: Send test alert
     const emailResult = await sendEmail({
       to: allEmails.filter(Boolean),
-      subject: '🧪 Test Alert — MedStar H2O',
+      subject: `🧪 Test Alert — ${BRAND.name}`,
       text: 'This is a test alert sent from the cron job.',
     });
 
     const smsResult = await sendSMS(
       allSMS,
-      '🧪 Test SMS from medstarh20log.com cron job'
+      `🧪 Test SMS from ${BRAND.name} cron job`
     );
 
     console.log('[cron] Results:', { emailResult, smsResult });
