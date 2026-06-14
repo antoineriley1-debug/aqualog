@@ -7,3 +7,6 @@ dist/
 build/
 
 .vercel
+
+# Runtime data lives on the Render persistent disk — never commit it (it contains user records).
+data/
