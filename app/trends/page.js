@@ -41,6 +41,7 @@ const PARAM_CONFIG = {
   condensate: [
     { key: 'ph', label: 'pH', min: 7.5, max: 9.0 },
     { key: 'iron', label: 'Iron', min: 0, max: 1.0 },
+    { key: 'hardness', label: 'Hardness', min: 0, max: 0 },
     { key: 'conductivity', label: 'Conductivity', min: 0, max: 100 },
     { key: 'amine', label: 'Amine', min: 0, max: 10 },
   ],
