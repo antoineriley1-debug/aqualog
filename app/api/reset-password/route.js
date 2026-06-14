@@ -1,7 +1,7 @@
 /**
- * MedStar H2O — Password Reset API
+ * FacilityH2O — Password Reset API
  * Author & Owner: Antoine Riley
- * © 2026 Antoine Riley / MedStar H2O. All rights reserved.
+ * © 2026 Antoine Riley / FacilityH2O. All rights reserved.
  *
  * - Any user can request a self-service reset for their own account
  * - Admins can also force-reset any user's password from the Users page
@@ -12,6 +12,7 @@ import { NextResponse } from 'next/server';
 import { randomBytes } from 'crypto';
 import fs from 'fs';
 import path from 'path';
+import { BRAND } from '@/lib/branding';
 
 const RESET_FILE = path.join(process.cwd(), 'data', 'reset-tokens.json');
 const TOKEN_TTL  = 60 * 60 * 1000; // 1 hour
@@ -48,7 +49,7 @@ export async function POST(request) {
     };
     writeTokens(tokens);
 
-    const baseUrl  = process.env.NEXT_PUBLIC_APP_URL || 'https://www.medstarh20log.com';
+    const baseUrl  = process.env.NEXT_PUBLIC_APP_URL || 'https://www.facilityh2o.com';
     const resetUrl = `${baseUrl}/reset-password?token=${resetToken}`;
 
     // Try email via Resend
@@ -58,10 +59,10 @@ export async function POST(request) {
         const { Resend } = await import('resend');
         const resend = new Resend(process.env.RESEND_API_KEY);
         await resend.emails.send({
-          from: process.env.ALERT_EMAIL_FROM || 'aqualog@medstarh20log.com',
+          from: process.env.ALERT_EMAIL_FROM || BRAND.fromEmail,
           to: userEmail,
-          subject: 'MedStar H2O — Password Reset Request',
-          text: `You requested a password reset for your MedStar H2O account.\n\nClick this link to reset your password (valid for 1 hour):\n${resetUrl}\n\nIf you did not request this, ignore this email.\n\nMedStar H2O · MedStar Health Water Chemistry Portal`,
+          subject: `${BRAND.name} — Password Reset Request`,
+          text: `You requested a password reset for your ${BRAND.name} account.\n\nClick this link to reset your password (valid for 1 hour):\n${resetUrl}\n\nIf you did not request this, ignore this email.\n\n${BRAND.name} · ${BRAND.tagline}`,
         });
         return NextResponse.json({ ok: true, message: `Reset link sent to ${userEmail}` });
       } catch (e) {
