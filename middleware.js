@@ -14,6 +14,8 @@ export function middleware(request) {
     pathname === '/login' ||
     pathname === '/reset-password' ||
     pathname === '/pricing' ||
+    pathname === '/demo.html' ||              // public product tour (lead-gated client-side)
+    pathname.startsWith('/api/lead') ||        // demo lead capture endpoint
     pathname.startsWith('/hospital-single/login') ||
     pathname.startsWith('/api/auth') ||
     pathname.startsWith('/api/reset-password') ||
