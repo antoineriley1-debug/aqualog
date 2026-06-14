@@ -1,6 +1,6 @@
 /**
  * Shift Schedules API
- * GET  → { facilities:[{id,name,code,orgId,canEdit}], schedules:{[id]:{timezone,shifts}}, timezones:[{id,label}] }
+ * GET  → { facilities:[{id,name,code,orgId,canEdit}], schedules:{[id]:{timezone,shifts}}, timezones:[tzId,...] }
  * POST → { facilityId, schedule } saves a facility's shift schedule (permission enforced).
  *
  * Scoping matches equipment-profile: owner (ariley) sees ALL facilities; an org admin sees
@@ -40,7 +40,9 @@ export async function GET(request) {
   for (const f of facs) {
     schedules[f.id] = normalizeSchedule(getShiftScheduleFor(f.id));
   }
-  return NextResponse.json({ facilities: facs, schedules, timezones: TIMEZONES });
+  // The page renders each timezone as a string and supplies its own labels (TZ_LABEL),
+  // so return the tz ids — returning {id,label} objects makes React throw on render.
+  return NextResponse.json({ facilities: facs, schedules, timezones: TIMEZONES.map(t => t.id) });
 }
 
 export async function POST(request) {
