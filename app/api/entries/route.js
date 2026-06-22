@@ -5,6 +5,8 @@ import { sendEmail, sendSMS, getEnvEmails } from '@/lib/notify';
 import { getOutOfRangeParams, CHEMISTRY_RANGES } from '@/lib/chemistryRanges';
 import { detectDrift } from '@/lib/driftDetection';
 import { getHospital, getHospitalVendor } from '@/lib/hospitals';
+import { SYSTEM_META } from '@/lib/systemFields';
+import { BRAND } from '@/lib/branding';
 import fs from 'fs';
 import path from 'path';
 import {
@@ -72,16 +74,19 @@ function getNotificationContacts(hospitalId, level) {
 // They RETURN delivery results and log failures loudly, instead of swallowing them.
 
 // ── Dispatch OOR alert notifications (with smart throttle/quiet hours) ──────
-async function dispatchAlertNotifications({ alertId, hospitalId, hospitalName, system, shift, date, operatorName, oor, vendor }) {
+async function dispatchAlertNotifications({ alertId, hospitalId, hospitalName, system, unit, shift, date, operatorName, oor, vendor }) {
   const alertLevel = determineLevel('oor', oor);
+  const sysLabel = SYSTEM_META[system]?.label || system;
+  const sysIcon = SYSTEM_META[system]?.icon || '';
+  const unitLabel = unit ? ` — ${unit}` : '';
 
   const paramList = oor.map(p => `  • ${p.label}: ${p.value}${p.unit} (range: ${p.min}–${p.max}${p.unit})`).join('\n');
   const vendorLine = vendor ? `\nWater Treatment Vendor: ${vendor.company} | Emergency: ${vendor.emergency || 'N/A'}` : '';
 
-  const subject = `🚨 Out-of-Range Alert — ${hospitalName} | ${system === 'boiler' ? 'Boiler' : 'Chilled'} Water | ${shift}`;
-  const text = `OUT-OF-RANGE WATER CHEMISTRY ALERT\n\nFacility: ${hospitalName}\nSystem: ${system === 'boiler' ? 'Boiler Water' : 'Chilled Water'}\nShift: ${shift} | Date: ${date}\nLogged By: ${operatorName}\n\nOUT-OF-RANGE PARAMETERS:\n${paramList}${vendorLine}\n\n— MedStar H2O Alert System`;
-  const html = `<div style="font-family:sans-serif;max-width:600px"><div style="background:#c0392b;color:white;padding:16px;border-radius:8px 8px 0 0"><h2 style="margin:0">🚨 Out-of-Range Alert</h2></div><div style="border:1px solid #e0e0e0;border-top:none;padding:20px;border-radius:0 0 8px 8px"><p><strong>Facility:</strong> ${hospitalName}<br><strong>System:</strong> ${system === 'boiler' ? '🔥 Boiler Water' : '❄️ Chilled Water'}<br><strong>Shift:</strong> ${shift} | <strong>Date:</strong> ${date}<br><strong>Logged By:</strong> ${operatorName}</p><h3 style="color:#c0392b">Out-of-Range Parameters:</h3><ul>${oor.map(p => `<li><strong>${p.label}:</strong> ${p.value}${p.unit} <em>(acceptable: ${p.min}–${p.max}${p.unit})</em></li>`).join('')}</ul>${vendor ? `<p style="color:#666;font-size:12px">Vendor: ${vendor.company} | Emergency: ${vendor.emergency || 'N/A'}</p>` : ''}<hr style="border:none;border-top:1px solid #eee;margin:16px 0"><p style="color:#999;font-size:11px">MedStar H2O Alert System</p></div></div>`;
-  const smsText = `🚨 OOR Alert: ${hospitalName} ${system} ${shift} on ${date}. Params: ${oor.map(p => `${p.label}=${p.value}`).join(', ')}. See portal for details.`;
+  const subject = `🚨 Out-of-Range Alert — ${hospitalName} | ${sysLabel}${unitLabel} | ${shift}`;
+  const text = `OUT-OF-RANGE WATER CHEMISTRY ALERT\n\nFacility: ${hospitalName}\nSystem: ${sysLabel}${unitLabel}\nShift: ${shift} | Date: ${date}\nLogged By: ${operatorName}\n\nOUT-OF-RANGE PARAMETERS:\n${paramList}${vendorLine}\n\n— ${BRAND.name} Alert System`;
+  const html = `<div style="font-family:sans-serif;max-width:600px"><div style="background:#c0392b;color:white;padding:16px;border-radius:8px 8px 0 0"><h2 style="margin:0">🚨 Out-of-Range Alert</h2></div><div style="border:1px solid #e0e0e0;border-top:none;padding:20px;border-radius:0 0 8px 8px"><p><strong>Facility:</strong> ${hospitalName}<br><strong>System:</strong> ${sysIcon} ${sysLabel}${unitLabel}<br><strong>Shift:</strong> ${shift} | <strong>Date:</strong> ${date}<br><strong>Logged By:</strong> ${operatorName}</p><h3 style="color:#c0392b">Out-of-Range Parameters:</h3><ul>${oor.map(p => `<li><strong>${p.label}:</strong> ${p.value}${p.unit} <em>(acceptable: ${p.min}–${p.max}${p.unit})</em></li>`).join('')}</ul>${vendor ? `<p style="color:#666;font-size:12px">Vendor: ${vendor.company} | Emergency: ${vendor.emergency || 'N/A'}</p>` : ''}<hr style="border:none;border-top:1px solid #eee;margin:16px 0"><p style="color:#999;font-size:11px">${BRAND.name} Alert System</p></div></div>`;
+  const smsText = `🚨 OOR Alert: ${hospitalName} ${sysLabel}${unitLabel} ${shift} on ${date}. Params: ${oor.map(p => `${p.label}=${p.value}`).join(', ')}. See portal for details.`;
 
   // Track every delivery so a swallowed failure becomes visible on the alert.
   const emailSent = new Set();
@@ -160,7 +165,7 @@ async function dispatchDriftNotifications({ hospitalId, hospitalName, system, pa
   const alertLevel = 2; // Drift = Info level
 
   const subject = `⚠️ Trend Warning — ${hospitalName} | ${param} drifting ${drift.direction}`;
-  const text = `WATER CHEMISTRY TREND WARNING\n\nFacility: ${hospitalName}\nSystem: ${system === 'boiler' ? 'Boiler Water' : 'Chilled Water'}\nParameter: ${param}\n\nTrend: ${drift.direction.toUpperCase()}\nLast readings: ${drift.trend.join(' → ')}\nCurrent: ${drift.current} | Limit: ${drift.limit}\n\n— MedStar H2O Alert System`;
+  const text = `WATER CHEMISTRY TREND WARNING\n\nFacility: ${hospitalName}\nSystem: ${SYSTEM_META[system]?.label || system}\nParameter: ${param}\n\nTrend: ${drift.direction.toUpperCase()}\nLast readings: ${drift.trend.join(' → ')}\nCurrent: ${drift.current} | Limit: ${drift.limit}\n\n— ${BRAND.name} Alert System`;
   const smsText = `⚠️ Trend Warning: ${hospitalName} ${system} ${param} drifting ${drift.direction}. Current: ${drift.current}, limit: ${drift.limit}.`;
 
   const contacts = getContactsForLevel(hospitalId, alertLevel);
@@ -228,7 +233,7 @@ export async function POST(request) {
 
   try {
     const body = await request.json();
-    const { hospitalId, system, shift, date, time, testerName, operatorName, values, notes, correctiveAction } = body;
+    const { hospitalId, system, unit, shift, date, time, testerName, operatorName, values, notes, correctiveAction } = body;
 
     if (!hospitalId || !system || !shift || !date || !operatorName || !testerName || !values) {
       return NextResponse.json({ error: 'Missing required fields. Tester name is required.' }, { status: 400 });
@@ -238,7 +243,7 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Forbidden.' }, { status: 403 });
     }
 
-    const entryData = { hospitalId, system, shift, date, time: time || null, testerName, operatorName, values, notes };
+    const entryData = { hospitalId, system, unit: unit || null, shift, date, time: time || null, testerName, operatorName, values, notes };
 
     if (correctiveAction?.action) {
       entryData.correctiveAction = {
@@ -268,7 +273,7 @@ export async function POST(request) {
       : oorFromRanges(customRanges, values);
     let alert = null;
     if (oor.length > 0) {
-      alert = addAlert({ entryId: entry.id, hospitalId, system, shift, date, operatorName, outOfRangeParams: oor });
+      alert = addAlert({ entryId: entry.id, hospitalId, system, unit: unit || null, shift, date, operatorName, outOfRangeParams: oor });
       const hospital = getHospital(hospitalId);
       const vendor   = getHospitalVendor(hospitalId);
       // Fire-and-forget — don't block the response
@@ -276,7 +281,7 @@ export async function POST(request) {
         alertId: alert.id,
         hospitalId,
         hospitalName: hospital?.name || hospitalId,
-        system, shift, date, operatorName, oor, vendor,
+        system, unit, shift, date, operatorName, oor, vendor,
       }).catch(err => console.error('[notify] OOR dispatch error:', err.message));
     }
 

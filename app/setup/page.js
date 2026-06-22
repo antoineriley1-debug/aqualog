@@ -106,7 +106,7 @@ function AccountSetupContent() {
         throw new Error('Missing account ID');
       }
 
-      const response = await fetch('/api/setup/complete', {
+      const response = await fetch('/api/setup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -126,7 +126,7 @@ function AccountSetupContent() {
       setSuccess('Account activated! Redirecting to dashboard...');
       
       setTimeout(() => {
-        router.push(`/hospital-single?hospitalId=${data.hospitalId}`);
+        router.push(`/hospital-single/${data.hospitalId}`);
       }, 1500);
     } catch (err) {
       setError(err.message);

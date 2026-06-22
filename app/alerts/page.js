@@ -32,7 +32,7 @@ export default function AlertsPage() {
   }, []);
 
   const acknowledge = async (id) => {
-    await fetch(`/api/alerts/${id}/ack`, { method: 'POST' });
+    await fetch('/api/alerts', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ alertId: id }) });
     setAlerts((prev) => prev.map((a) => a.id === id ? { ...a, acknowledged: true } : a));
   };
 

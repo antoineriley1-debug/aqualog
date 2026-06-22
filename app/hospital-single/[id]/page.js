@@ -360,7 +360,7 @@ export default function HospitalSinglePage() {
                 entries.slice(0, 6).map((e) => (
                   <Link
                     key={e.id}
-                    href={`/entry/${e.id}`}
+                    href="/history"
                     className="px-6 py-3 hover:bg-gray-50 transition block cursor-pointer"
                   >
                     <div className="flex items-start justify-between gap-2 mb-2">

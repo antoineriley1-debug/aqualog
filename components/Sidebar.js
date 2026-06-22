@@ -88,6 +88,7 @@ export default function Sidebar() {
           { href: '/coc', label: '🧪 Chain of Custody', shortLabel: 'COC' },
         ]
       : []),
+    { href: '/help', label: '❓ Help & Guide', shortLabel: 'Help' },
     { href: '/legal', label: '📋 Legal & Policies', shortLabel: 'Legal' },
   ];
 

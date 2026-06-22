@@ -26,7 +26,7 @@ function SignupForm() {
         body: JSON.stringify(form),
       });
       const data = await res.json();
-      if (data.success) router.push('/dashboard');
+      if (data.ok) router.push('/welcome');
       else setError(data.error || 'Signup failed. Please try again.');
     } catch {
       setError('Connection error. Please try again.');
@@ -96,7 +96,7 @@ function SignupForm() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
-                <input type="password" value={form.password} onChange={e => update('password', e.target.value)} required placeholder="At least 8 characters" className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0891B2]" />
+                <input type="password" value={form.password} onChange={e => update('password', e.target.value)} required placeholder="At least 6 characters" className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0891B2]" />
               </div>
               {error && <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl">{error}</div>}
               <div className="flex gap-3">
