@@ -22,7 +22,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="min-h-screen bg-[#F0F9FF] flex flex-col items-center justify-center p-4">
-      <Link href="/" className="flex items-center gap-2 mb-8"><span className="text-3xl">💧</span><span className="text-xl font-bold text-[#164E63]">FacilityH2O</span></Link>
+      <Link href="/" className="flex items-center gap-2 mb-8"><span className="text-3xl">[WATER]</span><span className="text-xl font-bold text-[#164E63]">FacilityH2O</span></Link>
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
         {!sent ? (
           <>
@@ -38,7 +38,7 @@ export default function ForgotPasswordPage() {
           </>
         ) : (
           <div className="text-center py-4">
-            <div className="text-4xl mb-3">📧</div>
+            <div className="text-4xl mb-3">✉</div>
             <h1 className="text-lg font-bold text-gray-900 mb-2">Check your email</h1>
             <p className="text-gray-500 text-sm mb-6">If an account exists for that email, we've sent a password reset link. It expires in 1 hour. Be sure to check spam.</p>
             <Link href="/login" className="inline-block text-[#0891B2] font-semibold text-sm hover:underline">← Back to Sign In</Link>

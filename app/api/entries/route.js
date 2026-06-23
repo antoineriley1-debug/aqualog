@@ -83,10 +83,10 @@ async function dispatchAlertNotifications({ alertId, hospitalId, hospitalName, s
   const paramList = oor.map(p => `  • ${p.label}: ${p.value}${p.unit} (range: ${p.min}–${p.max}${p.unit})`).join('\n');
   const vendorLine = vendor ? `\nWater Treatment Vendor: ${vendor.company} | Emergency: ${vendor.emergency || 'N/A'}` : '';
 
-  const subject = `🚨 Out-of-Range Alert — ${hospitalName} | ${sysLabel}${unitLabel} | ${shift}`;
+  const subject = `!! Out-of-Range Alert — ${hospitalName} | ${sysLabel}${unitLabel} | ${shift}`;
   const text = `OUT-OF-RANGE WATER CHEMISTRY ALERT\n\nFacility: ${hospitalName}\nSystem: ${sysLabel}${unitLabel}\nShift: ${shift} | Date: ${date}\nLogged By: ${operatorName}\n\nOUT-OF-RANGE PARAMETERS:\n${paramList}${vendorLine}\n\n— ${BRAND.name} Alert System`;
-  const html = `<div style="font-family:sans-serif;max-width:600px"><div style="background:#c0392b;color:white;padding:16px;border-radius:8px 8px 0 0"><h2 style="margin:0">🚨 Out-of-Range Alert</h2></div><div style="border:1px solid #e0e0e0;border-top:none;padding:20px;border-radius:0 0 8px 8px"><p><strong>Facility:</strong> ${hospitalName}<br><strong>System:</strong> ${sysIcon} ${sysLabel}${unitLabel}<br><strong>Shift:</strong> ${shift} | <strong>Date:</strong> ${date}<br><strong>Logged By:</strong> ${operatorName}</p><h3 style="color:#c0392b">Out-of-Range Parameters:</h3><ul>${oor.map(p => `<li><strong>${p.label}:</strong> ${p.value}${p.unit} <em>(acceptable: ${p.min}–${p.max}${p.unit})</em></li>`).join('')}</ul>${vendor ? `<p style="color:#666;font-size:12px">Vendor: ${vendor.company} | Emergency: ${vendor.emergency || 'N/A'}</p>` : ''}<hr style="border:none;border-top:1px solid #eee;margin:16px 0"><p style="color:#999;font-size:11px">${BRAND.name} Alert System</p></div></div>`;
-  const smsText = `🚨 OOR Alert: ${hospitalName} ${sysLabel}${unitLabel} ${shift} on ${date}. Params: ${oor.map(p => `${p.label}=${p.value}`).join(', ')}. See portal for details.`;
+  const html = `<div style="font-family:sans-serif;max-width:600px"><div style="background:#c0392b;color:white;padding:16px;border-radius:8px 8px 0 0"><h2 style="margin:0">!! Out-of-Range Alert</h2></div><div style="border:1px solid #e0e0e0;border-top:none;padding:20px;border-radius:0 0 8px 8px"><p><strong>Facility:</strong> ${hospitalName}<br><strong>System:</strong> ${sysIcon} ${sysLabel}${unitLabel}<br><strong>Shift:</strong> ${shift} | <strong>Date:</strong> ${date}<br><strong>Logged By:</strong> ${operatorName}</p><h3 style="color:#c0392b">Out-of-Range Parameters:</h3><ul>${oor.map(p => `<li><strong>${p.label}:</strong> ${p.value}${p.unit} <em>(acceptable: ${p.min}–${p.max}${p.unit})</em></li>`).join('')}</ul>${vendor ? `<p style="color:#666;font-size:12px">Vendor: ${vendor.company} | Emergency: ${vendor.emergency || 'N/A'}</p>` : ''}<hr style="border:none;border-top:1px solid #eee;margin:16px 0"><p style="color:#999;font-size:11px">${BRAND.name} Alert System</p></div></div>`;
+  const smsText = `!! OOR Alert: ${hospitalName} ${sysLabel}${unitLabel} ${shift} on ${date}. Params: ${oor.map(p => `${p.label}=${p.value}`).join(', ')}. See portal for details.`;
 
   // Track every delivery so a swallowed failure becomes visible on the alert.
   const emailSent = new Set();
@@ -164,9 +164,9 @@ async function dispatchAlertNotifications({ alertId, hospitalId, hospitalName, s
 async function dispatchDriftNotifications({ hospitalId, hospitalName, system, param, drift }) {
   const alertLevel = 2; // Drift = Info level
 
-  const subject = `⚠️ Trend Warning — ${hospitalName} | ${param} drifting ${drift.direction}`;
+  const subject = `!️ Trend Warning — ${hospitalName} | ${param} drifting ${drift.direction}`;
   const text = `WATER CHEMISTRY TREND WARNING\n\nFacility: ${hospitalName}\nSystem: ${SYSTEM_META[system]?.label || system}\nParameter: ${param}\n\nTrend: ${drift.direction.toUpperCase()}\nLast readings: ${drift.trend.join(' → ')}\nCurrent: ${drift.current} | Limit: ${drift.limit}\n\n— ${BRAND.name} Alert System`;
-  const smsText = `⚠️ Trend Warning: ${hospitalName} ${system} ${param} drifting ${drift.direction}. Current: ${drift.current}, limit: ${drift.limit}.`;
+  const smsText = `!️ Trend Warning: ${hospitalName} ${system} ${param} drifting ${drift.direction}. Current: ${drift.current}, limit: ${drift.limit}.`;
 
   const contacts = getContactsForLevel(hospitalId, alertLevel);
   const envEmails = getEnvEmails();

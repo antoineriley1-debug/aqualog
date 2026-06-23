@@ -60,19 +60,19 @@ export default function EquipmentPage() {
   };
 
   if (loading) return <div className="flex min-h-screen"><Sidebar /><div className="flex-1 p-8 text-gray-400">Loading…</div></div>;
-  if (forbidden) return <div className="flex min-h-screen"><Sidebar /><div className="flex-1 flex items-center justify-center"><div className="text-center"><div className="text-4xl mb-3">🔒</div><b className="text-gray-900">Admins only</b><div className="text-sm text-gray-500 mt-1">Equipment setup is managed by administrators.</div></div></div></div>;
+  if (forbidden) return <div className="flex min-h-screen"><Sidebar /><div className="flex-1 flex items-center justify-center"><div className="text-center"><div className="text-4xl mb-3">■</div><b className="text-gray-900">Admins only</b><div className="text-sm text-gray-500 mt-1">Equipment setup is managed by administrators.</div></div></div></div>;
 
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
       <main className="flex-1 w-full min-w-0 p-4 md:p-8 pt-16 md:pt-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">🛠️ Facility Equipment</h1>
+          <h1 className="text-2xl font-bold text-gray-900">⚙ Facility Equipment</h1>
           <p className="text-gray-500 text-sm mt-1">Turn off any system a facility doesn't have (e.g. a steam-fed site with no boiler). Systems left off aren't offered for logging and never count as missed readings.</p>
         </div>
 
         <div className="mb-4 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 max-w-3xl">
-          ⚠️ Cooling tower, condensate, and softener ranges are typical industry defaults — verify them against your water treatment program.
+          !️ Cooling tower, condensate, and softener ranges are typical industry defaults — verify them against your water treatment program.
         </div>
 
         {facilities.length === 0 && <div className="text-gray-400 text-sm">No facilities available.</div>}
@@ -103,7 +103,7 @@ export default function EquipmentPage() {
                 {customEnabled && library.length > 0 && (
                   <div className="px-6 pb-6">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-sm font-bold text-gray-900">➕ Additional Equipment</span>
+                      <span className="text-sm font-bold text-gray-900">+ Additional Equipment</span>
                       <span className="text-[10px] font-bold text-[#0891B2] bg-cyan-50 px-2 py-0.5 rounded-full uppercase tracking-wide">Enterprise</span>
                     </div>
                     <p className="text-xs text-gray-400 mb-3">Specialized equipment with standards-based parameters. Turn on the items this facility runs. Always verify thresholds against your own equipment manuals and standards.</p>

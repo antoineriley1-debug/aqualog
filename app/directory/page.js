@@ -74,7 +74,7 @@ export default function DirectoryPage() {
         {/* Header */}
         <div className="flex items-start justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">📞 Staff Directory</h1>
+            <h1 className="text-2xl font-bold text-gray-900">☎ Staff Directory</h1>
             <p className="text-gray-500 text-sm mt-1">
               {HOSPITALS.length} facilities · {totalContacts} contacts · Managed by FacilityH2O
             </p>
@@ -89,7 +89,7 @@ export default function DirectoryPage() {
 
         {/* Search */}
         <div className="relative mb-8">
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg">🔍</span>
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg">⌕</span>
           <input
             type="text"
             value={search}
@@ -102,7 +102,7 @@ export default function DirectoryPage() {
               onClick={() => setSearch('')}
               className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-sm"
             >
-              ✕ Clear
+              × Clear
             </button>
           )}
         </div>
@@ -149,7 +149,7 @@ export default function DirectoryPage() {
                       <div>
                         <div className="font-semibold text-gray-900">{h.name}</div>
                         <div className="text-xs text-gray-400 mt-0.5 flex items-center gap-3">
-                          <span>📍 {h.address}</span>
+                          <span>◈ {h.address}</span>
                           <span>· {activeContacts.length} contacts{vacantCount > 0 ? ` · ${vacantCount} vacant` : ''}</span>
                         </div>
                       </div>
@@ -171,12 +171,12 @@ export default function DirectoryPage() {
                               <div className="flex flex-wrap gap-3 mt-2">
                                 {director.office && (
                                   <a href={`tel:${director.office}`} className="text-xs text-gray-600 hover:text-[#0072CE] flex items-center gap-1">
-                                    📞 {director.office}
+                                    ☎ {director.office}
                                   </a>
                                 )}
                                 {director.mobile && (
                                   <a href={`tel:${director.mobile}`} className="text-xs text-gray-600 hover:text-[#0072CE] flex items-center gap-1">
-                                    📱 {director.mobile}
+                                    ☎ {director.mobile}
                                   </a>
                                 )}
                               </div>
@@ -229,7 +229,7 @@ function ContactCard({ contact: c, showHospital }) {
         <div className="text-sm text-gray-400 italic mt-1">— Vacant —</div>
         {(c.office || c.mobile) && (
           <div className="text-xs text-gray-400 mt-1">
-            {c.office && <span>📞 {c.office}</span>}
+            {c.office && <span>☎ {c.office}</span>}
           </div>
         )}
       </div>
@@ -249,12 +249,12 @@ function ContactCard({ contact: c, showHospital }) {
       <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">
         {c.office && (
           <a href={`tel:${c.office}`} className="text-xs text-gray-500 hover:text-[#0072CE] transition-colors">
-            📞 <span className="font-mono">{c.office}</span>
+            ☎ <span className="font-mono">{c.office}</span>
           </a>
         )}
         {c.mobile && (
           <a href={`tel:${c.mobile}`} className="text-xs text-gray-500 hover:text-[#0072CE] transition-colors">
-            📱 <span className="font-mono">{c.mobile}</span>
+            ☎ <span className="font-mono">{c.mobile}</span>
           </a>
         )}
       </div>

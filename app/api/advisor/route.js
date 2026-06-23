@@ -88,7 +88,7 @@ function buildDataSummary(hospitalId) {
               ? latest === 0
               : latest >= range.min && latest <= range.max
             : true;
-          summary += `\n  ${range?.label || param}: avg=${avg}, latest=${latest} (${rangeStr})${!inRange ? ' ⚠️ OUT OF RANGE' : ''}`;
+          summary += `\n  ${range?.label || param}: avg=${avg}, latest=${latest} (${rangeStr})${!inRange ? ' !️ OUT OF RANGE' : ''}`;
         }
       }
 
@@ -127,7 +127,7 @@ function buildDataSummary(hospitalId) {
               ? latest === 0
               : latest >= range.min && latest <= range.max
             : true;
-          summary += `\n  ${range?.label || param}: avg=${avg}, latest=${latest} (${rangeStr})${!inRange ? ' ⚠️ OUT OF RANGE' : ''}`;
+          summary += `\n  ${range?.label || param}: avg=${avg}, latest=${latest} (${rangeStr})${!inRange ? ' !️ OUT OF RANGE' : ''}`;
         }
       }
 

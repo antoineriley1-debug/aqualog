@@ -67,7 +67,7 @@ export default function AlertsPage() {
       <main className="flex-1 w-full min-w-0 p-4 md:p-8 pt-16 md:pt-8">
         <div className="mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">⚠️ Alerts</h1>
+            <h1 className="text-2xl font-bold text-gray-900">!️ Alerts</h1>
             <p className="text-gray-500 text-sm mt-1">
               {alerts.filter((a) => !a.acknowledged).length} unacknowledged · {alerts.length} total
             </p>
@@ -82,7 +82,7 @@ export default function AlertsPage() {
                 {testLoading ? (
                   <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
-                  <span>🧪</span>
+                  <span>⚗</span>
                 )}
                 {testLoading ? 'Sending…' : 'Test Alerts'}
               </button>
@@ -90,20 +90,20 @@ export default function AlertsPage() {
                 <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm text-xs space-y-1 max-w-sm">
                   <div className={testResult.email?.ok ? 'text-green-600' : 'text-red-600'}>
                     {testResult.email?.ok
-                      ? `✅ Email sent to ${(testResult.email.recipients || []).join(', ')}`
-                      : `❌ Email: ${testResult.email?.error || 'No recipients'}`}
+                      ? `✓ Email sent to ${(testResult.email.recipients || []).join(', ')}`
+                      : `× Email: ${testResult.email?.error || 'No recipients'}`}
                   </div>
                   <div className={testResult.sms?.ok ? 'text-green-600' : 'text-red-600'}>
                     {testResult.sms?.ok
-                      ? `✅ SMS sent to ${(testResult.sms.recipients || []).join(', ')}`
-                      : `❌ SMS: ${testResult.sms?.error || 'No recipients'}`}
+                      ? `✓ SMS sent to ${(testResult.sms.recipients || []).join(', ')}`
+                      : `× SMS: ${testResult.sms?.error || 'No recipients'}`}
                   </div>
                   <div className="text-gray-400 mt-1">{testResult.timestamp}</div>
                 </div>
               )}
               {testResult?.error && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-xs text-red-600 max-w-sm">
-                  ❌ {testResult.error}
+                  × {testResult.error}
                 </div>
               )}
             </div>
@@ -137,7 +137,7 @@ export default function AlertsPage() {
             <div className="bg-white rounded-xl p-8 text-center text-gray-400">Loading...</div>
           ) : filtered.length === 0 ? (
             <div className="bg-white rounded-xl p-8 text-center text-gray-400 shadow-sm border border-gray-100">
-              {filterAcked === 'unacknowledged' ? '✅ No open alerts' : 'No alerts found'}
+              {filterAcked === 'unacknowledged' ? '✓ No open alerts' : 'No alerts found'}
             </div>
           ) : (
             filtered.map((a) => (
@@ -157,7 +157,7 @@ export default function AlertsPage() {
                         a.kind === 'missed_reading' ? 'bg-amber-100 text-amber-800' :
                         a.system === 'boiler' ? 'bg-orange-100 text-orange-700' : 'bg-blue-100 text-blue-700'
                       }`}>
-                        {a.kind === 'missed_reading' ? `⏱️ ${a.systemLabel || a.system}` : (a.system === 'boiler' ? '🔥 Boiler' : '❄️ Chilled')}
+                        {a.kind === 'missed_reading' ? `⌚️ ${a.systemLabel || a.system}` : (a.system === 'boiler' ? '[BOILER] Boiler' : '[CHILLED]️ Chilled')}
                       </span>
                       <span className="text-xs text-gray-500">
                         {a.shift} shift · {a.date}
@@ -170,7 +170,7 @@ export default function AlertsPage() {
                     </div>
                     {a.kind === 'missed_reading' ? (
                       <div className="text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-                        🚨 {a.message || 'Reading not logged for this shift.'} — log it to clear this alert.
+                        !! {a.message || 'Reading not logged for this shift.'} — log it to clear this alert.
                       </div>
                     ) : (
                       <>
@@ -205,7 +205,7 @@ export default function AlertsPage() {
                     <Link href="/entry" className="flex-shrink-0 bg-amber-100 hover:bg-amber-200 text-amber-800 text-xs px-3 py-2 rounded-lg transition-colors font-semibold">Log reading →</Link>
                   )}
                   {a.acknowledged && (
-                    <span className="flex-shrink-0 text-xs text-green-600 font-medium">✅ Acknowledged</span>
+                    <span className="flex-shrink-0 text-xs text-green-600 font-medium">✓ Acknowledged</span>
                   )}
                 </div>
               </div>

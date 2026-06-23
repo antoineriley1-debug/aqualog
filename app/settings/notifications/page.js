@@ -27,9 +27,9 @@ const THROTTLE_MINUTES = [15, 30, 60, 120];
 const DIGEST_HOURS = [1, 2, 4, 8, 12, 24];
 
 const LEVEL_META = {
-  0: { name: 'Critical', icon: '🔴', desc: 'Legionella, extreme OOR — always immediate, bypasses quiet hours' },
-  1: { name: 'Warning', icon: '🟡', desc: 'Standard OOR — respects throttle + quiet hours' },
-  2: { name: 'Info', icon: '🔵', desc: 'Drift warnings — digest only recommended' },
+  0: { name: 'Critical', icon: '●', desc: 'Legionella, extreme OOR — always immediate, bypasses quiet hours' },
+  1: { name: 'Warning', icon: '●', desc: 'Standard OOR — respects throttle + quiet hours' },
+  2: { name: 'Info', icon: '●', desc: 'Drift warnings — digest only recommended' },
 };
 
 function defaultThrottle() {
@@ -123,13 +123,13 @@ export default function NotificationSettingsPage() {
         }),
       });
       if (res.ok) {
-        setSaveMsg('✅ Settings saved');
+        setSaveMsg('✓ Settings saved');
       } else {
         const d = await res.json();
-        setSaveMsg(`❌ ${d.error || 'Failed to save'}`);
+        setSaveMsg(`× ${d.error || 'Failed to save'}`);
       }
     } catch (e) {
-      setSaveMsg(`❌ ${e.message}`);
+      setSaveMsg(`× ${e.message}`);
     } finally {
       setSaving(false);
       setTimeout(() => setSaveMsg(''), 4000);
@@ -225,10 +225,10 @@ export default function NotificationSettingsPage() {
   }
 
   const tabs = [
-    { id: 'contacts', label: '👥 Contacts' },
-    { id: 'throttle', label: '⏱️ Throttle & Digest' },
-    { id: 'quiet', label: '🌙 Quiet Hours' },
-    { id: 'levels', label: '🚦 Escalation Levels' },
+    { id: 'contacts', label: '○○ Contacts' },
+    { id: 'throttle', label: '⌚️ Throttle & Digest' },
+    { id: 'quiet', label: '◑ Quiet Hours' },
+    { id: 'levels', label: '◉ Escalation Levels' },
   ];
 
   return (
@@ -238,7 +238,7 @@ export default function NotificationSettingsPage() {
         {/* Header */}
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">🔔 Notification Settings</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">⌁ Notification Settings</h1>
             <p className="text-gray-500 text-sm mt-1">Configure contacts, alert frequency, quiet hours & escalation</p>
           </div>
           <div className="flex items-center gap-3">
@@ -249,7 +249,7 @@ export default function NotificationSettingsPage() {
               className="bg-[#0072CE] hover:bg-[#005fa3] text-white px-5 py-2.5 rounded-lg font-medium text-sm transition disabled:opacity-50 flex items-center gap-2"
             >
               {saving && <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-              💾 Save Settings
+              ⏏ Save Settings
             </button>
           </div>
         </div>
@@ -332,7 +332,7 @@ export default function NotificationSettingsPage() {
                 onClick={addContact}
                 className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
               >
-                ➕ Add Contact
+                + Add Contact
               </button>
             </div>
 
@@ -349,7 +349,7 @@ export default function NotificationSettingsPage() {
                         <span className="font-medium text-gray-900 dark:text-white">{c.name || '(unnamed)'}</span>
                         <div className="flex gap-3 mt-1 text-xs text-gray-500">
                           {c.email && <span>✉️ {c.email}</span>}
-                          {c.sms && <span>📱 {c.sms}</span>}
+                          {c.sms && <span>☎ {c.sms}</span>}
                         </div>
                       </div>
                       <button
@@ -385,7 +385,7 @@ export default function NotificationSettingsPage() {
 
                   {lvl === 0 ? (
                     <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 text-sm text-red-700 dark:text-red-300">
-                      ⚠️ Critical alerts <strong>always send immediately</strong> and bypass quiet hours. No throttle configuration needed.
+                      !️ Critical alerts <strong>always send immediately</strong> and bypass quiet hours. No throttle configuration needed.
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -438,7 +438,7 @@ export default function NotificationSettingsPage() {
 
                       {/* SMS settings */}
                       <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
-                        <h3 className="font-medium text-gray-900 dark:text-white mb-3">📱 SMS</h3>
+                        <h3 className="font-medium text-gray-900 dark:text-white mb-3">☎ SMS</h3>
                         <div className="space-y-3">
                           <div>
                             <label className="block text-xs text-gray-500 mb-1">Mode</label>
@@ -493,7 +493,7 @@ export default function NotificationSettingsPage() {
         {/* ── QUIET HOURS TAB ───────────────────────────────────────────── */}
         {activeTab === 'quiet' && (
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">🌙 Quiet Hours</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">◑ Quiet Hours</h2>
             <p className="text-gray-500 text-sm mb-6">
               During quiet hours, SMS alerts are suppressed (queued for morning). Email still sends for Level 0 (Critical).
               Timezone: <strong>America/New_York (ET)</strong>
@@ -569,14 +569,14 @@ export default function NotificationSettingsPage() {
                           <div>
                             <span className="font-medium">{c.name || '(unnamed)'}</span>
                             <span className="text-gray-400 ml-2">
-                              {c.email && `✉️ ${c.email}`} {c.sms && `📱 ${c.sms}`}
+                              {c.email && `✉️ ${c.email}`} {c.sms && `☎ ${c.sms}`}
                             </span>
                           </div>
                           <button
                             onClick={() => removeContactFromLevel(String(lvl), c.email, c.sms)}
                             className="text-red-400 hover:text-red-600 text-xs font-medium"
                           >
-                            ✕
+                            ×
                           </button>
                         </div>
                       ))}

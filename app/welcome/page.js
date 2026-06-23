@@ -16,21 +16,21 @@ function getUser() {
 }
 
 const STEPS = [
-  { id: 'equipment', n: '01', href: '/equipment', icon: '🛠️',
+  { id: 'equipment', n: '01', href: '/equipment', icon: '⚙',
     title: 'Set up your equipment',
     desc: 'Tell FacilityH2O what you run — boilers, chillers, cooling towers, softeners. This is what we keep in range for you.' },
-  { id: 'team', n: '02', href: '/users', icon: '👥',
+  { id: 'team', n: '02', href: '/users', icon: '○○',
     title: 'Add your team',
     desc: 'Invite the operators who log readings each shift. Everyone gets their own secure login.' },
-  { id: 'reading', n: '03', href: '/entry', icon: '💧',
+  { id: 'reading', n: '03', href: '/entry', icon: '[WATER]',
     title: 'Log your first reading',
     desc: 'Watch compliance tracking come alive the moment you save. Out-of-range values flag instantly.' },
 ];
 
 const OUTCOMES = [
-  ['⚡', 'Catch issues early', 'Out-of-range readings flag the second they are logged — not weeks later.'],
-  ['🛡️', 'Always audit-ready', 'Every reading is timestamped and filed. The binder builds itself.'],
-  ['📉', 'Spend less on repairs', 'Proactive water chemistry, for a fraction of what reactive failures cost.'],
+  ['↯', 'Catch issues early', 'Out-of-range readings flag the second they are logged — not weeks later.'],
+  ['⬡️', 'Always audit-ready', 'Every reading is timestamped and filed. The binder builds itself.'],
+  ['↘', 'Spend less on repairs', 'Proactive water chemistry, for a fraction of what reactive failures cost.'],
 ];
 
 export default function WelcomePage() {
@@ -90,7 +90,7 @@ export default function WelcomePage() {
         {/* brand + skip */}
         <div className="fh2o-rise fh2o-d1 flex items-center justify-between mb-12">
           <div className="flex items-center gap-2 text-cyan-200/90 font-semibold tracking-wide">
-            <span className="text-2xl">💧</span> FacilityH2O
+            <span className="text-2xl">[WATER]</span> FacilityH2O
           </div>
           <button onClick={() => router.push('/dashboard')}
             className="text-sm text-blue-200/70 hover:text-white transition">Skip for now →</button>
@@ -156,7 +156,7 @@ export default function WelcomePage() {
         <div className="fh2o-rise fh2o-d4 mt-10">
           {allDone && (
             <div className="rounded-2xl bg-gradient-to-r from-cyan-500/20 to-sky-500/20 border border-cyan-400/40 px-5 py-4 mb-4 text-cyan-100 font-medium">
-              🎉 You’re all set. Everything from here lives in your dashboard.
+              ★ You’re all set. Everything from here lives in your dashboard.
             </div>
           )}
           <button onClick={() => router.push('/dashboard')}

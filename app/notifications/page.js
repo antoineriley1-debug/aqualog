@@ -24,7 +24,7 @@ const TRIGGER_LABELS = {
   critical:     'Critical only',
 };
 
-const CHANNEL_ICONS = { email: '✉️', phone: '📞', sms: '📱' };
+const CHANNEL_ICONS = { email: '✉️', phone: '☎', sms: '☎' };
 
 const DEFAULT_THRESHOLDS = { trending_days: 3, missed_shifts: 1, out_of_range_count: 2, legionella_cfu_alert: 1 };
 const DEFAULT_LEVELS = [
@@ -141,7 +141,7 @@ export default function NotificationsPage() {
           {isOwner && activeTab !== 'overview' && (
             <button onClick={save} disabled={saving}
               className="bg-[#0072CE] text-white px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#005fa3] transition disabled:opacity-50">
-              {saving ? 'Saving...' : '💾 Save Rules'}
+              {saving ? 'Saving...' : '⏏ Save Rules'}
             </button>
           )}
         </div>
@@ -154,8 +154,8 @@ export default function NotificationsPage() {
 
         {/* Tab bar */}
         <div className="flex flex-wrap gap-1 mb-6 border-b border-gray-200 pb-1">
-          <TabBtn active={activeTab==='overview'}  onClick={() => setActiveTab('overview')}>📊 Overview</TabBtn>
-          <TabBtn active={activeTab==='global'}    onClick={() => setActiveTab('global')}>🌐 Global Defaults</TabBtn>
+          <TabBtn active={activeTab==='overview'}  onClick={() => setActiveTab('overview')}>▦ Overview</TabBtn>
+          <TabBtn active={activeTab==='global'}    onClick={() => setActiveTab('global')}>⊕ Global Defaults</TabBtn>
           <div className="w-px bg-gray-200 mx-1" />
           {HOSPITALS.map(h => (
             <TabBtn key={h.id} active={activeTab===`hospital:${h.id}`} onClick={() => setActiveTab(`hospital:${h.id}`)}>
@@ -172,7 +172,7 @@ export default function NotificationsPage() {
 
             {/* Global summary row */}
             <SummaryCard
-              label="🌐 Global Defaults"
+              label="⊕ Global Defaults"
               thresholds={global.thresholds || DEFAULT_THRESHOLDS}
               levels={global.levels || DEFAULT_LEVELS}
               onEdit={() => setActiveTab('global')}
@@ -188,7 +188,7 @@ export default function NotificationsPage() {
               return (
                 <SummaryCard
                   key={h.id}
-                  label={`🏥 ${h.name}`}
+                  label={`[SITE] ${h.name}`}
                   subLabel={h.code}
                   thresholds={t}
                   levels={l}
@@ -219,7 +219,7 @@ export default function NotificationsPage() {
 
             {/* Thresholds */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-              <h2 className="font-bold text-gray-800 mb-4">📏 Alert Thresholds</h2>
+              <h2 className="font-bold text-gray-800 mb-4">≡ Alert Thresholds</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {[
                   { key:'trending_days',        label:'Trending days before escalation',        unit:'days',     min:1, max:14, hint:'Consecutive days going wrong direction' },
@@ -328,11 +328,11 @@ export default function NotificationsPage() {
                               {c.hospital && <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full ml-2">{c.hospital.toUpperCase()}</span>}
                               <div className="flex gap-3 mt-0.5">
                                 {c.email && <span className="text-xs text-gray-500">✉️ {c.email}</span>}
-                                {c.phone && <span className="text-xs text-gray-500">📞 {c.phone}</span>}
-                                {c.sms   && <span className="text-xs text-gray-500">📱 {c.sms}</span>}
+                                {c.phone && <span className="text-xs text-gray-500">☎ {c.phone}</span>}
+                                {c.sms   && <span className="text-xs text-gray-500">☎ {c.sms}</span>}
                               </div>
                             </div>
-                            {isOwner && <button onClick={() => removeContact(level.id, c.id)} className="text-red-400 hover:text-red-600 text-xs ml-4">✕</button>}
+                            {isOwner && <button onClick={() => removeContact(level.id, c.id)} className="text-red-400 hover:text-red-600 text-xs ml-4">×</button>}
                           </div>
                         ))}
                       </div>
@@ -391,7 +391,7 @@ function SummaryCard({ label, subLabel, thresholds, levels, contacts, onEdit, is
         </div>
         {isOwner && (
           <button onClick={onEdit} className="text-xs text-[#0072CE] hover:underline px-3 py-1 rounded border border-[#0072CE]/30 hover:bg-blue-50 transition">
-            ✏️ Edit
+            ✎️ Edit
           </button>
         )}
       </div>

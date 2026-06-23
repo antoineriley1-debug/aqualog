@@ -57,7 +57,7 @@ function OORBanner({ alerts: alertsProp }) {
   if (unacknowledged.length === 0) {
     return (
       <div className="mb-4 bg-green-50 border border-green-200 rounded-xl px-4 py-3 flex items-center gap-2">
-        <span className="text-green-700 text-sm font-medium">✅ All facilities within range</span>
+        <span className="text-green-700 text-sm font-medium">✓ All facilities within range</span>
       </div>
     );
   }
@@ -90,7 +90,7 @@ function OORBanner({ alerts: alertsProp }) {
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
           <div className="font-semibold text-red-800 text-sm">
-            🚨 {unacknowledged.length} Out-of-Range Alert{unacknowledged.length !== 1 ? 's' : ''}
+            !! {unacknowledged.length} Out-of-Range Alert{unacknowledged.length !== 1 ? 's' : ''}
           </div>
           <div className="text-red-700 text-xs mt-1 leading-relaxed">
             {summaryParts.slice(0, 4).join(' · ')}
@@ -234,7 +234,7 @@ export default function DashboardPage() {
                         </span>
                       )}
                       <span className={`text-xs ${overdue ? 'text-orange-600' : 'text-green-600'}`}>
-                        {overdue ? '⚠️ Overdue' : '✅ Current'}
+                        {overdue ? '!️ Overdue' : '✓ Current'}
                       </span>
                     </div>
                   </div>
@@ -286,10 +286,10 @@ export default function DashboardPage() {
 
         {myAlerts.length > 0 && (
           <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
-            <div className="font-semibold text-red-700 mb-2">⚠️ {myAlerts.length} Open Alert{myAlerts.length > 1 ? 's' : ''}</div>
+            <div className="font-semibold text-red-700 mb-2">!️ {myAlerts.length} Open Alert{myAlerts.length > 1 ? 's' : ''}</div>
             {myAlerts.slice(0, 3).map((a) => (
               <div key={a.id} className="text-sm text-red-600">
-                {a.system === 'boiler' ? '🔥' : '❄️'} {a.shift} shift — {a.outOfRange?.map((o) => o.label).join(', ')}
+                {a.system === 'boiler' ? '[BOILER]' : '[CHILLED]️'} {a.shift} shift — {a.outOfRange?.map((o) => o.label).join(', ')}
               </div>
             ))}
           </div>
@@ -315,7 +315,7 @@ export default function DashboardPage() {
         {myAlerts.length > 0 && (
           <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-8 flex items-center justify-between">
             <div>
-              <div className="font-semibold text-red-900">🔔 {myAlerts.length} Open Alert{myAlerts.length !== 1 ? 's' : ''}</div>
+              <div className="font-semibold text-red-900">⌁ {myAlerts.length} Open Alert{myAlerts.length !== 1 ? 's' : ''}</div>
               <div className="text-sm text-red-700">Out-of-range readings detected. Review and acknowledge.</div>
             </div>
             <Link href="/alerts" className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg transition">
@@ -334,7 +334,7 @@ export default function DashboardPage() {
                 <div key={e.id} className="px-5 py-3 flex items-center justify-between text-sm">
                   <div>
                     <span className="font-medium text-gray-800">
-                      {e.system === 'boiler' ? '🔥 Boiler' : '❄️ Chilled Water'}
+                      {e.system === 'boiler' ? '[BOILER] Boiler' : '[CHILLED]️ Chilled Water'}
                     </span>
                     <span className="text-gray-400 ml-2">· {e.shift} shift · {e.date}</span>
                   </div>

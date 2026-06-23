@@ -53,11 +53,11 @@ const PARAM_CONFIG = {
 
 // Display label + icon for every system, including custom Enterprise equipment (filled in at runtime).
 const SYSTEM_META = {
-  boiler:        { label: 'Boiler Water',  icon: '🔥' },
-  chilled:       { label: 'Chilled Water', icon: '❄️' },
-  cooling_tower: { label: 'Cooling Tower', icon: '🌫️' },
-  condensate:    { label: 'Condensate',    icon: '💧' },
-  softener:      { label: 'Softener',      icon: '🧂' },
+  boiler:        { label: 'Boiler Water',  icon: '[BOILER]' },
+  chilled:       { label: 'Chilled Water', icon: '[CHILLED]️' },
+  cooling_tower: { label: 'Cooling Tower', icon: '[STEAM]️' },
+  condensate:    { label: 'Condensate',    icon: '[WATER]' },
+  softener:      { label: 'Softener',      icon: '[SALT]' },
 };
 const BUILTIN_SYSTEMS = ['boiler','chilled','cooling_tower','condensate','softener'];
 
@@ -108,7 +108,7 @@ export default function TrendsPage() {
           for (const c of custom) {
             if (!c || !c.key) continue;
             systems.push(c.key);
-            SYSTEM_META[c.key] = { label: c.label || c.key, icon: c.icon || '🔧' };
+            SYSTEM_META[c.key] = { label: c.label || c.key, icon: c.icon || '⚙' };
             // custom params: [{key,label,min,max}] — fall back to a generic value param
             mergedCfg[c.key] = Array.isArray(c.params) && c.params.length
               ? c.params.map(p => ({ key: p.key, label: p.label || p.key, min: p.min ?? 0, max: p.max ?? 0 }))
@@ -203,7 +203,7 @@ export default function TrendsPage() {
       <div className="bg-white border border-gray-200 rounded-lg p-3 shadow text-sm">
         <div className="font-medium text-gray-700">{label}</div>
         <div className={`font-bold ${inRange ? 'text-green-600' : 'text-red-600'}`}>
-          {currentParam?.label}: {val} {inRange ? '🟢' : '🔴'}
+          {currentParam?.label}: {val} {inRange ? '●' : '●'}
         </div>
         {currentParam && (
           <div className="text-gray-400 text-xs">Range: {currentParam.min}–{currentParam.max}</div>
@@ -239,7 +239,7 @@ export default function TrendsPage() {
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0072CE]"
           >
             {availableSystems.map((sys) => (
-              <option key={sys} value={sys}>{(SYSTEM_META[sys]?.icon || '🔧')} {(SYSTEM_META[sys]?.label || sys)}</option>
+              <option key={sys} value={sys}>{(SYSTEM_META[sys]?.icon || '⚙')} {(SYSTEM_META[sys]?.label || sys)}</option>
             ))}
           </select>
           <select
@@ -328,8 +328,8 @@ export default function TrendsPage() {
                 parseFloat(stats.compliance) >= 90 ? 'text-amber-600' : 'text-red-600'
               }`}>{stats.compliance}%</div>
               <div className="text-xs text-gray-400 mt-1">
-                {parseFloat(stats.compliance) >= 95 ? '✅ Excellent' :
-                 parseFloat(stats.compliance) >= 90 ? '⚠️ Acceptable' : '🔴 Needs attention'}
+                {parseFloat(stats.compliance) >= 95 ? '✓ Excellent' :
+                 parseFloat(stats.compliance) >= 90 ? '!️ Acceptable' : '● Needs attention'}
                 {' '}· {stats.oor} OOR
               </div>
             </div>

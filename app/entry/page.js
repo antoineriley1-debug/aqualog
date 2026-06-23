@@ -65,7 +65,7 @@ function RangeGauge({ value, min, max, targetZero }) {
         </div>
         <div className="flex justify-between text-xs text-gray-400 mt-1">
           <span>Target: 0</span>
-          <span>{hasValue ? (inRange ? '✅ In Range' : '🔴 Out of Range') : ''}</span>
+          <span>{hasValue ? (inRange ? '✓ In Range' : '● Out of Range') : ''}</span>
         </div>
       </div>
     );
@@ -100,7 +100,7 @@ function RangeGauge({ value, min, max, targetZero }) {
       </div>
       <div className="flex justify-between text-xs text-gray-400 mt-1">
         <span>{min}</span>
-        <span>{hasValue ? (inRange ? '✅ In Range' : '🔴 Out of Range') : 'Enter value'}</span>
+        <span>{hasValue ? (inRange ? '✓ In Range' : '● Out of Range') : 'Enter value'}</span>
         <span>{max}</span>
       </div>
     </div>
@@ -181,7 +181,7 @@ function EntryForm() {
     return [];
   };
   const labelFor = (sys) => (SYSTEM_META[sys]?.label) || customLib[sys]?.label || sys;
-  const iconFor  = (sys) => (SYSTEM_META[sys]?.icon)  || customLib[sys]?.icon  || '🔧';
+  const iconFor  = (sys) => (SYSTEM_META[sys]?.icon)  || customLib[sys]?.icon  || '⚙';
   const fields = fieldsFor(system);
   const availableSystems = (facilitySystems && facilitySystems.length) ? facilitySystems : SYSTEM_ORDER;
 
@@ -218,7 +218,7 @@ function EntryForm() {
           const params = (c.params && c.params.length ? c.params : (libDef?.params || []));
           libMap[key] = {
             label: c.label || libDef?.label || key,
-            icon: c.icon || libDef?.icon || '🔧',
+            icon: c.icon || libDef?.icon || '⚙',
             fields: params.map(p => ({ key: p.key, label: p.label + (p.unit ? ` (${p.unit})` : ''), min: p.min, max: p.max, unit: p.unit, targetZero: (p.min === 0 && p.max === 0) })),
           };
           customKeys.push(key);
@@ -351,10 +351,10 @@ function EntryForm() {
 
           {success && (
             <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl mb-4 font-medium text-sm">
-              ✅ Entry saved successfully!
+              ✓ Entry saved successfully!
               {driftWarnings.length > 0 && (
                 <div className="mt-2 text-sm text-yellow-700 bg-yellow-50 border border-yellow-200 rounded-lg p-2">
-                  ⚠️ Trend warnings:
+                  !️ Trend warnings:
                   {driftWarnings.map((w, i) => (
                     <div key={i} className="mt-1">• {w.param} trending {w.direction}</div>
                   ))}
@@ -572,8 +572,8 @@ function EntryForm() {
                           inRange === null ? 'text-gray-400' : inRange ? 'text-green-600' : 'text-red-600'
                         }`}>
                           {val || '—'} {f.unit && <span className="text-gray-400 text-xs">{f.unit}</span>}
-                          {inRange === false && ' 🔴'}
-                          {inRange === true && ' 🟢'}
+                          {inRange === false && ' ●'}
+                          {inRange === true && ' ●'}
                         </span>
                       </div>
                     );
@@ -598,7 +598,7 @@ function EntryForm() {
                 {/* Corrective action for OOR */}
                 {hasOOR && (
                   <div className="px-4 py-3 border-t border-orange-200 bg-orange-50">
-                    <div className="text-sm font-semibold text-orange-700 mb-2">⚠️ Out-of-range values detected</div>
+                    <div className="text-sm font-semibold text-orange-700 mb-2">!️ Out-of-range values detected</div>
                     <textarea
                       value={caAction}
                       onChange={(e) => setCaAction(e.target.value)}
@@ -617,7 +617,7 @@ function EntryForm() {
                 disabled={submitting || !allFilled}
                 className="w-full mt-6 bg-[#0072CE] hover:bg-[#005fa3] text-white font-bold py-5 rounded-2xl text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
               >
-                {submitting ? 'Saving...' : '✅ Submit Entry'}
+                {submitting ? 'Saving...' : '✓ Submit Entry'}
               </button>
             </WizardStep>
           )}
@@ -674,10 +674,10 @@ function EntryForm() {
 
             {success && (
               <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl mb-6 font-medium">
-                ✅ Entry saved successfully!
+                ✓ Entry saved successfully!
                 {driftWarnings.length > 0 && (
                   <div className="mt-2 text-sm text-yellow-700 bg-yellow-50 border border-yellow-200 rounded-lg p-2">
-                    ⚠️ Trend warnings detected:
+                    !️ Trend warnings detected:
                     {driftWarnings.map((w, i) => (
                       <div key={i} className="mt-1">• {w.param} is trending {w.direction} (current: {w.current}, limit: {w.limit})</div>
                     ))}
@@ -817,7 +817,7 @@ function EntryForm() {
                             }`}
                           />
                           <span className="text-lg flex-shrink-0 w-6 text-center">
-                            {inRange === null ? '' : inRange ? '🟢' : '🔴'}
+                            {inRange === null ? '' : inRange ? '●' : '●'}
                           </span>
                         </div>
                       </div>
@@ -840,7 +840,7 @@ function EntryForm() {
               <div className={`border rounded-xl overflow-hidden transition-all ${hasOOR ? 'border-orange-300 bg-orange-50' : 'border-gray-200'}`}>
                 <button type="button" onClick={() => setShowCorrectiveAction(!showCorrectiveAction)}
                   className={`w-full flex items-center justify-between px-4 py-3 text-sm font-semibold text-left transition-colors ${hasOOR ? 'text-orange-700' : 'text-gray-700'}`}>
-                  <span>{hasOOR ? '⚠️ Log Corrective Action (out-of-range values detected)' : '🔧 Log Corrective Action (optional)'}</span>
+                  <span>{hasOOR ? '!️ Log Corrective Action (out-of-range values detected)' : '⚙ Log Corrective Action (optional)'}</span>
                   <span className="text-gray-400">{showCorrectiveAction ? '▲' : '▼'}</span>
                 </button>
                 {showCorrectiveAction && (

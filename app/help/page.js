@@ -11,20 +11,20 @@ const GROUPS = [
   {
     heading: 'For everyone',
     items: [
-      { icon: '➕', q: 'How do I log a reading?',
+      { icon: '+', q: 'How do I log a reading?',
         steps: [
           'Tap New Entry in the sidebar.',
           'Choose the facility, the shift (1st / 2nd / 3rd), and the system you are logging — boiler, chilled water, cooling tower, condensate, or softener.',
           'Enter each chemistry value and tap Save.',
           'If any value falls outside its limits, an out-of-range alert is raised automatically. You do not need to do anything extra.',
         ] },
-      { icon: '📋', q: 'How do I see past readings?',
+      { icon: '≡', q: 'How do I see past readings?',
         steps: [
           'Open History to see logged readings.',
           'Filter by facility, system, or date to narrow the list.',
           'Open Trends to see the same data as charts over time.',
         ] },
-      { icon: '🧪', q: 'What is the Chemistry Advisor?',
+      { icon: '⚗', q: 'What is the Chemistry Advisor?',
         steps: [
           'The Advisor reviews a reading and explains what it means in plain language.',
           'Use it when a value looks off and you want guidance on likely cause and corrective action.',
@@ -34,25 +34,25 @@ const GROUPS = [
   {
     heading: 'For administrators',
     items: [
-      { icon: '🔔', q: 'How do alerts work, and how do I clear them?',
+      { icon: '⌁', q: 'How do alerts work, and how do I clear them?',
         steps: [
           'Open Alerts. Two kinds appear: out-of-range (a reading outside its limits) and missed-shift (a required reading was not logged).',
           'Tap Acknowledge on an alert once it has been handled. It is recorded and removed from the unacknowledged list.',
           'The red number on the Alerts menu item is the count still waiting to be acknowledged.',
         ] },
-      { icon: '📊', q: 'How do I run a report?',
+      { icon: '▦', q: 'How do I run a report?',
         steps: [
           'Open Reports and choose the facility and date range.',
           'A compliance summary is produced that you can save or print as a PDF.',
           'End-of-day and weekly summaries are also sent automatically by email when enabled.',
         ] },
-      { icon: '⏱️', q: 'Shift schedules, equipment, and alert rules',
+      { icon: '⌚️', q: 'Shift schedules, equipment, and alert rules',
         steps: [
           'Shift Schedules sets which shifts each facility runs, so missed-shift alerts fire at the right times.',
           'Facility Equipment controls which systems each facility tracks.',
           'Alert Rules and Notification Settings control who is emailed and when.',
         ] },
-      { icon: '💧', q: 'ST108, Legionella, and Chain of Custody',
+      { icon: '[WATER]', q: 'ST108, Legionella, and Chain of Custody',
         steps: [
           'These are specialized regulatory logs, each with its own menu item.',
           'ST108 has its own log, report, and self-audit views.',
@@ -63,7 +63,7 @@ const GROUPS = [
   {
     heading: 'For the account owner',
     items: [
-      { icon: '🏢', q: 'How do I manage client accounts?',
+      { icon: '[ORG]', q: 'How do I manage client accounts?',
         steps: [
           'Open Accounts. Each client is one row showing its tier, status, and asset cap.',
           'Use the tier dropdown to upgrade or downgrade. This also resets that client to the features defined for the new tier.',
@@ -71,7 +71,7 @@ const GROUPS = [
           'Reset PW sends a password reset to the contact login for that client.',
           'Audit expands a per-account trail of everything that has happened on that account.',
         ] },
-      { icon: '🎚️', q: 'What do the tiers mean?',
+      { icon: '≡️', q: 'What do the tiers mean?',
         steps: [
           'A tier sets how many equipment units (boilers, softeners, chillers, and so on) a client can track.',
           'Tier 1 allows 3 units, Tier 2 allows 10, and Tier 3 is unlimited.',

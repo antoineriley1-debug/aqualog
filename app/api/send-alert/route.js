@@ -61,13 +61,13 @@ export async function GET(request) {
 
     const emailResult = await sendEmail({
       to: allEmails,
-      subject: `🧪 Test Alert — ${BRAND.name}`,
+      subject: `⚗ Test Alert — ${BRAND.name}`,
       text: 'This is a test alert. If you received this, email alerts are working!',
     });
 
     const smsResult = await sendSMS(
       contacts.sms,
-      `🧪 SMS Test from ${BRAND.name} — alerts working!`
+      `⚗ SMS Test from ${BRAND.name} — alerts working!`
     );
 
     return NextResponse.json({

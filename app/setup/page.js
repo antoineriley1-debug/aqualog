@@ -106,7 +106,7 @@ function AccountSetupContent() {
       <div className="max-w-2xl mx-auto">
         <div className="mb-8 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl">💧</span>
+            <span className="text-2xl">[WATER]</span>
             <span className="text-lg font-bold text-[#164E63]">FacilityH2O</span>
           </Link>
           <span className="text-sm font-medium text-[#0891B2] bg-[#F0F9FF] border border-[#0891B2]/30 px-3 py-1 rounded-full">

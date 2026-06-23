@@ -102,13 +102,13 @@ export async function GET(request) {
 
     const emailResult = await sendEmail({
       to: emails.length ? emails : 'antoine.riley.1@gmail.com',
-      subject: '🧪 DEBUG TEST ALERT — MedStar H2O',
+      subject: '⚗ DEBUG TEST ALERT — MedStar H2O',
       text: 'This is a debug test email. If you received this, email alerts are working.',
     });
 
     const smsResult = await sendSMS(
       sms,
-      '🧪 DEBUG TEST: SMS alerts working on medstarh20log.com'
+      '⚗ DEBUG TEST: SMS alerts working on medstarh20log.com'
     );
 
     return NextResponse.json({

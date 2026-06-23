@@ -83,7 +83,7 @@ function ResetPasswordContent() {
 
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="text-5xl mb-3">💧</div>
+          <div className="text-5xl mb-3">[WATER]</div>
           <h1 className="text-3xl font-bold text-[#003366]">FacilityH2O</h1>
           <p className="text-gray-500 mt-1 text-sm">FacilityH2O Inc. · Water Chemistry Portal</p>
         </div>

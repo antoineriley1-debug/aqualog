@@ -21,7 +21,7 @@ async function run() {
     }
 
     console.log(`Report for ${data.date}: ${data.missedCount} missed, ${data.outOfRangeCount} out-of-range.`);
-    console.log(data.email && data.email.ok ? `✅ Emailed to ${data.email.recipients?.join(', ')}` : `⚠️  Email NOT sent: ${data.email?.error || 'unknown'}`);
+    console.log(data.email && data.email.ok ? `✓ Emailed to ${data.email.recipients?.join(', ')}` : `!️  Email NOT sent: ${data.email?.error || 'unknown'}`);
   } catch (err) {
     console.error('Error running end-of-day report:', err.message);
     process.exit(1);

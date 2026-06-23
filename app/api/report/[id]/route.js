@@ -208,7 +208,7 @@ export async function GET(request, { params }) {
   @media print{ .noprint{display:none} body{padding:0} }
 </style></head><body>
   <div class="head">
-    <div class="brand">💧 FacilityH2O<small>Water Chemistry Compliance Portal</small></div>
+    <div class="brand">[WATER] FacilityH2O<small>Water Chemistry Compliance Portal</small></div>
     <div style="text-align:right"><h1>${esc(hospital.name)}</h1>
       <div class="meta">Monthly Compliance Report — ${esc(monthLabel(month))}<br>Generated ${new Date().toLocaleString('en-US')} · ${entries.length} readings · ${totalExceed} out-of-range</div></div>
   </div>

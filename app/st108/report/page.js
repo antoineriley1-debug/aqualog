@@ -145,14 +145,14 @@ export default function ST108ReportPage() {
               onClick={generate} disabled={loading}
               className="bg-[#0072CE] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-[#005fa3] transition disabled:opacity-50"
             >
-              {loading ? 'Generating...' : '📊 Generate Report'}
+              {loading ? 'Generating...' : '▦ Generate Report'}
             </button>
             {generated && (
               <button
                 onClick={() => window.print()}
                 className="bg-gray-700 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-gray-900 transition"
               >
-                🖨️ Print / Save PDF
+                ⎙️ Print / Save PDF
               </button>
             )}
           </div>
@@ -208,7 +208,7 @@ export default function ST108ReportPage() {
             {entries.some((e) => e.corrections?.length > 0) && (
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <h3 className="text-base font-bold text-gray-800 mb-4 flex items-center gap-2">
-                  ⚠️ Corrective Action Log
+                  !️ Corrective Action Log
                   <span className="text-xs font-normal text-gray-400">(ST108 §9 — required documentation)</span>
                 </h3>
                 <table className="w-full text-sm">
@@ -281,7 +281,7 @@ export default function ST108ReportPage() {
                           <td className="py-2 pr-3">{e.evaluation?.passCount}/{e.evaluation?.total}</td>
                           <td className="py-2">
                             {e.evaluation?.failCount > 0
-                              ? <span className="text-red-600 font-bold">✗ {e.evaluation.failCount} FAIL</span>
+                              ? <span className="text-red-600 font-bold">× {e.evaluation.failCount} FAIL</span>
                               : <span className="text-green-600 font-bold">✓ PASS</span>
                             }
                           </td>

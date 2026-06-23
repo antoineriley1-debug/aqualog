@@ -211,7 +211,7 @@ export default function HistoryPage() {
                             {oor > 0 ? (
                               <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-medium">{oor} OOR</span>
                             ) : (
-                              <span className="text-xs text-green-600">✅ All OK</span>
+                              <span className="text-xs text-green-600">✓ All OK</span>
                             )}
                           </td>
                           <td className="px-4 py-3 text-gray-400 text-xs">{isExpanded ? '▲' : '▼'}</td>
@@ -228,7 +228,7 @@ export default function HistoryPage() {
                                     <div key={f.key} className={`p-2 rounded-lg text-xs ${inRange === null ? 'bg-gray-50 border border-gray-200' : inRange ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
                                       <div className="text-gray-500">{f.label}</div>
                                       <div className={`font-bold text-sm mt-0.5 ${inRange === null ? 'text-gray-400' : inRange ? 'text-green-700' : 'text-red-700'}`}>
-                                        {val ?? '—'} {inRange === null ? '' : inRange ? '🟢' : '🔴'}
+                                        {val ?? '—'} {inRange === null ? '' : inRange ? '●' : '●'}
                                       </div>
                                       <div className="text-gray-400">{rangeStr}</div>
                                     </div>
@@ -242,11 +242,11 @@ export default function HistoryPage() {
                               )}
                               {e.correctiveAction?.taken && (
                                 <div className="text-sm bg-orange-50 border border-orange-200 rounded-lg px-3 py-2 mt-2">
-                                  <div className="font-semibold text-orange-800 mb-1">🔧 Corrective Action Taken</div>
+                                  <div className="font-semibold text-orange-800 mb-1">⚙ Corrective Action Taken</div>
                                   <div className="text-orange-900"><span className="font-medium">Action:</span> {e.correctiveAction.action}</div>
                                   {e.correctiveAction.actionBy && <div className="text-orange-700 text-xs mt-0.5">By: {e.correctiveAction.actionBy} · {e.correctiveAction.actionAt ? new Date(e.correctiveAction.actionAt).toLocaleString() : ''}</div>}
                                   {e.correctiveAction.followUpRequired && (
-                                    <div className="mt-1 text-orange-800 font-medium">⚠️ Follow-up Required{e.correctiveAction.followUpNotes ? `: ${e.correctiveAction.followUpNotes}` : ''}</div>
+                                    <div className="mt-1 text-orange-800 font-medium">!️ Follow-up Required{e.correctiveAction.followUpNotes ? `: ${e.correctiveAction.followUpNotes}` : ''}</div>
                                   )}
                                 </div>
                               )}

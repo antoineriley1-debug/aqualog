@@ -15,7 +15,7 @@ export default function TermsPage() {
             ← Back to FacilityH2O
           </Link>
           <div className="flex items-center gap-3 mb-2">
-            <span className="text-2xl">💧</span>
+            <span className="text-2xl">[WATER]</span>
             <span className="text-sm font-semibold text-cyan-200 uppercase tracking-widest">FacilityH2O</span>
           </div>
           <h1 className="text-4xl font-extrabold mb-2">Terms of Service</h1>
@@ -67,7 +67,7 @@ export default function TermsPage() {
             </p>
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mt-4">
               <p className="text-amber-800 text-sm font-medium">
-                ⚠️ The Service is intended for facility infrastructure management only. It is not a clinical system and does not interface with patient care systems or electronic health records.
+                !️ The Service is intended for facility infrastructure management only. It is not a clinical system and does not interface with patient care systems or electronic health records.
               </p>
             </div>
           </section>
@@ -150,7 +150,7 @@ export default function TermsPage() {
 
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-400 py-10 text-center text-sm">
-        <div className="text-white font-bold text-lg mb-2">💧 FacilityH2O</div>
+        <div className="text-white font-bold text-lg mb-2">[WATER] FacilityH2O</div>
         <div className="flex items-center justify-center gap-4 mt-2 flex-wrap">
           <Link href="/" className="hover:text-white transition">Home</Link>
           <span className="text-gray-600">·</span>

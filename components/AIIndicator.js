@@ -10,10 +10,10 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 const MODEL_CONFIG = {
-  openclaw: { color: 'bg-purple-500', label: 'OpenClaw', icon: '⚡' },
-  claude: { color: 'bg-green-500', label: 'Claude', icon: '✨' },
-  gemini: { color: 'bg-blue-500', label: 'Gemini', icon: '🌟' },
-  ollama: { color: 'bg-gray-500', label: 'Ollama', icon: '⚙️' },
+  openclaw: { color: 'bg-purple-500', label: 'OpenClaw', icon: '↯' },
+  claude: { color: 'bg-green-500', label: 'Claude', icon: '✦' },
+  gemini: { color: 'bg-blue-500', label: 'Gemini', icon: '★' },
+  ollama: { color: 'bg-gray-500', label: 'Ollama', icon: '⚙' },
 };
 
 export default function AIIndicator() {

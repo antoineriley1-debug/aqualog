@@ -103,7 +103,7 @@ export async function GET(request) {
   // ── Build the email ───────────────────────────────────────────────────────
   const html = buildHtml(reportDate, missed, outOfRange);
   const text = buildText(reportDate, missed, outOfRange);
-  const subject = `📋 ${BRAND.name} End-of-Day Report — ${reportDate} | ${missed.length} missed, ${outOfRange.length} out-of-range`;
+  const subject = `≡ ${BRAND.name} End-of-Day Report — ${reportDate} | ${missed.length} missed, ${outOfRange.length} out-of-range`;
 
   const recipients = getEnvEmails();
   const emailResult = await sendEmail({ to: recipients, subject, text, html });
@@ -147,24 +147,24 @@ function buildText(date, missed, oor) {
 
 function buildHtml(date, missed, oor) {
   const missedRows = missed.length ? missed.map((m) => {
-    const what = [m.missingBoiler && '🔥 Boiler', m.missingChilled && '❄️ Chilled'].filter(Boolean).join(', ');
+    const what = [m.missingBoiler && '[BOILER] Boiler', m.missingChilled && '[CHILLED]️ Chilled'].filter(Boolean).join(', ');
     const dir = m.director ? `${m.director.name}${m.director.email ? `<br/><a href="mailto:${m.director.email}" style="color:#0072CE">${m.director.email}</a>` : ''}` : '<span style="color:#999">—</span>';
     return `<tr style="border-bottom:1px solid #f0f0f0"><td style="padding:9px 12px;font-weight:600;color:#111">${m.hospital}</td><td style="padding:9px 12px;color:#444">${m.shift}</td><td style="padding:9px 12px;color:#dc2626;font-weight:600">${what}</td><td style="padding:9px 12px;font-size:13px;color:#444">${dir}</td></tr>`;
-  }).join('') : `<tr><td colspan="4" style="padding:14px 12px;color:#16a34a;text-align:center">✅ All shifts logged — no missed readings.</td></tr>`;
+  }).join('') : `<tr><td colspan="4" style="padding:14px 12px;color:#16a34a;text-align:center">✓ All shifts logged — no missed readings.</td></tr>`;
 
   const oorRows = oor.length ? oor.map((o) => {
     const paramLines = o.params.map((p) => {
       const range = p.targetZero ? `target 0${p.unit ? ' ' + p.unit : ''}` : `${p.min}–${p.max}${p.unit ? ' ' + p.unit : ''}`;
       return `<div><strong>${p.label}:</strong> <span style="color:#dc2626;font-weight:600">${p.value}${p.unit}</span> <span style="color:#888;font-size:12px">(ok: ${range})</span></div>`;
     }).join('');
-    return `<tr style="border-bottom:1px solid #f0f0f0"><td style="padding:9px 12px;font-weight:600;color:#111">${o.hospital}</td><td style="padding:9px 12px;color:#444">${o.system === 'boiler' ? '🔥 Boiler' : '❄️ Chilled'} · ${o.shift}</td><td style="padding:9px 12px;font-size:13px">${paramLines}</td><td style="padding:9px 12px;font-size:13px;color:#444">${o.operatorName || '—'}</td></tr>`;
-  }).join('') : `<tr><td colspan="4" style="padding:14px 12px;color:#16a34a;text-align:center">✅ No out-of-range readings.</td></tr>`;
+    return `<tr style="border-bottom:1px solid #f0f0f0"><td style="padding:9px 12px;font-weight:600;color:#111">${o.hospital}</td><td style="padding:9px 12px;color:#444">${o.system === 'boiler' ? '[BOILER] Boiler' : '[CHILLED]️ Chilled'} · ${o.shift}</td><td style="padding:9px 12px;font-size:13px">${paramLines}</td><td style="padding:9px 12px;font-size:13px;color:#444">${o.operatorName || '—'}</td></tr>`;
+  }).join('') : `<tr><td colspan="4" style="padding:14px 12px;color:#16a34a;text-align:center">✓ No out-of-range readings.</td></tr>`;
 
   const th = 'padding:9px 12px;text-align:left;color:#555;font-size:11px;text-transform:uppercase;letter-spacing:0.5px';
   return `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;background:#f8f9fa;margin:0;padding:20px">
   <div style="max-width:740px;margin:0 auto;background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
     <div style="background:${BRAND.headerColor};padding:20px 28px">
-      <div style="color:white;font-size:22px;font-weight:bold">💧 ${BRAND.name} — End-of-Day Report</div>
+      <div style="color:white;font-size:22px;font-weight:bold">[WATER] ${BRAND.name} — End-of-Day Report</div>
       <div style="color:${BRAND.accentColor};font-size:13px;margin-top:4px">${date} · ${BRAND.tagline}</div>
     </div>
     <div style="padding:24px 28px">

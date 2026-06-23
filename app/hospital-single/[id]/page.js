@@ -111,7 +111,7 @@ export default function HospitalSinglePage() {
               const params = Array.isArray(c.params) ? c.params : [];
               const ranges = {};
               for (const pr of params) ranges[pr.key] = { min: pr.min, max: pr.max, unit: pr.unit, label: pr.label };
-              return { key: c.key, label: c.label || c.key, icon: c.icon || '🔧', ranges };
+              return { key: c.key, label: c.label || c.key, icon: c.icon || '⚙', ranges };
             }).filter(it => Object.keys(it.ranges).length);
             setCustomEquip(items);
           } else {
@@ -138,7 +138,7 @@ export default function HospitalSinglePage() {
         <div className="bg-white p-4 rounded border border-red-200 max-w-2xl text-sm font-mono">
           <p><strong>Requested ID:</strong> {id}</p>
           <p><strong>Available IDs:</strong> {availableIds}</p>
-          <p><strong>Match Check:</strong> {id && HOSPITALS.some(h => h.id === id) ? '✓ Match exists' : '✗ No match'}</p>
+          <p><strong>Match Check:</strong> {id && HOSPITALS.some(h => h.id === id) ? '✓ Match exists' : '× No match'}</p>
         </div>
       </div>
     );
@@ -174,7 +174,7 @@ export default function HospitalSinglePage() {
                 onClick={() => setShowDropdown(!showDropdown)}
                 className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg font-semibold text-sm transition border border-gray-300"
               >
-                🏥 Switch Hospital ▼
+                [SITE] Switch Hospital ▼
               </button>
               
               {showDropdown && (
@@ -216,7 +216,7 @@ export default function HospitalSinglePage() {
               // fall back to the original full-size file if an optimized one is missing, then to a placeholder
               if (!e.target.dataset.fallback) { e.target.dataset.fallback = '1'; e.target.src = `/hospitals/${id}.jpg`; return; }
               e.target.onerror = null;
-              e.target.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 300%22%3E%3Crect fill=%22%23e5f0f7%22 width=%22800%22 height=%22300%22/%3E%3Ctext x=%22400%22 y=%22150%22 font-size=%2280%22 text-anchor=%22middle%22 fill=%22%238b9dae%22%3E🏥%3C/text%3E%3C/svg%3E';
+              e.target.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 300%22%3E%3Crect fill=%22%23e5f0f7%22 width=%22800%22 height=%22300%22/%3E%3Ctext x=%22400%22 y=%22150%22 font-size=%2280%22 text-anchor=%22middle%22 fill=%22%238b9dae%22%3E[SITE]%3C/text%3E%3C/svg%3E';
               setImgLoaded(true);
             }}
           />
@@ -264,7 +264,7 @@ export default function HospitalSinglePage() {
         {/* ===== LIVE VISUAL COMMAND STRIP ===== */}
         <div className="mb-8 bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
           <div className="bg-gradient-to-r from-[#0072CE] to-cyan-500 px-6 py-4 flex items-center justify-between">
-            <h2 className="text-lg font-bold text-white">⚡ Live System Health</h2>
+            <h2 className="text-lg font-bold text-white">↯ Live System Health</h2>
             <span className="text-xs text-cyan-50">animated · last readings</span>
           </div>
           <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -301,7 +301,7 @@ export default function HospitalSinglePage() {
         {customEquip.length > 0 && (
           <div className="mb-8 bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
             <div className="bg-gradient-to-r from-[#0891B2] to-teal-500 px-6 py-4 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-white">➕ Additional Equipment</h2>
+              <h2 className="text-lg font-bold text-white">+ Additional Equipment</h2>
               <span className="text-xs text-teal-50">specialized · last readings</span>
             </div>
             <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -344,7 +344,7 @@ export default function HospitalSinglePage() {
             {/* Recent Entries */}
             <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
               <div className="bg-green-50 border-b border-green-200 px-6 py-4">
-                <h2 className="text-lg font-bold text-gray-900">📊 Recent Entries</h2>
+                <h2 className="text-lg font-bold text-gray-900">▦ Recent Entries</h2>
               </div>
             <div className="divide-y divide-gray-100">
               {loading ? (
@@ -365,7 +365,7 @@ export default function HospitalSinglePage() {
                   >
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <span className="font-semibold text-sm text-gray-900">
-                        {e.system === 'boiler' ? '🔥' : '❄️'} {e.shift}
+                        {e.system === 'boiler' ? '[BOILER]' : '[CHILLED]️'} {e.shift}
                       </span>
                       <span className={`text-sm font-bold ${pHColor(e.values?.ph)}`}>
                         {e.values?.ph ?? '—'}
@@ -376,7 +376,7 @@ export default function HospitalSinglePage() {
                     </div>
                     {e.hasAlerts && (
                       <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded mt-2 inline-block font-semibold">
-                        ⚠️ Out of Range
+                        !️ Out of Range
                       </span>
                     )}
                   </Link>
@@ -388,14 +388,14 @@ export default function HospitalSinglePage() {
             {/* Trends Preview */}
             <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
               <div className="bg-purple-50 border-b border-purple-200 px-6 py-4">
-                <h2 className="text-lg font-bold text-gray-900">📈 Trends</h2>
+                <h2 className="text-lg font-bold text-gray-900">↗ Trends</h2>
               </div>
               <div className="p-6">
                 <div className="space-y-4 mb-6">
                   {/* Boiler Trend */}
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-semibold text-gray-900">🔥 Boiler pH</span>
+                      <span className="text-sm font-semibold text-gray-900">[BOILER] Boiler pH</span>
                       <span className={`text-sm font-bold ${pHColor(lastBoilerPH)}`}>
                         {lastBoilerPH ? `${lastBoilerPH}` : '—'}
                       </span>
@@ -412,7 +412,7 @@ export default function HospitalSinglePage() {
                   {/* Chilled Trend */}
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-semibold text-gray-900">❄️ Chilled pH</span>
+                      <span className="text-sm font-semibold text-gray-900">[CHILLED]️ Chilled pH</span>
                       <span className={`text-sm font-bold ${pHColor(lastChilledPH)}`}>
                         {lastChilledPH ? `${lastChilledPH}` : '—'}
                       </span>
@@ -443,7 +443,7 @@ export default function HospitalSinglePage() {
             <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
               <div className={`border-b px-6 py-4 ${unacknowledgedAlerts.length > 0 ? 'bg-red-50 border-red-200' : 'bg-green-50 border-green-200'}`}>
                 <h2 className="text-lg font-bold text-gray-900">
-                  {unacknowledgedAlerts.length > 0 ? '🚨 Open Alerts' : '✅ No Alerts'}
+                  {unacknowledgedAlerts.length > 0 ? '!! Open Alerts' : '✓ No Alerts'}
                 </h2>
               </div>
               <div className="p-6">
@@ -462,7 +462,7 @@ export default function HospitalSinglePage() {
                           <div className="flex items-start justify-between gap-2">
                             <div>
                               <div className="text-sm font-semibold text-red-900">
-                                {a.system === 'boiler' ? '🔥' : '❄️'} {a.shift}
+                                {a.system === 'boiler' ? '[BOILER]' : '[CHILLED]️'} {a.shift}
                               </div>
                               <div className="text-xs text-red-700 mt-1">
                                 {a.outOfRange?.map((o) => o.label).join(', ')}
@@ -486,7 +486,7 @@ export default function HospitalSinglePage() {
             {/* Chain of Custody Card */}
             <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
               <div className="bg-orange-50 border-b border-orange-200 px-6 py-4">
-                <h2 className="text-lg font-bold text-gray-900">📋 Chain of Custody</h2>
+                <h2 className="text-lg font-bold text-gray-900">≡ Chain of Custody</h2>
               </div>
               <div className="p-6">
                 <p className="text-sm text-gray-600 mb-4">Generate a chain of custody form for lab samples. Print and send with your sample containers.</p>
@@ -505,7 +505,7 @@ export default function HospitalSinglePage() {
                 onClick={() => setShowTestGuide(!showTestGuide)}
                 className="w-full bg-blue-50 border-b border-blue-200 px-6 py-4 flex items-center justify-between hover:bg-blue-100 transition"
               >
-                <h2 className="text-lg font-bold text-gray-900">🧪 Testing Procedures</h2>
+                <h2 className="text-lg font-bold text-gray-900">⚗ Testing Procedures</h2>
                 <span className={`text-xl text-gray-600 transition-transform ${showTestGuide ? 'rotate-180' : ''}`}>
                   ▼
                 </span>
@@ -560,7 +560,7 @@ export default function HospitalSinglePage() {
 
             {/* Quick Links */}
             <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6">
-              <h3 className="text-sm font-bold text-gray-900 mb-4">⚡ Quick Links</h3>
+              <h3 className="text-sm font-bold text-gray-900 mb-4">↯ Quick Links</h3>
               <div className="space-y-2">
                 <Link
                   href="/entry"

@@ -88,7 +88,7 @@ export default function ST108EntryPage() {
         {/* Header */}
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-1">
-            <span className="text-2xl">💧</span>
+            <span className="text-2xl">[WATER]</span>
             <h1 className="text-2xl font-bold text-gray-900">AAMI ST108 Water Quality Log</h1>
             <span className="text-xs bg-[#003366] text-white px-2 py-1 rounded-full font-medium">ANSI/AAMI ST108:2023</span>
           </div>
@@ -97,12 +97,12 @@ export default function ST108EntryPage() {
 
         {saved && (
           <div className="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2">
-            ✅ Entry saved successfully — recorded for ST108 compliance reporting.
+            ✓ Entry saved successfully — recorded for ST108 compliance reporting.
           </div>
         )}
         {error && (
           <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm font-medium">
-            ⚠️ {error}
+            !️ {error}
           </div>
         )}
 
@@ -238,7 +238,7 @@ export default function ST108EntryPage() {
                             : isPass ? <span className="text-green-600 text-xs font-bold">✓ PASS</span>
                             : (
                               <div>
-                                <span className="text-red-600 text-xs font-bold">✗ FAIL</span>
+                                <span className="text-red-600 text-xs font-bold">× FAIL</span>
                                 {caLevel && (
                                   <div className={`text-xs mt-0.5 font-semibold
                                     ${caLevel === CA_LEVELS?.critical ? 'text-red-700' : caLevel?.color === 'orange' ? 'text-orange-600' : 'text-yellow-600'}`}>
@@ -261,7 +261,7 @@ export default function ST108EntryPage() {
           {eval_.failCount > 0 && (
             <div className="bg-red-50 border border-red-200 rounded-xl p-6">
               <h2 className="text-sm font-bold text-red-700 mb-2 flex items-center gap-2">
-                ⚠️ Out-of-Specification — Corrective Action Required (ST108 §9)
+                !️ Out-of-Specification — Corrective Action Required (ST108 §9)
               </h2>
               <ul className="text-sm text-red-700 mb-4 space-y-1">
                 {eval_.failures.map((f, i) => (
@@ -302,7 +302,7 @@ export default function ST108EntryPage() {
               disabled={saving || !hospital || !pou}
               className="bg-[#0072CE] text-white px-8 py-3 rounded-xl font-semibold hover:bg-[#005fa3] transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {saving ? 'Saving...' : '💾 Save ST108 Entry'}
+              {saving ? 'Saving...' : '⏏ Save ST108 Entry'}
             </button>
             <span className="text-xs text-gray-400">
               Entry will be logged with timestamp and included in monthly compliance report

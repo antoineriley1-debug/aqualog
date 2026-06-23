@@ -36,7 +36,7 @@ export default function ContractPage() {
   const endDate = (() => { try { const d=new Date(f.startDate); d.setFullYear(d.getFullYear()+1); return d.toISOString().slice(0,10); } catch { return '____'; } })();
   const B = ({v}) => <span style={{borderBottom:'1px solid #475569',padding:'0 6px',fontWeight:600}}>{v && String(v).trim() ? v : '\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0'}</span>;
 
-  if (forbidden) return <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'sans-serif'}}><div style={{textAlign:'center'}}><div style={{fontSize:40}}>🔒</div><b>Owner only</b><div style={{color:'#64748b',fontSize:14}}>The contract generator is restricted to the account owner.</div></div></div>;
+  if (forbidden) return <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'sans-serif'}}><div style={{textAlign:'center'}}><div style={{fontSize:40}}>■</div><b>Owner only</b><div style={{color:'#64748b',fontSize:14}}>The contract generator is restricted to the account owner.</div></div></div>;
   if (!ok) return <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',color:'#94a3b8'}}>Loading…</div>;
 
   return (
@@ -48,7 +48,7 @@ export default function ContractPage() {
             <div style={{fontWeight:800,fontSize:18,marginBottom:2}}>One-Year Service Agreement</div>
             <div style={{fontSize:12,color:'#bae6fd'}}>Fill in the client details, then Print → Save as PDF to send.</div>
           </div>
-          <button onClick={() => window.print()} style={{background:'#0891b2',color:'#fff',border:'none',borderRadius:10,padding:'12px 22px',fontWeight:700,cursor:'pointer'}}>🖨 Print / Save PDF</button>
+          <button onClick={() => window.print()} style={{background:'#0891b2',color:'#fff',border:'none',borderRadius:10,padding:'12px 22px',fontWeight:700,cursor:'pointer'}}>⎙ Print / Save PDF</button>
         </div>
         <div style={{maxWidth:900,margin:'14px auto 0',display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10}}>
           {[['client','Client legal name'],['clientAddress','Client address'],['signer','Client signer name'],['signerTitle','Signer title'],['facilities','# Facilities'],['users','# Users'],['annualFee','Annual fee (e.g. $12,000)'],['startDate','Start date']].map(([k,label]) => (
@@ -72,7 +72,7 @@ export default function ContractPage() {
       {/* The contract document */}
       <div style={{maxWidth:760,margin:'24px auto',background:'#fff',padding:'56px 64px',boxShadow:'0 10px 40px rgba(0,0,0,.1)',color:'#1e293b',fontSize:14,lineHeight:1.7}}>
         <div style={{textAlign:'center',borderBottom:'2px solid #003366',paddingBottom:16,marginBottom:24}}>
-          <div style={{fontSize:22,fontWeight:800,color:'#003366'}}>💧 FacilityH2O</div>
+          <div style={{fontSize:22,fontWeight:800,color:'#003366'}}>[WATER] FacilityH2O</div>
           <div style={{fontSize:16,fontWeight:700,marginTop:10}}>SOFTWARE SERVICES AGREEMENT</div>
           <div style={{fontSize:12,color:'#64748b'}}>One-Year Term</div>
         </div>

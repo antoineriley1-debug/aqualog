@@ -393,7 +393,7 @@ function generateDOHReport(hospital, entries, alerts, parameterStats, compliance
     <!-- Alerts if any -->
     ${alerts.length > 0 ? `
     <div class="alerts-section">
-      <div class="alerts-title">⚠️  OPEN ALERTS / CORRECTIVE ACTIONS REQUIRED</div>
+      <div class="alerts-title">!️  OPEN ALERTS / CORRECTIVE ACTIONS REQUIRED</div>
       ${alerts.map((a, i) => `
         <div style="margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dotted #666;">
           <strong>${i + 1}. ${a.type || 'Alert'}:</strong> ${a.message || 'Details unavailable'}<br>
@@ -711,31 +711,31 @@ function generateJointCommissionReport(hospital, entries, alerts, parameterStats
       <div class="section-title">EC.02.05.02 Compliance Checklist</div>
       <div class="checklist">
         <div class="checklist-item">
-          <div class="checkbox">☑</div>
+          <div class="checkbox">✓</div>
           <span><strong>Water Management Program (WMP)</strong> – Written program in place and current</span>
         </div>
         <div class="checklist-item">
-          <div class="checkbox">☑</div>
+          <div class="checkbox">✓</div>
           <span><strong>ST108 Monitoring</strong> – Water quality tested per schedule for all water types</span>
         </div>
         <div class="checklist-item">
-          <div class="checkbox">☑</div>
+          <div class="checkbox">✓</div>
           <span><strong>Treatment Equipment</strong> – RO/DI and sterilization systems maintained</span>
         </div>
         <div class="checklist-item">
-          <div class="checkbox">☑</div>
+          <div class="checkbox">✓</div>
           <span><strong>Lab Testing</strong> – Microbial and chemical results documented with chain of custody</span>
         </div>
         <div class="checklist-item">
-          <div class="checkbox">☑</div>
+          <div class="checkbox">✓</div>
           <span><strong>Corrective Actions</strong> – Out-of-spec results trigger documented actions within 24h</span>
         </div>
         <div class="checklist-item">
-          <div class="checkbox">☑</div>
+          <div class="checkbox">✓</div>
           <span><strong>Documentation</strong> – All records retained minimum 3 years, accessible for surveys</span>
         </div>
         <div class="checklist-item">
-          <div class="checkbox">☑</div>
+          <div class="checkbox">✓</div>
           <span><strong>Staff Competency</strong> – Personnel trained and competent in water management</span>
         </div>
       </div>

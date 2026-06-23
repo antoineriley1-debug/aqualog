@@ -12,13 +12,13 @@ function getUser() {
 }
 
 const EVENT_TYPE_STYLES = {
-  auth:    { bg: 'bg-blue-100',   text: 'text-blue-700',   label: '🔐 Auth' },
-  entry:   { bg: 'bg-green-100',  text: 'text-green-700',  label: '📝 Entry' },
-  alert:   { bg: 'bg-orange-100', text: 'text-orange-700', label: '🔔 Alert' },
-  user:    { bg: 'bg-purple-100', text: 'text-purple-700', label: '👤 User' },
-  action:  { bg: 'bg-teal-100',   text: 'text-teal-700',   label: '🔧 Action' },
-  st108:   { bg: 'bg-cyan-100',   text: 'text-cyan-700',   label: '💧 ST108' },
-  legionella: { bg: 'bg-red-100', text: 'text-red-700',    label: '🦠 WMP' },
+  auth:    { bg: 'bg-blue-100',   text: 'text-blue-700',   label: '⚿ Auth' },
+  entry:   { bg: 'bg-green-100',  text: 'text-green-700',  label: '✎ Entry' },
+  alert:   { bg: 'bg-orange-100', text: 'text-orange-700', label: '⌁ Alert' },
+  user:    { bg: 'bg-purple-100', text: 'text-purple-700', label: '○ User' },
+  action:  { bg: 'bg-teal-100',   text: 'text-teal-700',   label: '⚙ Action' },
+  st108:   { bg: 'bg-cyan-100',   text: 'text-cyan-700',   label: '[WATER] ST108' },
+  legionella: { bg: 'bg-red-100', text: 'text-red-700',    label: '⌬ WMP' },
 };
 
 export default function AuditPage() {
@@ -118,14 +118,14 @@ export default function AuditPage() {
               className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0072CE]"
             >
               <option value="">All Types</option>
-              <option value="auth">🔐 Auth (all)</option>
+              <option value="auth">⚿ Auth (all)</option>
               <option value="login">✓ Logins (success)</option>
-              <option value="login_failed">✗ Failed logins</option>
-              <option value="entry">📝 Entries</option>
-              <option value="alert">🔔 Alerts</option>
-              <option value="user">👤 User changes</option>
-              <option value="st108">💧 ST108</option>
-              <option value="legionella">🦠 WMP/Legionella</option>
+              <option value="login_failed">× Failed logins</option>
+              <option value="entry">✎ Entries</option>
+              <option value="alert">⌁ Alerts</option>
+              <option value="user">○ User changes</option>
+              <option value="st108">[WATER] ST108</option>
+              <option value="legionella">⌬ WMP/Legionella</option>
             </select>
             <select
               value={filterHospital}
@@ -218,8 +218,8 @@ export default function AuditPage() {
                         </td>
                         <td className="px-4 py-3 text-xs">
                           {log.outcome === 'SUCCESS' && <span className="text-green-600 font-bold">✓ Success</span>}
-                          {log.outcome === 'FAILED'  && <span className="text-red-600 font-bold">✗ Failed</span>}
-                          {log.outcome === 'ERROR'   && <span className="text-orange-600 font-bold">⚠ Error</span>}
+                          {log.outcome === 'FAILED'  && <span className="text-red-600 font-bold">× Failed</span>}
+                          {log.outcome === 'ERROR'   && <span className="text-orange-600 font-bold">! Error</span>}
                           {!log.outcome && <span className="text-gray-300">—</span>}
                         </td>
                       </tr>

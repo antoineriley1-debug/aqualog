@@ -104,7 +104,7 @@ export async function GET(request) {
   const recipients = getEnvEmails();
   const emailResult = await sendEmail({
     to: recipients,
-    subject: `⚠️ ${BRAND.name}: ${missing.length} Missed ${shiftToCheck} Shift Reading${missing.length > 1 ? 's' : ''} — ${checkDate}`,
+    subject: `!️ ${BRAND.name}: ${missing.length} Missed ${shiftToCheck} Shift Reading${missing.length > 1 ? 's' : ''} — ${checkDate}`,
     html: emailBody,
   });
   const status = getNotifyStatus();
@@ -132,7 +132,7 @@ function buildEmailBody(shift, date, missing) {
   };
 
   const rows = missing.map(m => {
-    const missed = [m.missingBoiler && '🔥 Boiler', m.missingChilled && '❄️ Chilled'].filter(Boolean).join(', ');
+    const missed = [m.missingBoiler && '[BOILER] Boiler', m.missingChilled && '[CHILLED]️ Chilled'].filter(Boolean).join(', ');
     const dirInfo = m.director
       ? `${m.director.name}<br/>${[m.director.office, m.director.mobile].filter(Boolean).join(' / ')}<br/><a href="mailto:${m.director.email}">${m.director.email}</a>`
       : '<span style="color:#999">—</span>';
@@ -151,12 +151,12 @@ function buildEmailBody(shift, date, missing) {
 <body style="font-family:Arial,sans-serif;background:#f8f9fa;margin:0;padding:20px">
   <div style="max-width:700px;margin:0 auto;background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
     <div style="background:${BRAND.headerColor};padding:20px 28px">
-      <div style="color:white;font-size:22px;font-weight:bold">💧 ${BRAND.name}</div>
+      <div style="color:white;font-size:22px;font-weight:bold">[WATER] ${BRAND.name}</div>
       <div style="color:${BRAND.accentColor};font-size:13px;margin-top:4px">${BRAND.tagline}</div>
     </div>
     <div style="padding:24px 28px">
       <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:16px 20px;margin-bottom:24px">
-        <div style="font-size:18px;font-weight:700;color:#dc2626">⚠️ Missed ${shift} Shift Readings</div>
+        <div style="font-size:18px;font-weight:700;color:#dc2626">!️ Missed ${shift} Shift Readings</div>
         <div style="color:#666;margin-top:6px;font-size:14px">
           ${shift} Shift (${shiftTimes[shift]}) · ${date} · ${missing.length} facilit${missing.length !== 1 ? 'ies' : 'y'} missing
         </div>

@@ -29,7 +29,7 @@ const sections = [
     ],
   },
   {
-    title: '📋 Acceptable Use Policy',
+    title: '≡ Acceptable Use Policy',
     effective: 'Effective: April 2026',
     content: [
       {
@@ -55,7 +55,7 @@ const sections = [
     ],
   },
   {
-    title: '🗄️ Data Retention Policy',
+    title: '️ Data Retention Policy',
     effective: 'Effective: April 2026',
     content: [
       {
@@ -81,7 +81,7 @@ const sections = [
     ],
   },
   {
-    title: '🔒 System Security Policy',
+    title: '■ System Security Policy',
     effective: 'Effective: April 2026',
     content: [
       {
@@ -111,7 +111,7 @@ const sections = [
     ],
   },
   {
-    title: '🔏 Privacy Notice',
+    title: '■ Privacy Notice',
     effective: 'Effective: April 2026',
     content: [
       {

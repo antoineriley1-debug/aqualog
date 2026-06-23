@@ -92,12 +92,12 @@ export async function GET(request) {
       return `• Alert at ${a.hospitalName || 'unknown'}`;
     }).join('\n');
 
-    const subject = `📋 ${BRAND.name} Alert Digest — ${alerts.length} alert${alerts.length > 1 ? 's' : ''} | ${now}`;
+    const subject = `≡ ${BRAND.name} Alert Digest — ${alerts.length} alert${alerts.length > 1 ? 's' : ''} | ${now}`;
     const text = `ALERT DIGEST — ${BRAND.name}\n\n${alerts.length} alert(s) since last digest:\n\n${alertSummary}\n\nReview details at your ${BRAND.name} portal.\n\n— ${BRAND.name} Alert System`;
     const html = `
       <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
         <div style="background:#0072CE;color:white;padding:16px;border-radius:8px 8px 0 0">
-          <h2 style="margin:0">📋 Alert Digest</h2>
+          <h2 style="margin:0">≡ Alert Digest</h2>
           <p style="margin:4px 0 0;opacity:0.8;font-size:13px">${alerts.length} queued alert${alerts.length > 1 ? 's' : ''} · ${now}</p>
         </div>
         <div style="border:1px solid #e0e0e0;border-top:none;padding:20px;border-radius:0 0 8px 8px;background:#fff">
@@ -116,7 +116,7 @@ export async function GET(request) {
 
   // Send digest SMS
   for (const [sms, alerts] of Object.entries(bySms)) {
-    const smsText = `📋 ${BRAND.name} Digest: ${alerts.length} alert(s). ${alerts.slice(0, 3).map(a => a.hospitalName || 'alert').join(', ')}${alerts.length > 3 ? '...' : ''}. Check portal.`;
+    const smsText = `≡ ${BRAND.name} Digest: ${alerts.length} alert(s). ${alerts.slice(0, 3).map(a => a.hospitalName || 'alert').join(', ')}${alerts.length > 3 ? '...' : ''}. Check portal.`;
     await sendSMS([sms], smsText);
   }
 

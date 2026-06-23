@@ -62,4 +62,4 @@ hospitals.forEach((h) => {
   console.log(`✓ Created ${h.id}.jpg`);
 });
 
-console.log(`\n✅ Created ${hospitals.length} hospital placeholder images`);
+console.log(`\n✓ Created ${hospitals.length} hospital placeholder images`);

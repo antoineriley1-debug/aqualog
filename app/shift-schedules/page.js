@@ -53,7 +53,7 @@ export default function ShiftSchedulesPage() {
   };
 
   if (loading) return <div className="flex min-h-screen"><Sidebar /><div className="flex-1 p-8 text-gray-400">Loading…</div></div>;
-  if (forbidden) return <div className="flex min-h-screen"><Sidebar /><div className="flex-1 flex items-center justify-center"><div className="text-center"><div className="text-4xl mb-3">🔒</div><b className="text-gray-900">Admins only</b><div className="text-sm text-gray-500 mt-1">Shift schedules are managed by administrators.</div></div></div></div>;
+  if (forbidden) return <div className="flex min-h-screen"><Sidebar /><div className="flex-1 flex items-center justify-center"><div className="text-center"><div className="text-4xl mb-3">■</div><b className="text-gray-900">Admins only</b><div className="text-sm text-gray-500 mt-1">Shift schedules are managed by administrators.</div></div></div></div>;
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -61,13 +61,13 @@ export default function ShiftSchedulesPage() {
       <main className="flex-1 w-full min-w-0 p-4 md:p-8 pt-16 md:pt-8">
         <button onClick={() => router.back()} className="text-sm text-gray-500 hover:text-gray-900 mb-4 inline-flex items-center gap-1">← Back</button>
         <div className="mb-5">
-          <h1 className="text-2xl font-bold text-gray-900">⏱️ Shift Schedules</h1>
+          <h1 className="text-2xl font-bold text-gray-900">⌚️ Shift Schedules</h1>
           <p className="text-gray-500 text-sm mt-1">Set each facility's shift hours and timezone. Readings not logged by a shift's end become missed-reading alerts.</p>
         </div>
 
         {/* HOW THIS WORKS */}
         <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 mb-6 max-w-3xl">
-          <div className="font-bold text-blue-900 mb-2 flex items-center gap-2">📘 How shift schedules work</div>
+          <div className="font-bold text-blue-900 mb-2 flex items-center gap-2">▪ How shift schedules work</div>
           <ol className="list-decimal list-inside space-y-1.5 text-sm text-blue-900/90">
             <li><b>Each facility has three shifts</b> (1st, 2nd, 3rd). For every shift you set a <b>Start</b> and <b>End</b> time — the window operators are expected to log a reading in.</li>
             <li><b>Set the timezone</b> (top-right of each facility card) so shift windows follow that facility's local clock. Daylight saving is handled automatically.</li>
@@ -82,7 +82,7 @@ export default function ShiftSchedulesPage() {
 
         {facilities.length === 0 && (
           <div className="bg-white border border-gray-200 rounded-2xl p-8 text-center max-w-3xl">
-            <div className="text-3xl mb-2">🏥</div>
+            <div className="text-3xl mb-2">[SITE]</div>
             <div className="font-semibold text-gray-900">No facilities available to edit</div>
             <div className="text-sm text-gray-500 mt-1">Your account doesn't have any facilities assigned yet. If you expect to see facilities here, check that you're signed in to the right account, or contact your administrator.</div>
           </div>

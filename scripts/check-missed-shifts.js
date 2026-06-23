@@ -19,7 +19,7 @@ async function run() {
     const data = await res.json();
 
     if (data.missing && data.missing.length > 0) {
-      console.log(`⚠️  ${data.missing.length} hospitals missed ${data.shift} shift readings:`);
+      console.log(`!️  ${data.missing.length} hospitals missed ${data.shift} shift readings:`);
       data.missing.forEach(m => {
         const missed = [m.missingBoiler && 'Boiler', m.missingChilled && 'Chilled'].filter(Boolean).join(', ');
         console.log(`  - ${m.hospital} [${m.code}]: ${missed}`);
@@ -27,9 +27,9 @@ async function run() {
           console.log(`    Director: ${m.director.name} | ${m.director.office || m.director.mobile || 'No phone'}`);
         }
       });
-      console.log(data.emailSent ? '✅ Alert email sent.' : '⚠️  Email not configured (no RESEND_API_KEY).');
+      console.log(data.emailSent ? '✓ Alert email sent.' : '!️  Email not configured (no RESEND_API_KEY).');
     } else {
-      console.log(`✅ All hospitals logged ${data.shift} shift readings for ${data.date}.`);
+      console.log(`✓ All hospitals logged ${data.shift} shift readings for ${data.date}.`);
     }
   } catch (err) {
     console.error('Error checking missed shifts:', err.message);

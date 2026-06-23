@@ -45,7 +45,7 @@ export default function TierGate({ requiredTier = 'professional', user, children
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow p-8 max-w-md text-center">
-          <div className="text-4xl mb-4">🔒</div>
+          <div className="text-4xl mb-4">■</div>
           <h2 className="text-2xl font-bold text-gray-900 mb-3">Premium Feature</h2>
           <p className="text-gray-600 mb-4">
             This feature is available on <strong>{tierNames[requiredTier]}</strong> plans and above.

@@ -38,8 +38,8 @@ export const RANGES = {
 };
 
 const SYSTEM_LABELS = {
-  boiler: '🔥 Boiler', chilled: '❄️ Chilled', cooling_tower: '🌫️ Cooling Tower',
-  condensate: '💧 Condensate', softener: '🧂 Softener',
+  boiler: '[BOILER] Boiler', chilled: '[CHILLED]️ Chilled', cooling_tower: '[STEAM]️ Cooling Tower',
+  condensate: '[WATER] Condensate', softener: '[SALT] Softener',
 };
 
 const inRange = (v, r) => v != null && Number.isFinite(+v) && +v >= r.min && +v <= r.max;

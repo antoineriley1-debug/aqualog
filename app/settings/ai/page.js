@@ -194,7 +194,7 @@ export default function AISettingsPage() {
                         <strong className={`${MODEL_COLORS[model.name].text}`}>{model.label}</strong>
                       </div>
                       <p className="text-sm text-gray-600 mt-1">{model.description}</p>
-                      {!model.available && <p className="text-sm text-red-600 mt-1">⚠️ {model.error}</p>}
+                      {!model.available && <p className="text-sm text-red-600 mt-1">!️ {model.error}</p>}
                     </div>
                   </div>
                 </label>
@@ -288,7 +288,7 @@ export default function AISettingsPage() {
                       }`}>
                         {testResults[model.name].success
                           ? '✓ ' + testResults[model.name].message
-                          : '✗ ' + testResults[model.name].error}
+                          : '× ' + testResults[model.name].error}
                       </p>
                     )}
                   </div>

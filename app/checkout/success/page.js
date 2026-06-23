@@ -106,7 +106,7 @@ function SuccessContent() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white p-6 rounded-lg border border-gray-200">
               <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center">
-                <span className="text-[#0891B2] text-xl mr-2">📊</span>
+                <span className="text-[#0891B2] text-xl mr-2">▦</span>
                 Dashboard Overview
               </h3>
               <p className="text-gray-600 text-sm">
@@ -117,7 +117,7 @@ function SuccessContent() {
 
             <div className="bg-white p-6 rounded-lg border border-gray-200">
               <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center">
-                <span className="text-[#0891B2] text-xl mr-2">⚠️</span>
+                <span className="text-[#0891B2] text-xl mr-2">!️</span>
                 Alerts & Notifications
               </h3>
               <p className="text-gray-600 text-sm">
@@ -128,7 +128,7 @@ function SuccessContent() {
 
             <div className="bg-white p-6 rounded-lg border border-gray-200">
               <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center">
-                <span className="text-[#0891B2] text-xl mr-2">🤖</span>
+                <span className="text-[#0891B2] text-xl mr-2">◎</span>
                 Chemistry Advisor AI
               </h3>
               <p className="text-gray-600 text-sm">
@@ -139,7 +139,7 @@ function SuccessContent() {
 
             <div className="bg-white p-6 rounded-lg border border-gray-200">
               <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center">
-                <span className="text-[#0891B2] text-xl mr-2">📄</span>
+                <span className="text-[#0891B2] text-xl mr-2">◻</span>
                 Compliance Reports
               </h3>
               <p className="text-gray-600 text-sm">
@@ -150,7 +150,7 @@ function SuccessContent() {
 
             <div className="bg-white p-6 rounded-lg border border-gray-200">
               <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center">
-                <span className="text-[#0891B2] text-xl mr-2">📋</span>
+                <span className="text-[#0891B2] text-xl mr-2">≡</span>
                 ST108 & Legionella Tracking
               </h3>
               <p className="text-gray-600 text-sm">
@@ -161,7 +161,7 @@ function SuccessContent() {
 
             <div className="bg-white p-6 rounded-lg border border-gray-200">
               <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center">
-                <span className="text-[#0891B2] text-xl mr-2">🏥</span>
+                <span className="text-[#0891B2] text-xl mr-2">[SITE]</span>
                 Account Management
               </h3>
               <p className="text-gray-600 text-sm">

@@ -129,7 +129,7 @@ export default function LicensingPage() {
   if (forbidden) return (
     <div className="flex"><Sidebar />
       <div className="flex-1 flex items-center justify-center min-h-screen">
-        <div className="text-center"><div className="text-4xl mb-3">🔒</div>
+        <div className="text-center"><div className="text-4xl mb-3">■</div>
           <div className="text-lg font-bold text-gray-900">Owner only</div>
           <div className="text-sm text-gray-500 mt-1">The accounts console is restricted to the account owner.</div></div>
       </div></div>
@@ -175,7 +175,7 @@ export default function LicensingPage() {
 
             {licenses.length === 0 ? (
               <div className="px-6 py-14 text-center">
-                <div className="text-3xl mb-2">🏢</div>
+                <div className="text-3xl mb-2">[ORG]</div>
                 <div className="text-sm text-gray-500 mb-4">No accounts yet. Add your first client.</div>
                 <button onClick={() => setForm(blank())} className="bg-[#0891B2] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-[#0E7490]">+ New Account</button>
               </div>
@@ -276,7 +276,7 @@ export default function LicensingPage() {
           <div className="bg-white w-full max-w-md h-full overflow-y-auto shadow-2xl p-6">
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-lg font-bold text-gray-900">{form.id ? 'Edit Account' : 'New Account'}</h2>
-              <button onClick={() => setForm(null)} className="text-gray-400 hover:text-gray-700 text-xl">✕</button>
+              <button onClick={() => setForm(null)} className="text-gray-400 hover:text-gray-700 text-xl">×</button>
             </div>
             <div className="space-y-4">
               {[['company','Company name','text'],['contactName','Contact name','text'],['contactEmail','Contact email (their login)','email']].map(([k,label,type]) => (

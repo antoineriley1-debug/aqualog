@@ -4,15 +4,15 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 const INDUSTRIES = [
-  { value: 'healthcare', label: '🏥 Healthcare / Hospital' },
-  { value: 'commercial', label: '🏢 Commercial Buildings' },
-  { value: 'manufacturing', label: '🏭 Manufacturing' },
-  { value: 'university', label: '🎓 University / Education' },
-  { value: 'pharmaceutical', label: '🧪 Pharmaceutical' },
-  { value: 'datacenter', label: '💻 Data Center' },
-  { value: 'municipal', label: '🏛 Municipal / Government' },
-  { value: 'hospitality', label: '🏨 Hotel / Hospitality' },
-  { value: 'other', label: '⚙️ Other' },
+  { value: 'healthcare', label: '[SITE] Healthcare / Hospital' },
+  { value: 'commercial', label: '[ORG] Commercial Buildings' },
+  { value: 'manufacturing', label: '[MFG] Manufacturing' },
+  { value: 'university', label: '[EDU] University / Education' },
+  { value: 'pharmaceutical', label: '⚗ Pharmaceutical' },
+  { value: 'datacenter', label: '[DC] Data Center' },
+  { value: 'municipal', label: '[GOVT] Municipal / Government' },
+  { value: 'hospitality', label: '[HOTEL] Hotel / Hospitality' },
+  { value: 'other', label: '⚙ Other' },
 ];
 
 const FACILITY_TYPES = [
@@ -22,18 +22,18 @@ const FACILITY_TYPES = [
 ];
 
 const ALL_SYSTEMS = [
-  { id: 'boiler', label: 'Boiler Water', icon: '🔥', desc: 'Steam & hot water boilers' },
-  { id: 'chilled', label: 'Chilled Water', icon: '❄️', desc: 'Chilled water loops' },
-  { id: 'cooling_tower', label: 'Cooling Towers', icon: '🌀', desc: 'Open cooling systems' },
-  { id: 'domestic', label: 'Domestic Water', icon: '💧', desc: 'Potable water systems' },
-  { id: 'legionella', label: 'Legionella / WMP', icon: '🦠', desc: 'Water management program' },
-  { id: 'st108', label: 'ST108 / Reprocessing', icon: '🔬', desc: 'Medical device reprocessing water' },
+  { id: 'boiler', label: 'Boiler Water', icon: '[BOILER]', desc: 'Steam & hot water boilers' },
+  { id: 'chilled', label: 'Chilled Water', icon: '[CHILLED]️', desc: 'Chilled water loops' },
+  { id: 'cooling_tower', label: 'Cooling Towers', icon: '', desc: 'Open cooling systems' },
+  { id: 'domestic', label: 'Domestic Water', icon: '[WATER]', desc: 'Potable water systems' },
+  { id: 'legionella', label: 'Legionella / WMP', icon: '⌬', desc: 'Water management program' },
+  { id: 'st108', label: 'ST108 / Reprocessing', icon: '⊕', desc: 'Medical device reprocessing water' },
   { id: 'steam', label: 'Steam Distribution', icon: '♨️', desc: 'Steam condensate & distribution' },
-  { id: 'glycol', label: 'Glycol Systems', icon: '🧊', desc: 'Closed loop glycol systems' },
-  { id: 'softener', label: 'Water Softeners', icon: '🏺', desc: 'Ion exchange softening' },
-  { id: 'ro', label: 'RO / DI Systems', icon: '🌊', desc: 'Reverse osmosis & deionization' },
-  { id: 'fire', label: 'Fire Protection', icon: '🚒', desc: 'Sprinkler & standpipe systems' },
-  { id: 'wastewater', label: 'Wastewater', icon: '🔃', desc: 'Wastewater treatment & neutralization' },
+  { id: 'glycol', label: 'Glycol Systems', icon: '[FREEZE]', desc: 'Closed loop glycol systems' },
+  { id: 'softener', label: 'Water Softeners', icon: '', desc: 'Ion exchange softening' },
+  { id: 'ro', label: 'RO / DI Systems', icon: '[WAVE]', desc: 'Reverse osmosis & deionization' },
+  { id: 'fire', label: 'Fire Protection', icon: '', desc: 'Sprinkler & standpipe systems' },
+  { id: 'wastewater', label: 'Wastewater', icon: '', desc: 'Wastewater treatment & neutralization' },
 ];
 
 // 14-day trial = all systems at enterprise tier
@@ -154,7 +154,7 @@ function SignupForm() {
   return (
     <div className="min-h-screen bg-[#F0F9FF] flex flex-col items-center justify-center p-4">
       <Link href="/" className="flex items-center gap-2 mb-8">
-        <span className="text-3xl">💧</span>
+        <span className="text-3xl">[WATER]</span>
         <span className="text-xl font-bold text-[#164E63]">FacilityH2O</span>
       </Link>
 
@@ -319,7 +319,7 @@ function SignupForm() {
             <h2 className="text-xl font-bold text-gray-900 mb-1">Select your water systems</h2>
             <p className="text-gray-400 text-sm mb-2">Select all that apply. FacilityH2O tracks chemistry, compliance, and alerts for each system you choose.</p>
             <div className="inline-flex items-center gap-2 bg-[#0891B2]/10 border border-[#0891B2]/30 rounded-lg px-3 py-1.5 mb-5">
-              <span className="text-[#0891B2] text-xs font-bold">🎯 14-Day Trial</span>
+              <span className="text-[#0891B2] text-xs font-bold"> 14-Day Trial</span>
               <span className="text-gray-500 text-xs">All systems unlocked — select freely</span>
             </div>
 

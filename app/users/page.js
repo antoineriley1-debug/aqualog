@@ -150,7 +150,7 @@ export default function UsersPage() {
             onClick={() => setShowAdd(!showAdd)}
             className="bg-[#0072CE] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#005fa3] transition"
           >
-            {showAdd ? '✕ Cancel' : '+ Add User'}
+            {showAdd ? '× Cancel' : '+ Add User'}
           </button>
         </div>
 
@@ -262,7 +262,7 @@ export default function UsersPage() {
             {isSuperAdmin && admins.length > 0 && (
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="px-5 py-3 bg-[#003366] text-white text-sm font-semibold flex items-center gap-2">
-                  🔐 Admin Accounts
+                  ⚿ Admin Accounts
                   <span className="ml-2 text-xs bg-yellow-400 text-gray-900 px-2 py-0.5 rounded-full font-bold">Owner View Only</span>
                   <span className="ml-auto text-xs text-blue-200 font-normal">Full system access</span>
                 </div>
@@ -278,7 +278,7 @@ export default function UsersPage() {
             {byHospital.map(({ hospital, users: hospUsers }) => (
               <div key={hospital.id} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="px-5 py-3 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700 flex items-center justify-between">
-                  <span>🏥 {hospital.name}</span>
+                  <span>[SITE] {hospital.name}</span>
                   <span className="text-xs text-gray-400">{hospital.code} · {hospUsers.length} user{hospUsers.length !== 1 ? 's' : ''}</span>
                 </div>
                 {hospUsers.length === 0 ? (
@@ -347,7 +347,7 @@ function UserRow({ user, hospitalName, onToggle, onDelete, onReset, onSendReset,
             className="text-xs text-[#0072CE] hover:text-[#005fa3] px-2 py-1 rounded border border-[#0072CE]/30 hover:border-[#0072CE] transition"
             title="Generate a password reset link for this user"
           >
-            🔗 Reset Link
+            ⛓ Reset Link
           </button>
         )}
         {/* Manual password reset: admins can reset operators; super-admin can reset anyone except themselves */}
@@ -356,7 +356,7 @@ function UserRow({ user, hospitalName, onToggle, onDelete, onReset, onSendReset,
             onClick={() => setEditingPw(!editingPw)}
             className="text-xs text-gray-500 hover:text-[#0072CE] px-2 py-1 rounded border border-gray-200 hover:border-[#0072CE] transition"
           >
-            🔑 Set PW
+            ⚿ Set PW
           </button>
         )}
         {/* Disable/Enable: operators only (super-admin can also toggle other admins) */}
@@ -378,7 +378,7 @@ function UserRow({ user, hospitalName, onToggle, onDelete, onReset, onSendReset,
             onClick={() => onDelete(user)}
             className="text-xs text-red-500 hover:text-red-700 px-2 py-1 rounded border border-red-100 hover:border-red-300 hover:bg-red-50 transition"
           >
-            🗑 Remove
+            ⌫ Remove
           </button>
         )}
       </div>

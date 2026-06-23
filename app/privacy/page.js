@@ -15,7 +15,7 @@ export default function PrivacyPage() {
             ← Back to FacilityH2O
           </Link>
           <div className="flex items-center gap-3 mb-2">
-            <span className="text-2xl">💧</span>
+            <span className="text-2xl">[WATER]</span>
             <span className="text-sm font-semibold text-cyan-200 uppercase tracking-widest">FacilityH2O</span>
           </div>
           <h1 className="text-4xl font-extrabold mb-2">Privacy Policy</h1>
@@ -30,7 +30,7 @@ export default function PrivacyPage() {
 
         {/* Healthcare disclaimer banner */}
         <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 mb-10 flex gap-3">
-          <span className="text-2xl flex-shrink-0">🏥</span>
+          <span className="text-2xl flex-shrink-0">[SITE]</span>
           <div>
             <p className="font-bold text-blue-900 mb-1">Healthcare Notice</p>
             <p className="text-blue-800 text-sm leading-relaxed">
@@ -129,12 +129,12 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-bold text-[#164E63] mb-4 pb-2 border-b border-cyan-100">3. How We Use Your Information</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
-                { icon: '📊', title: 'Service Delivery', desc: 'Process and store readings, generate dashboards and reports.' },
-                { icon: '🔔', title: 'Alerts', desc: 'Send automated email alerts when readings fall outside configured thresholds.' },
-                { icon: '📈', title: 'Trend Analysis', desc: 'Generate historical trends and predictive insights about your water systems.' },
-                { icon: '👤', title: 'Account Management', desc: 'Authenticate users, manage permissions, and maintain records.' },
-                { icon: '💳', title: 'Billing', desc: 'Process subscription payments and send invoices via Stripe and Resend.' },
-                { icon: '🔧', title: 'Support', desc: 'Diagnose issues and respond to support requests.' },
+                { icon: '▦', title: 'Service Delivery', desc: 'Process and store readings, generate dashboards and reports.' },
+                { icon: '⌁', title: 'Alerts', desc: 'Send automated email alerts when readings fall outside configured thresholds.' },
+                { icon: '↗', title: 'Trend Analysis', desc: 'Generate historical trends and predictive insights about your water systems.' },
+                { icon: '○', title: 'Account Management', desc: 'Authenticate users, manage permissions, and maintain records.' },
+                { icon: '□', title: 'Billing', desc: 'Process subscription payments and send invoices via Stripe and Resend.' },
+                { icon: '⚙', title: 'Support', desc: 'Diagnose issues and respond to support requests.' },
               ].map(({ icon, title, desc }) => (
                 <div key={title} className="flex gap-3 bg-[#F0F9FF] rounded-xl p-4 border border-cyan-100">
                   <span className="text-xl flex-shrink-0">{icon}</span>
@@ -238,12 +238,12 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-bold text-[#164E63] mb-4 pb-2 border-b border-cyan-100">7. Security Measures</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
-                ['🔒', 'TLS 1.2+ encryption for all data in transit'],
-                ['🗄️', 'AES-256 encryption for data at rest (Supabase)'],
-                ['👥', 'Role-based access controls limiting internal access'],
-                ['🔑', 'Passwords hashed with bcrypt before storage'],
-                ['🛡️', 'MFA available and recommended for all accounts'],
-                ['🔍', 'Regular security assessments and patching'],
+                ['■', 'TLS 1.2+ encryption for all data in transit'],
+                ['️', 'AES-256 encryption for data at rest (Supabase)'],
+                ['○○', 'Role-based access controls limiting internal access'],
+                ['⚿', 'Passwords hashed with bcrypt before storage'],
+                ['⬡️', 'MFA available and recommended for all accounts'],
+                ['⌕', 'Regular security assessments and patching'],
               ].map(([icon, text]) => (
                 <div key={text} className="flex gap-3 items-start bg-[#F0F9FF] rounded-xl p-4 border border-cyan-100">
                   <span className="text-lg">{icon}</span>
@@ -294,7 +294,7 @@ export default function PrivacyPage() {
 
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-400 py-10 text-center text-sm">
-        <div className="text-white font-bold text-lg mb-2">💧 FacilityH2O</div>
+        <div className="text-white font-bold text-lg mb-2">[WATER] FacilityH2O</div>
         <div className="flex items-center justify-center gap-4 mt-2 flex-wrap">
           <Link href="/" className="hover:text-white transition">Home</Link>
           <span className="text-gray-600">·</span>

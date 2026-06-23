@@ -139,7 +139,7 @@ export default function CoCPage() {
         {/* Controls — hidden on print */}
         <div className="mb-6 print:hidden">
           <div className="flex items-center gap-3 mb-2">
-            <span className="text-2xl">🧪</span>
+            <span className="text-2xl">⚗</span>
             <h1 className="text-2xl font-bold text-gray-900">Chain of Custody Form</h1>
             <span className="text-xs bg-purple-700 text-white px-2 py-1 rounded-full font-medium">Lab Sample COC</span>
           </div>
@@ -227,7 +227,7 @@ export default function CoCPage() {
 
             <button onClick={() => window.print()}
               className="bg-[#003366] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#002244] transition">
-              🖨️ Print COC Form
+              ⎙️ Print COC Form
             </button>
           </div>
         </div>
@@ -240,7 +240,7 @@ export default function CoCPage() {
           {/* Header */}
           <div className="flex items-start justify-between p-6 border-b-2 border-gray-800">
             <div>
-              <div className="text-2xl font-black text-[#003366]">💧 FacilityH2O</div>
+              <div className="text-2xl font-black text-[#003366]">[WATER] FacilityH2O</div>
               <div className="text-sm font-semibold text-gray-600">FacilityH2O Inc. · Water Chemistry Portal</div>
               <div className="text-xs text-gray-400 mt-1">Author: Antoine Riley · FacilityH2O</div>
             </div>
@@ -253,7 +253,7 @@ export default function CoCPage() {
               </div>
               {form.priority !== 'routine' && (
                 <div className={`mt-1 inline-block px-3 py-0.5 rounded font-bold text-xs text-white ${form.priority === 'stat' ? 'bg-red-600' : 'bg-orange-500'}`}>
-                  {form.priority === 'stat' ? '🚨 STAT' : '⚡ RUSH'}
+                  {form.priority === 'stat' ? '!! STAT' : '↯ RUSH'}
                 </div>
               )}
             </div>

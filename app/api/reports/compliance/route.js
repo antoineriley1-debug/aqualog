@@ -317,7 +317,7 @@ export async function GET(request) {
 <body>
   <!-- Confidential Header -->
   <div class="header">
-    🔒 CONFIDENTIAL - INTERNAL USE ONLY
+    ■ CONFIDENTIAL - INTERNAL USE ONLY
   </div>
   
   <div class="container">
@@ -419,7 +419,7 @@ export async function GET(request) {
     
     <!-- Audit Trail -->
     <div class="audit-trail">
-      <h2>📋 Access & Modification Audit Trail</h2>
+      <h2>≡ Access & Modification Audit Trail</h2>
       ${auditTrail.map((item) => `
         <div class="audit-item">
           <strong>${item.action}</strong> | ${item.timestamp} | User: ${item.user}

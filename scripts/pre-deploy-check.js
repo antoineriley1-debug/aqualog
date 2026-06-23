@@ -25,13 +25,13 @@ const ROOT = path.resolve(__dirname, '..');
 
 function log(level, message) {
   const colors = {
-    '✅': '\x1b[32m', // Green
-    '❌': '\x1b[31m', // Red
-    '⚠️': '\x1b[33m', // Yellow
+    '✓': '\x1b[32m', // Green
+    '×': '\x1b[31m', // Red
+    '!️': '\x1b[33m', // Yellow
     '\x1b[0m': '\x1b[0m', // Reset
   };
   
-  const icon = level === 'pass' ? '✅' : level === 'fail' ? '❌' : '⚠️';
+  const icon = level === 'pass' ? '✓' : level === 'fail' ? '×' : '!️';
   const color = colors[icon];
   console.log(`${color}${icon}\x1b[0m ${message}`);
 }
@@ -45,7 +45,7 @@ function checkFile(filePath, pattern, shouldNotExist = true) {
       PASSED++;
       return true;
     } else {
-      log('fail', `✗ ${filePath} not found`);
+      log('fail', `× ${filePath} not found`);
       FAILED++;
       return false;
     }
@@ -55,13 +55,13 @@ function checkFile(filePath, pattern, shouldNotExist = true) {
   const matches = content.match(pattern);
   
   if (matches && shouldNotExist) {
-    log('fail', `✗ ${filePath} contains exposed secrets: ${matches[0].substring(0, 50)}...`);
+    log('fail', `× ${filePath} contains exposed secrets: ${matches[0].substring(0, 50)}...`);
     FAILED++;
     return false;
   }
   
   if (!matches && !shouldNotExist) {
-    log('fail', `✗ ${filePath} missing required content`);
+    log('fail', `× ${filePath} missing required content`);
     FAILED++;
     return false;
   }
@@ -88,7 +88,7 @@ function checkEnvironment() {
   }
   
   if (missing.length > 0) {
-    log('fail', `✗ Missing environment variables: ${missing.join(', ')}`);
+    log('fail', `× Missing environment variables: ${missing.join(', ')}`);
     FAILED++;
     return false;
   }
@@ -103,7 +103,7 @@ function checkNodeVersion() {
   const major = parseInt(nodeVersion.slice(1));
   
   if (major < 18) {
-    log('fail', `✗ Node.js version ${nodeVersion} is outdated (requires 18+)`);
+    log('fail', `× Node.js version ${nodeVersion} is outdated (requires 18+)`);
     FAILED++;
     return false;
   }
@@ -123,7 +123,7 @@ function checkDependencies() {
     const missing = required.filter(dep => !deps[dep]);
     
     if (missing.length > 0) {
-      log('fail', `✗ Missing critical dependencies: ${missing.join(', ')}`);
+      log('fail', `× Missing critical dependencies: ${missing.join(', ')}`);
       FAILED++;
       return false;
     }
@@ -132,7 +132,7 @@ function checkDependencies() {
     PASSED++;
     return true;
   } catch (error) {
-    log('fail', `✗ Failed to check dependencies: ${error.message}`);
+    log('fail', `× Failed to check dependencies: ${error.message}`);
     FAILED++;
     return false;
   }
@@ -151,7 +151,7 @@ function checkGitignore() {
   const missing = required.filter(pattern => !gitignore.includes(pattern));
   
   if (missing.length > 0) {
-    log('fail', `✗ .gitignore missing patterns: ${missing.join(', ')}`);
+    log('fail', `× .gitignore missing patterns: ${missing.join(', ')}`);
     FAILED++;
     return false;
   }
@@ -201,7 +201,7 @@ function checkForHardcodedSecrets() {
   }
   
   if (found.length > 0) {
-    log('fail', `✗ Found hardcoded secrets:\n  ${found.join('\n  ')}`);
+    log('fail', `× Found hardcoded secrets:\n  ${found.join('\n  ')}`);
     FAILED++;
     return false;
   }
@@ -225,9 +225,9 @@ function checkFallbackUsers() {
   // Pattern: password property with a non-empty string value
   const plainTextPwPattern = /password\s*:\s*['"][^'"]{4,}['"]/;
   if (plainTextPwPattern.test(content)) {
-    log('fail', `✗ lib/auth.js contains FALLBACK_USERS with plaintext passwords.\n` +
-      `  ➜ Remove FALLBACK_USERS or replace passwords with bcrypt hashes before production.\n` +
-      `  ➜ These credentials are visible in source control and could be exploited.`);
+    log('fail', `× lib/auth.js contains FALLBACK_USERS with plaintext passwords.\n` +
+      `  → Remove FALLBACK_USERS or replace passwords with bcrypt hashes before production.\n` +
+      `  → These credentials are visible in source control and could be exploited.`);
     FAILED++;
     return false;
   }
@@ -243,7 +243,7 @@ function checkSourceMaps() {
   
   // Check if source maps are disabled in production
   if (!config.includes('productionBrowserSourceMaps: false')) {
-    log('fail', `✗ next.config.mjs should have 'productionBrowserSourceMaps: false'`);
+    log('fail', `× next.config.mjs should have 'productionBrowserSourceMaps: false'`);
     FAILED++;
     return false;
   }
@@ -266,7 +266,7 @@ function checkSecurityHeaders() {
   const missing = required.filter(header => !config.includes(header));
   
   if (missing.length > 0) {
-    log('fail', `✗ Missing security headers: ${missing.join(', ')}`);
+    log('fail', `× Missing security headers: ${missing.join(', ')}`);
     FAILED++;
     return false;
   }
@@ -278,7 +278,7 @@ function checkSecurityHeaders() {
 
 function checkEnvironmentIsolation() {
   if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'staging') {
-    log('fail', `⚠️ NODE_ENV is ${process.env.NODE_ENV} (running pre-deploy check in non-production environment)`);
+    log('fail', `!️ NODE_ENV is ${process.env.NODE_ENV} (running pre-deploy check in non-production environment)`);
     WARNINGS++;
     return true;
   }
@@ -296,30 +296,30 @@ console.log('\n╔════════════════════�
 console.log('║  FacilityH2O Pre-Deployment Security Validation               ║');
 console.log('╚════════════════════════════════════════════════════════════════╝\n');
 
-console.log('🔍 Checking file exposure...');
+console.log('⌕ Checking file exposure...');
 checkFile('.env', /.*/, true); // .env should NOT exist
 checkFile('.env.local', /.*/, true); // .env.local should NOT exist
 checkFile('.gitignore', /\.env/, false); // .gitignore SHOULD mention .env
 
-console.log('\n🔍 Checking environment variables...');
+console.log('\n⌕ Checking environment variables...');
 checkEnvironment();
 checkNodeVersion();
 
-console.log('\n🔍 Checking dependencies...');
+console.log('\n⌕ Checking dependencies...');
 checkDependencies();
 
-console.log('\n🔍 Checking gitignore...');
+console.log('\n⌕ Checking gitignore...');
 checkGitignore();
 
-console.log('\n🔍 Checking for hardcoded secrets...');
+console.log('\n⌕ Checking for hardcoded secrets...');
 checkForHardcodedSecrets();
 checkFallbackUsers();
 
-console.log('\n🔍 Checking security headers...');
+console.log('\n⌕ Checking security headers...');
 checkSourceMaps();
 checkSecurityHeaders();
 
-console.log('\n🔍 Checking environment isolation...');
+console.log('\n⌕ Checking environment isolation...');
 checkEnvironmentIsolation();
 
 // ════════════════════════════════════════════════════════════════════════════════
@@ -331,15 +331,15 @@ console.log(`║  Results: ${PASSED} passed, ${FAILED} failed, ${WARNINGS} warni
 console.log('╚════════════════════════════════════════════════════════════════╝\n');
 
 if (FAILED > 0) {
-  console.log('❌ Pre-deployment validation FAILED. Fix the issues above before deploying.\n');
+  console.log('× Pre-deployment validation FAILED. Fix the issues above before deploying.\n');
   process.exit(1);
 }
 
 if (WARNINGS > 0) {
-  console.log('⚠️  Pre-deployment validation passed with warnings. Review them before deploying.\n');
+  console.log('!️  Pre-deployment validation passed with warnings. Review them before deploying.\n');
   process.exit(0);
 }
 
-console.log('✅ Pre-deployment validation PASSED. Ready to deploy!\n');
+console.log('✓ Pre-deployment validation PASSED. Ready to deploy!\n');
 process.exit(0);
 

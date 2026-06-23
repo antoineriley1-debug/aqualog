@@ -224,7 +224,7 @@ export default function ReportsPage() {
                           {h.openAlerts}
                         </span>
                       ) : (
-                        <span className="text-green-600 text-xs">✅ None</span>
+                        <span className="text-green-600 text-xs">✓ None</span>
                       )}
                     </td>
                     <td className="px-4 py-4 text-center text-gray-500 text-xs">
@@ -237,7 +237,7 @@ export default function ReportsPage() {
                         rel="noopener noreferrer"
                         className="text-xs bg-[#003366] text-white px-2.5 py-1.5 rounded-lg hover:bg-[#002244] transition-colors"
                       >
-                        📄 PDF
+                        ◻ PDF
                       </a>
                     </td>
                   </tr>

@@ -22,10 +22,10 @@ function getUser() {
 }
 
 const RESPONSE_OPTIONS = [
-  { value: 'yes',  label: '✅ Yes — Compliant',      color: 'green' },
-  { value: 'no',   label: '❌ No — Not Compliant',    color: 'red' },
-  { value: 'na',   label: '➖ N/A',                   color: 'gray' },
-  { value: 'ip',   label: '🔄 In Progress',           color: 'yellow' },
+  { value: 'yes',  label: '✓ Yes — Compliant',      color: 'green' },
+  { value: 'no',   label: '× No — Not Compliant',    color: 'red' },
+  { value: 'na',   label: '− N/A',                   color: 'gray' },
+  { value: 'ip',   label: '↺ In Progress',           color: 'yellow' },
 ];
 
 export default function ST108AuditPage() {
@@ -131,7 +131,7 @@ export default function ST108AuditPage() {
 
         {saved && (
           <div className="mb-4 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl text-sm font-medium print:hidden">
-            ✅ Audit saved successfully.
+            ✓ Audit saved successfully.
           </div>
         )}
 
@@ -221,13 +221,13 @@ export default function ST108AuditPage() {
             onClick={handleSave} disabled={saving || !hospital}
             className="bg-[#0072CE] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#005fa3] transition disabled:opacity-50"
           >
-            {saving ? 'Saving...' : '💾 Save Audit'}
+            {saving ? 'Saving...' : '⏏ Save Audit'}
           </button>
           <button
             onClick={() => window.print()}
             className="bg-gray-700 text-white px-6 py-3 rounded-xl font-semibold hover:bg-gray-900 transition"
           >
-            🖨️ Print / Save PDF
+            ⎙️ Print / Save PDF
           </button>
           <span className="text-xs text-gray-400">Records retained for minimum 3 years per ST108 §10</span>
         </div>

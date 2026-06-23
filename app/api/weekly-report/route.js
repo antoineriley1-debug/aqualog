@@ -87,7 +87,7 @@ export async function GET(request) {
 <body style="font-family:Arial,sans-serif;background:#f9fafb;margin:0;padding:20px">
   <div style="max-width:700px;margin:0 auto;background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1)">
     <div style="background:${BRAND.headerColor};padding:24px 32px">
-      <h1 style="color:white;margin:0;font-size:22px">💧 ${BRAND.name} Weekly Report</h1>
+      <h1 style="color:white;margin:0;font-size:22px">[WATER] ${BRAND.name} Weekly Report</h1>
       <p style="color:#93c5fd;margin:6px 0 0">Week of ${weekDateLabel}</p>
     </div>
     <div style="padding:24px 32px">
@@ -111,14 +111,14 @@ export async function GET(request) {
 
       ${hospitalData.some(h => h.isCritical) ? `
         <div style="margin-top:20px;padding:14px 18px;background:#fee2e2;border:1px solid #fca5a5;border-radius:8px">
-          <strong style="color:#991b1b">⚠️ Attention Required</strong>
+          <strong style="color:#991b1b">!️ Attention Required</strong>
           <p style="color:#991b1b;margin:6px 0 0">The following facilities have grades of D or F and require immediate attention:
             ${hospitalData.filter(h => h.isCritical).map(h => h.name).join(', ')}
           </p>
         </div>
       ` : `
         <div style="margin-top:20px;padding:14px 18px;background:#dcfce7;border:1px solid #86efac;border-radius:8px">
-          <strong style="color:#166534">✅ All Facilities Performing Well</strong>
+          <strong style="color:#166534">✓ All Facilities Performing Well</strong>
           <p style="color:#166534;margin:6px 0 0">No facilities with critical grades this week.</p>
         </div>
       `}

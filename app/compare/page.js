@@ -103,7 +103,7 @@ export default function ComparePage() {
       <main className="flex-1 w-full min-w-0 p-4 md:p-8 pt-16 md:pt-8">
         <div className="mb-6 flex items-start justify-between flex-wrap gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">📊 Compare Facilities</h1>
+            <h1 className="text-2xl font-bold text-gray-900">▦ Compare Facilities</h1>
             <p className="text-gray-500 text-sm mt-1">Side-by-side compliance overview — last 7 days</p>
           </div>
           <div className="flex items-center gap-2">
@@ -124,19 +124,19 @@ export default function ComparePage() {
             <div className="text-3xl font-bold text-green-600">
               {facilities.filter((f) => statusColor(f.oorCount7d) === 'green').length}
             </div>
-            <div className="text-sm text-gray-500 mt-1">✅ Healthy</div>
+            <div className="text-sm text-gray-500 mt-1">✓ Healthy</div>
           </div>
           <div className="bg-white rounded-xl p-5 shadow-sm border border-yellow-100">
             <div className="text-3xl font-bold text-yellow-600">
               {facilities.filter((f) => statusColor(f.oorCount7d) === 'yellow').length}
             </div>
-            <div className="text-sm text-gray-500 mt-1">⚠️ Watch</div>
+            <div className="text-sm text-gray-500 mt-1">!️ Watch</div>
           </div>
           <div className="bg-white rounded-xl p-5 shadow-sm border border-red-100">
             <div className="text-3xl font-bold text-red-600">
               {facilities.filter((f) => statusColor(f.oorCount7d) === 'red').length}
             </div>
-            <div className="text-sm text-gray-500 mt-1">🚨 Action Needed</div>
+            <div className="text-sm text-gray-500 mt-1">!! Action Needed</div>
           </div>
         </div>
 

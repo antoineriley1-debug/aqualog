@@ -103,13 +103,13 @@ export async function GET(request) {
     // Example: Send test alert
     const emailResult = await sendEmail({
       to: allEmails.filter(Boolean),
-      subject: `🧪 Test Alert — ${BRAND.name}`,
+      subject: `⚗ Test Alert — ${BRAND.name}`,
       text: 'This is a test alert sent from the cron job.',
     });
 
     const smsResult = await sendSMS(
       allSMS,
-      `🧪 Test SMS from ${BRAND.name} cron job`
+      `⚗ Test SMS from ${BRAND.name} cron job`
     );
 
     console.log('[cron] Results:', { emailResult, smsResult });

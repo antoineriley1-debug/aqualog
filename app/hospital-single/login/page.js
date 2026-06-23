@@ -55,7 +55,7 @@ function HospitalLoginContent() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="text-5xl mb-3">🏥</div>
+          <div className="text-5xl mb-3">[SITE]</div>
           <h1 className="text-2xl font-bold text-gray-900">{hospitalNames[hospitalId] || 'Hospital'}</h1>
           <p className="text-gray-500 mt-1 text-sm">Water Chemistry Portal</p>
         </div>
