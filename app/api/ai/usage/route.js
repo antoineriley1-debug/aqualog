@@ -1,7 +1,8 @@
+﻿export const dynamic = 'force-dynamic';
 /**
  * GET /api/ai/usage
  * Get AI usage statistics for current user
- * © 2026 Antoine Riley
+ * Â© 2026 Antoine Riley
  */
 
 import { getUserFromRequest } from '@/lib/auth';
@@ -35,3 +36,4 @@ export async function GET(request) {
     return Response.json({ error: error.message }, { status: 500 });
   }
 }
+

@@ -1,7 +1,8 @@
+﻿export const dynamic = 'force-dynamic';
 /**
  * GET /api/ai/models
  * List available AI models and their status
- * © 2026 Antoine Riley
+ * Â© 2026 Antoine Riley
  */
 
 import { getUserFromRequest } from '@/lib/auth';
@@ -109,3 +110,4 @@ export async function GET(request) {
     return Response.json({ error: error.message }, { status: 500 });
   }
 }
+

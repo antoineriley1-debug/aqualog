@@ -1,7 +1,8 @@
+﻿export const dynamic = 'force-dynamic';
 /**
  * POST /api/ai/generate-report
  * Report generation using orchestrated AI providers
- * © 2026 Antoine Riley
+ * Â© 2026 Antoine Riley
  */
 
 import { getOrchestrator } from '@/lib/ai/orchestrator';
@@ -63,3 +64,4 @@ export async function POST(request) {
     return Response.json({ error: error.message }, { status: 500 });
   }
 }
+

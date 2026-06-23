@@ -1,7 +1,8 @@
+﻿export const dynamic = 'force-dynamic';
 /**
  * POST /api/ai/test-model
  * Test if a specific AI model is working
- * © 2026 Antoine Riley
+ * Â© 2026 Antoine Riley
  */
 
 import { getUserFromRequest } from '@/lib/auth';
@@ -47,3 +48,4 @@ export async function POST(request) {
     );
   }
 }
+

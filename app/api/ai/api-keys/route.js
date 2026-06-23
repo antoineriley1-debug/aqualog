@@ -1,7 +1,8 @@
+﻿export const dynamic = 'force-dynamic';
 /**
  * GET/POST /api/ai/api-keys
  * Manage API keys for AI providers
- * © 2026 Antoine Riley
+ * Â© 2026 Antoine Riley
  */
 
 import { getUserFromRequest } from '@/lib/auth';
@@ -28,7 +29,7 @@ export async function GET(request) {
           const decrypted = decrypt(encrypted);
           keys[provider] = { masked: maskKey(decrypted), configured: true };
         } catch (e) {
-          keys[provider] = { masked: '••••••••', configured: true, error: 'Decryption failed' };
+          keys[provider] = { masked: 'â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢', configured: true, error: 'Decryption failed' };
         }
       } else {
         keys[provider] = { configured: false };
@@ -112,3 +113,4 @@ export async function DELETE(request) {
     return Response.json({ error: error.message }, { status: 500 });
   }
 }
+

@@ -1,7 +1,8 @@
+﻿export const dynamic = 'force-dynamic';
 /**
  * GET/POST /api/ai/config
  * Get and update user's AI configuration
- * © 2026 Antoine Riley
+ * Â© 2026 Antoine Riley
  */
 
 import { getUserFromRequest } from '@/lib/auth';
@@ -60,3 +61,4 @@ export async function POST(request) {
     return Response.json({ error: error.message }, { status: 500 });
   }
 }
+
