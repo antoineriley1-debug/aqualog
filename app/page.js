@@ -65,16 +65,16 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { icon: '≡', title: 'Shift-Based Logging', desc: 'Log readings by shift — 1st, 2nd, 3rd. Every reading timestamped with operator name, time, and system. Set each facility\'s shift hours and timezone.' },
-              { icon: '⚙', title: 'Five Systems, Not Just Two', desc: 'Track boiler, chilled water, cooling tower, condensate, and softener — each with its own parameters and safe ranges. Turn on only the systems a facility runs.' },
+              { icon: '', title: 'Five Systems, Not Just Two', desc: 'Track boiler, chilled water, cooling tower, condensate, and softener — each with its own parameters and safe ranges. Turn on only the systems a facility runs.' },
               { icon: '↗', title: 'Live Trends & System Health', desc: 'Animated health gauges and interactive charts for any parameter over any time range. Spot drift early — before it becomes a compliance failure.' },
-              { icon: '⌁', title: 'Instant Out-of-Range Alerts', desc: 'When a reading falls outside acceptable limits, your team is notified immediately. Every alert tracked with an acknowledge workflow.' },
-              { icon: '⌚️', title: 'Missed-Reading Detection', desc: 'When a shift ends without a logged reading, it automatically becomes an alert — so a skipped round never slips through unnoticed.' },
-              { icon: '⚑', title: 'Reading Consistency Check', desc: 'An advisory signal flags shifts whose readings look suspiciously identical compared to other shifts — a prompt to spot-verify before an auditor does.' },
+              { icon: '', title: 'Instant Out-of-Range Alerts', desc: 'When a reading falls outside acceptable limits, your team is notified immediately. Every alert tracked with an acknowledge workflow.' },
+              { icon: '️', title: 'Missed-Reading Detection', desc: 'When a shift ends without a logged reading, it automatically becomes an alert — so a skipped round never slips through unnoticed.' },
+              { icon: '', title: 'Reading Consistency Check', desc: 'An advisory signal flags shifts whose readings look suspiciously identical compared to other shifts — a prompt to spot-verify before an auditor does.' },
               { icon: '[ORG]', title: 'Multi-Facility Dashboard', desc: 'Manage all your buildings from one screen. Each facility isolated — operators see only their site, admins see everything.' },
               { icon: '✓', title: 'ST108 Compliance Tracking', desc: 'Built-in ST108 water log compliance with audit trail and one-click compliance reports. Joint Commission inspection ready.' },
-              { icon: '⊕', title: 'Legionella Program Tracking', desc: 'Log and track your Legionella water management program entries. Full audit history for regulatory submissions.' },
-              { icon: '⚗', title: 'Chain-of-Custody Forms', desc: 'Generate chain-of-custody forms for lab samples in one click. Print and send with your sample containers — no separate paperwork.' },
-              { icon: '⌕', title: 'Tamper-Evident Audit Log', desc: 'Every login, every entry, every change is permanently logged with timestamp, user, and IP. SHA-256 sealed — immutable chain of custody.' },
+              { icon: '', title: 'Legionella Program Tracking', desc: 'Log and track your Legionella water management program entries. Full audit history for regulatory submissions.' },
+              { icon: '', title: 'Chain-of-Custody Forms', desc: 'Generate chain-of-custody forms for lab samples in one click. Print and send with your sample containers — no separate paperwork.' },
+              { icon: '', title: 'Tamper-Evident Audit Log', desc: 'Every login, every entry, every change is permanently logged with timestamp, user, and IP. SHA-256 sealed — immutable chain of custody.' },
               { icon: '○○', title: 'Role-Based Access', desc: 'Admin accounts see all facilities and reports. Operator accounts are scoped to their assigned building only. No configuration needed.' },
             ].map(f => (
               <div key={f.title} className="bg-[#F0F9FF] rounded-2xl p-6 border border-blue-100 hover:shadow-md transition">

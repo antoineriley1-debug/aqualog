@@ -8,11 +8,11 @@ const INDUSTRIES = [
   { value: 'commercial', label: '[ORG] Commercial Buildings' },
   { value: 'manufacturing', label: '[MFG] Manufacturing' },
   { value: 'university', label: '[EDU] University / Education' },
-  { value: 'pharmaceutical', label: '⚗ Pharmaceutical' },
+  { value: 'pharmaceutical', label: ' Pharmaceutical' },
   { value: 'datacenter', label: '[DC] Data Center' },
   { value: 'municipal', label: '[GOVT] Municipal / Government' },
   { value: 'hospitality', label: '[HOTEL] Hotel / Hospitality' },
-  { value: 'other', label: '⚙ Other' },
+  { value: 'other', label: ' Other' },
 ];
 
 const FACILITY_TYPES = [
@@ -26,8 +26,8 @@ const ALL_SYSTEMS = [
   { id: 'chilled', label: 'Chilled Water', icon: '[CHILLED]️', desc: 'Chilled water loops' },
   { id: 'cooling_tower', label: 'Cooling Towers', icon: '', desc: 'Open cooling systems' },
   { id: 'domestic', label: 'Domestic Water', icon: '[WATER]', desc: 'Potable water systems' },
-  { id: 'legionella', label: 'Legionella / WMP', icon: '⌬', desc: 'Water management program' },
-  { id: 'st108', label: 'ST108 / Reprocessing', icon: '⊕', desc: 'Medical device reprocessing water' },
+  { id: 'legionella', label: 'Legionella / WMP', icon: '', desc: 'Water management program' },
+  { id: 'st108', label: 'ST108 / Reprocessing', icon: '', desc: 'Medical device reprocessing water' },
   { id: 'steam', label: 'Steam Distribution', icon: '♨️', desc: 'Steam condensate & distribution' },
   { id: 'glycol', label: 'Glycol Systems', icon: '[FREEZE]', desc: 'Closed loop glycol systems' },
   { id: 'softener', label: 'Water Softeners', icon: '', desc: 'Ion exchange softening' },

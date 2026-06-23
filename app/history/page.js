@@ -242,7 +242,7 @@ export default function HistoryPage() {
                               )}
                               {e.correctiveAction?.taken && (
                                 <div className="text-sm bg-orange-50 border border-orange-200 rounded-lg px-3 py-2 mt-2">
-                                  <div className="font-semibold text-orange-800 mb-1">⚙ Corrective Action Taken</div>
+                                  <div className="font-semibold text-orange-800 mb-1"> Corrective Action Taken</div>
                                   <div className="text-orange-900"><span className="font-medium">Action:</span> {e.correctiveAction.action}</div>
                                   {e.correctiveAction.actionBy && <div className="text-orange-700 text-xs mt-0.5">By: {e.correctiveAction.actionBy} · {e.correctiveAction.actionAt ? new Date(e.correctiveAction.actionAt).toLocaleString() : ''}</div>}
                                   {e.correctiveAction.followUpRequired && (

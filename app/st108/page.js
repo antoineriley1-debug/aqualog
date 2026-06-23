@@ -302,7 +302,7 @@ export default function ST108EntryPage() {
               disabled={saving || !hospital || !pou}
               className="bg-[#0072CE] text-white px-8 py-3 rounded-xl font-semibold hover:bg-[#005fa3] transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {saving ? 'Saving...' : '⏏ Save ST108 Entry'}
+              {saving ? 'Saving...' : 'Save Save ST108 Entry'}
             </button>
             <span className="text-xs text-gray-400">
               Entry will be logged with timestamp and included in monthly compliance report

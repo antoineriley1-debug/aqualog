@@ -38,7 +38,7 @@ export default function ForgotPasswordPage() {
           </>
         ) : (
           <div className="text-center py-4">
-            <div className="text-4xl mb-3">✉</div>
+            <div className="text-4xl mb-3"></div>
             <h1 className="text-lg font-bold text-gray-900 mb-2">Check your email</h1>
             <p className="text-gray-500 text-sm mb-6">If an account exists for that email, we've sent a password reset link. It expires in 1 hour. Be sure to check spam.</p>
             <Link href="/login" className="inline-block text-[#0891B2] font-semibold text-sm hover:underline">← Back to Sign In</Link>

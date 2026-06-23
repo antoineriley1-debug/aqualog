@@ -3,7 +3,7 @@ import Sidebar from '@/components/Sidebar';
 
 const sections = [
   {
-    title: '⚖️ Intellectual Property & Proprietary Rights',
+    title: '️ Intellectual Property & Proprietary Rights',
     effective: 'Effective: April 2026 · Copyright Registration Filed',
     content: [
       {

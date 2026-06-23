@@ -103,7 +103,7 @@ export default function ComparePage() {
       <main className="flex-1 w-full min-w-0 p-4 md:p-8 pt-16 md:pt-8">
         <div className="mb-6 flex items-start justify-between flex-wrap gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">▦ Compare Facilities</h1>
+            <h1 className="text-2xl font-bold text-gray-900"> Compare Facilities</h1>
             <p className="text-gray-500 text-sm mt-1">Side-by-side compliance overview — last 7 days</p>
           </div>
           <div className="flex items-center gap-2">

@@ -129,12 +129,12 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-bold text-[#164E63] mb-4 pb-2 border-b border-cyan-100">3. How We Use Your Information</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
-                { icon: '▦', title: 'Service Delivery', desc: 'Process and store readings, generate dashboards and reports.' },
-                { icon: '⌁', title: 'Alerts', desc: 'Send automated email alerts when readings fall outside configured thresholds.' },
+                { icon: '', title: 'Service Delivery', desc: 'Process and store readings, generate dashboards and reports.' },
+                { icon: '', title: 'Alerts', desc: 'Send automated email alerts when readings fall outside configured thresholds.' },
                 { icon: '↗', title: 'Trend Analysis', desc: 'Generate historical trends and predictive insights about your water systems.' },
                 { icon: '○', title: 'Account Management', desc: 'Authenticate users, manage permissions, and maintain records.' },
                 { icon: '□', title: 'Billing', desc: 'Process subscription payments and send invoices via Stripe and Resend.' },
-                { icon: '⚙', title: 'Support', desc: 'Diagnose issues and respond to support requests.' },
+                { icon: '', title: 'Support', desc: 'Diagnose issues and respond to support requests.' },
               ].map(({ icon, title, desc }) => (
                 <div key={title} className="flex gap-3 bg-[#F0F9FF] rounded-xl p-4 border border-cyan-100">
                   <span className="text-xl flex-shrink-0">{icon}</span>
@@ -241,9 +241,9 @@ export default function PrivacyPage() {
                 ['■', 'TLS 1.2+ encryption for all data in transit'],
                 ['️', 'AES-256 encryption for data at rest (Supabase)'],
                 ['○○', 'Role-based access controls limiting internal access'],
-                ['⚿', 'Passwords hashed with bcrypt before storage'],
+                ['', 'Passwords hashed with bcrypt before storage'],
                 ['⬡️', 'MFA available and recommended for all accounts'],
-                ['⌕', 'Regular security assessments and patching'],
+                ['', 'Regular security assessments and patching'],
               ].map(([icon, text]) => (
                 <div key={text} className="flex gap-3 items-start bg-[#F0F9FF] rounded-xl p-4 border border-cyan-100">
                   <span className="text-lg">{icon}</span>

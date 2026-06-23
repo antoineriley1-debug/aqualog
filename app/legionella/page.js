@@ -221,13 +221,13 @@ export default function ST108AuditPage() {
             onClick={handleSave} disabled={saving || !hospital}
             className="bg-[#0072CE] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#005fa3] transition disabled:opacity-50"
           >
-            {saving ? 'Saving...' : '⏏ Save Audit'}
+            {saving ? 'Saving...' : 'Save Save Audit'}
           </button>
           <button
             onClick={() => window.print()}
             className="bg-gray-700 text-white px-6 py-3 rounded-xl font-semibold hover:bg-gray-900 transition"
           >
-            ⎙️ Print / Save PDF
+            Print️ Print / Save PDF
           </button>
           <span className="text-xs text-gray-400">Records retained for minimum 3 years per ST108 §10</span>
         </div>

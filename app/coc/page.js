@@ -139,7 +139,7 @@ export default function CoCPage() {
         {/* Controls — hidden on print */}
         <div className="mb-6 print:hidden">
           <div className="flex items-center gap-3 mb-2">
-            <span className="text-2xl">⚗</span>
+            <span className="text-2xl"></span>
             <h1 className="text-2xl font-bold text-gray-900">Chain of Custody Form</h1>
             <span className="text-xs bg-purple-700 text-white px-2 py-1 rounded-full font-medium">Lab Sample COC</span>
           </div>
@@ -227,7 +227,7 @@ export default function CoCPage() {
 
             <button onClick={() => window.print()}
               className="bg-[#003366] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#002244] transition">
-              ⎙️ Print COC Form
+              Print️ Print COC Form
             </button>
           </div>
         </div>

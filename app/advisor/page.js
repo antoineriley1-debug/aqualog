@@ -133,7 +133,7 @@ export default function AdvisorPage() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
               <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-                ⚗ Chemistry Advisor
+                 Chemistry Advisor
               </h1>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                 AI-powered water chemistry guidance
@@ -142,7 +142,7 @@ export default function AdvisorPage() {
             <div className="flex items-center gap-3">
               <label className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 cursor-pointer select-none whitespace-nowrap" title="Every answer is drafted, anonymously peer-reviewed by a second AI pass, then synthesized">
                 <input type="checkbox" checked={council} onChange={(e) => setCouncil(e.target.checked)} className="accent-[#0072CE]" />
-                ⚖️ Council
+                ️ Council
               </label>
               <select
                 value={hospital}
@@ -159,7 +159,7 @@ export default function AdvisorPage() {
                   className="text-sm text-gray-500 hover:text-red-500 transition-colors px-2 py-1"
                   title="Clear conversation"
                 >
-                  ⌫️ Clear
+                  ️ Clear
                 </button>
               )}
             </div>
@@ -175,7 +175,7 @@ export default function AdvisorPage() {
         <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 space-y-4">
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full text-center py-12">
-              <div className="text-5xl mb-4">⚗</div>
+              <div className="text-5xl mb-4"></div>
               <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Water Chemistry Advisor
               </h2>
@@ -216,9 +216,9 @@ export default function AdvisorPage() {
               >
                 {msg.role === 'assistant' && (
                   <div className="flex items-center gap-2 text-xs font-semibold mb-1">
-                    <span className="text-blue-600 dark:text-blue-400">⚗ Advisor</span>
+                    <span className="text-blue-600 dark:text-blue-400"> Advisor</span>
                     {msg.critique && (
-                      <span className="text-emerald-600 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-700 rounded-full px-2 py-0.5">⚖️ Council-reviewed</span>
+                      <span className="text-emerald-600 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-700 rounded-full px-2 py-0.5">️ Council-reviewed</span>
                     )}
                   </div>
                 )}
@@ -236,7 +236,7 @@ export default function AdvisorPage() {
           {loading && messages[messages.length - 1]?.role !== 'assistant' && (
             <div className="flex justify-start">
               <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
-                <div className="text-xs text-blue-600 dark:text-blue-400 font-semibold mb-1">⚗ Advisor</div>
+                <div className="text-xs text-blue-600 dark:text-blue-400 font-semibold mb-1"> Advisor</div>
                 <div className="flex items-center gap-1.5 text-sm text-gray-500">
                   <span className="animate-pulse">Thinking</span>
                   <span className="animate-bounce" style={{ animationDelay: '0ms' }}>.</span>

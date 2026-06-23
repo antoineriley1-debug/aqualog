@@ -145,14 +145,14 @@ export default function ST108ReportPage() {
               onClick={generate} disabled={loading}
               className="bg-[#0072CE] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-[#005fa3] transition disabled:opacity-50"
             >
-              {loading ? 'Generating...' : '▦ Generate Report'}
+              {loading ? 'Generating...' : ' Generate Report'}
             </button>
             {generated && (
               <button
                 onClick={() => window.print()}
                 className="bg-gray-700 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-gray-900 transition"
               >
-                ⎙️ Print / Save PDF
+                Print️ Print / Save PDF
               </button>
             )}
           </div>

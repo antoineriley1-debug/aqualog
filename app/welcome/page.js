@@ -16,7 +16,7 @@ function getUser() {
 }
 
 const STEPS = [
-  { id: 'equipment', n: '01', href: '/equipment', icon: '⚙',
+  { id: 'equipment', n: '01', href: '/equipment', icon: '',
     title: 'Set up your equipment',
     desc: 'Tell FacilityH2O what you run — boilers, chillers, cooling towers, softeners. This is what we keep in range for you.' },
   { id: 'team', n: '02', href: '/users', icon: '○○',
@@ -156,7 +156,7 @@ export default function WelcomePage() {
         <div className="fh2o-rise fh2o-d4 mt-10">
           {allDone && (
             <div className="rounded-2xl bg-gradient-to-r from-cyan-500/20 to-sky-500/20 border border-cyan-400/40 px-5 py-4 mb-4 text-cyan-100 font-medium">
-              ★ You’re all set. Everything from here lives in your dashboard.
+               You’re all set. Everything from here lives in your dashboard.
             </div>
           )}
           <button onClick={() => router.push('/dashboard')}

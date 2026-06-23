@@ -212,7 +212,7 @@ export function FalsificationBadge({ entries, system }) {
     <div className="mt-3">
       <button onClick={() => setOpen(!open)}
         className="flex items-center gap-2 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-300 rounded-lg px-3 py-2 hover:bg-amber-100 transition w-full text-left">
-        <span className="text-base">⚑</span>
+        <span className="text-base"></span>
         <span className="flex-1">Reading consistency check — worth a second look</span>
         <span className="text-amber-500">{open ? '▴' : '▾'}</span>
       </button>

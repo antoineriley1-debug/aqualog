@@ -111,7 +111,7 @@ export default function HospitalSinglePage() {
               const params = Array.isArray(c.params) ? c.params : [];
               const ranges = {};
               for (const pr of params) ranges[pr.key] = { min: pr.min, max: pr.max, unit: pr.unit, label: pr.label };
-              return { key: c.key, label: c.label || c.key, icon: c.icon || '⚙', ranges };
+              return { key: c.key, label: c.label || c.key, icon: c.icon || '', ranges };
             }).filter(it => Object.keys(it.ranges).length);
             setCustomEquip(items);
           } else {
@@ -344,7 +344,7 @@ export default function HospitalSinglePage() {
             {/* Recent Entries */}
             <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
               <div className="bg-green-50 border-b border-green-200 px-6 py-4">
-                <h2 className="text-lg font-bold text-gray-900">▦ Recent Entries</h2>
+                <h2 className="text-lg font-bold text-gray-900"> Recent Entries</h2>
               </div>
             <div className="divide-y divide-gray-100">
               {loading ? (
@@ -505,7 +505,7 @@ export default function HospitalSinglePage() {
                 onClick={() => setShowTestGuide(!showTestGuide)}
                 className="w-full bg-blue-50 border-b border-blue-200 px-6 py-4 flex items-center justify-between hover:bg-blue-100 transition"
               >
-                <h2 className="text-lg font-bold text-gray-900">⚗ Testing Procedures</h2>
+                <h2 className="text-lg font-bold text-gray-900"> Testing Procedures</h2>
                 <span className={`text-xl text-gray-600 transition-transform ${showTestGuide ? 'rotate-180' : ''}`}>
                   ▼
                 </span>

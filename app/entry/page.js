@@ -181,7 +181,7 @@ function EntryForm() {
     return [];
   };
   const labelFor = (sys) => (SYSTEM_META[sys]?.label) || customLib[sys]?.label || sys;
-  const iconFor  = (sys) => (SYSTEM_META[sys]?.icon)  || customLib[sys]?.icon  || '⚙';
+  const iconFor  = (sys) => (SYSTEM_META[sys]?.icon)  || customLib[sys]?.icon  || '';
   const fields = fieldsFor(system);
   const availableSystems = (facilitySystems && facilitySystems.length) ? facilitySystems : SYSTEM_ORDER;
 
@@ -218,7 +218,7 @@ function EntryForm() {
           const params = (c.params && c.params.length ? c.params : (libDef?.params || []));
           libMap[key] = {
             label: c.label || libDef?.label || key,
-            icon: c.icon || libDef?.icon || '⚙',
+            icon: c.icon || libDef?.icon || '',
             fields: params.map(p => ({ key: p.key, label: p.label + (p.unit ? ` (${p.unit})` : ''), min: p.min, max: p.max, unit: p.unit, targetZero: (p.min === 0 && p.max === 0) })),
           };
           customKeys.push(key);
@@ -840,7 +840,7 @@ function EntryForm() {
               <div className={`border rounded-xl overflow-hidden transition-all ${hasOOR ? 'border-orange-300 bg-orange-50' : 'border-gray-200'}`}>
                 <button type="button" onClick={() => setShowCorrectiveAction(!showCorrectiveAction)}
                   className={`w-full flex items-center justify-between px-4 py-3 text-sm font-semibold text-left transition-colors ${hasOOR ? 'text-orange-700' : 'text-gray-700'}`}>
-                  <span>{hasOOR ? '!️ Log Corrective Action (out-of-range values detected)' : '⚙ Log Corrective Action (optional)'}</span>
+                  <span>{hasOOR ? '!️ Log Corrective Action (out-of-range values detected)' : ' Log Corrective Action (optional)'}</span>
                   <span className="text-gray-400">{showCorrectiveAction ? '▲' : '▼'}</span>
                 </button>
                 {showCorrectiveAction && (

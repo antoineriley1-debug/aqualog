@@ -82,7 +82,7 @@ export default function AlertsPage() {
                 {testLoading ? (
                   <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
-                  <span>⚗</span>
+                  <span></span>
                 )}
                 {testLoading ? 'Sending…' : 'Test Alerts'}
               </button>
@@ -157,7 +157,7 @@ export default function AlertsPage() {
                         a.kind === 'missed_reading' ? 'bg-amber-100 text-amber-800' :
                         a.system === 'boiler' ? 'bg-orange-100 text-orange-700' : 'bg-blue-100 text-blue-700'
                       }`}>
-                        {a.kind === 'missed_reading' ? `⌚️ ${a.systemLabel || a.system}` : (a.system === 'boiler' ? '[BOILER] Boiler' : '[CHILLED]️ Chilled')}
+                        {a.kind === 'missed_reading' ? `️ ${a.systemLabel || a.system}` : (a.system === 'boiler' ? '[BOILER] Boiler' : '[CHILLED]️ Chilled')}
                       </span>
                       <span className="text-xs text-gray-500">
                         {a.shift} shift · {a.date}

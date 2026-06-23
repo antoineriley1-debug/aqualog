@@ -226,9 +226,9 @@ export default function NotificationSettingsPage() {
 
   const tabs = [
     { id: 'contacts', label: '○○ Contacts' },
-    { id: 'throttle', label: '⌚️ Throttle & Digest' },
+    { id: 'throttle', label: '️ Throttle & Digest' },
     { id: 'quiet', label: '◑ Quiet Hours' },
-    { id: 'levels', label: '◉ Escalation Levels' },
+    { id: 'levels', label: ' Escalation Levels' },
   ];
 
   return (
@@ -238,7 +238,7 @@ export default function NotificationSettingsPage() {
         {/* Header */}
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">⌁ Notification Settings</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white"> Notification Settings</h1>
             <p className="text-gray-500 text-sm mt-1">Configure contacts, alert frequency, quiet hours & escalation</p>
           </div>
           <div className="flex items-center gap-3">
@@ -249,7 +249,7 @@ export default function NotificationSettingsPage() {
               className="bg-[#0072CE] hover:bg-[#005fa3] text-white px-5 py-2.5 rounded-lg font-medium text-sm transition disabled:opacity-50 flex items-center gap-2"
             >
               {saving && <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-              ⏏ Save Settings
+              Save Save Settings
             </button>
           </div>
         </div>
@@ -348,8 +348,8 @@ export default function NotificationSettingsPage() {
                       <div>
                         <span className="font-medium text-gray-900 dark:text-white">{c.name || '(unnamed)'}</span>
                         <div className="flex gap-3 mt-1 text-xs text-gray-500">
-                          {c.email && <span>✉️ {c.email}</span>}
-                          {c.sms && <span>☎ {c.sms}</span>}
+                          {c.email && <span>️ {c.email}</span>}
+                          {c.sms && <span> {c.sms}</span>}
                         </div>
                       </div>
                       <button
@@ -391,7 +391,7 @@ export default function NotificationSettingsPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {/* Email settings */}
                       <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
-                        <h3 className="font-medium text-gray-900 dark:text-white mb-3">✉️ Email</h3>
+                        <h3 className="font-medium text-gray-900 dark:text-white mb-3">️ Email</h3>
                         <div className="space-y-3">
                           <div>
                             <label className="block text-xs text-gray-500 mb-1">Mode</label>
@@ -438,7 +438,7 @@ export default function NotificationSettingsPage() {
 
                       {/* SMS settings */}
                       <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
-                        <h3 className="font-medium text-gray-900 dark:text-white mb-3">☎ SMS</h3>
+                        <h3 className="font-medium text-gray-900 dark:text-white mb-3"> SMS</h3>
                         <div className="space-y-3">
                           <div>
                             <label className="block text-xs text-gray-500 mb-1">Mode</label>
@@ -569,7 +569,7 @@ export default function NotificationSettingsPage() {
                           <div>
                             <span className="font-medium">{c.name || '(unnamed)'}</span>
                             <span className="text-gray-400 ml-2">
-                              {c.email && `✉️ ${c.email}`} {c.sms && `☎ ${c.sms}`}
+                              {c.email && `️ ${c.email}`} {c.sms && ` ${c.sms}`}
                             </span>
                           </div>
                           <button

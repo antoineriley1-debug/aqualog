@@ -67,7 +67,7 @@ export default function EquipmentPage() {
       <Sidebar />
       <main className="flex-1 w-full min-w-0 p-4 md:p-8 pt-16 md:pt-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">⚙ Facility Equipment</h1>
+          <h1 className="text-2xl font-bold text-gray-900"> Facility Equipment</h1>
           <p className="text-gray-500 text-sm mt-1">Turn off any system a facility doesn't have (e.g. a steam-fed site with no boiler). Systems left off aren't offered for logging and never count as missed readings.</p>
         </div>
 

@@ -110,7 +110,7 @@ export default function SettingsPage() {
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900">Site Settings</h1>
           <p className="text-gray-500 text-sm mt-1">
-            ◈ Changes you make here apply to <strong>all users</strong> across the entire site.
+             Changes you make here apply to <strong>all users</strong> across the entire site.
           </p>
         </div>
 
@@ -221,14 +221,14 @@ export default function SettingsPage() {
             disabled={saving === 'custom'}
             className="bg-[#0072CE] text-white px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#005fa3] transition disabled:opacity-50"
           >
-            {saving === 'custom' ? 'Applying...' : '⏏ Apply Custom Theme'}
+            {saving === 'custom' ? 'Applying...' : 'Save Apply Custom Theme'}
           </button>
         </div>
 
         {/* ── TEST ALERT SYSTEM ── */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mt-6">
           <div className="flex items-start gap-4">
-            <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-xl flex-shrink-0">⌁</div>
+            <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-xl flex-shrink-0"></div>
             <div className="flex-1">
               <h2 className="text-base font-bold text-gray-800">Test Alert Notifications</h2>
               <p className="text-sm text-gray-500 mt-1">
@@ -237,10 +237,10 @@ export default function SettingsPage() {
 
               <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-600 bg-gray-50 rounded-lg p-4">
                 <div>
-                  <span className="font-semibold text-gray-700">✉ Email:</span> Sends to <code className="bg-gray-100 px-1 rounded text-xs">ALERT_EMAIL_TO</code> env var + notification rules
+                  <span className="font-semibold text-gray-700"> Email:</span> Sends to <code className="bg-gray-100 px-1 rounded text-xs">ALERT_EMAIL_TO</code> env var + notification rules
                 </div>
                 <div>
-                  <span className="font-semibold text-gray-700">☎ SMS:</span> Sends to all phone numbers in notification rules (Twilio)
+                  <span className="font-semibold text-gray-700"> SMS:</span> Sends to all phone numbers in notification rules (Twilio)
                 </div>
               </div>
 
@@ -252,7 +252,7 @@ export default function SettingsPage() {
                 {testingAlert ? (
                   <><span className="animate-spin">↺</span> Sending test alert...</>
                 ) : (
-                  <>⌁ Send Test Alert</>
+                  <> Send Test Alert</>
                 )}
               </button>
 

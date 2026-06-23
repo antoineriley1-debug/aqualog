@@ -213,7 +213,7 @@ export async function GET(request, { params }) {
       <div class="meta">Monthly Compliance Report — ${esc(monthLabel(month))}<br>Generated ${new Date().toLocaleString('en-US')} · ${entries.length} readings · ${totalExceed} out-of-range</div></div>
   </div>
 
-  ${ai.summary ? `<div><span class="badge">⚖ COUNCIL-REVIEWED</span>
+  ${ai.summary ? `<div><span class="badge"> COUNCIL-REVIEWED</span>
     <h2 style="margin-top:8px">Executive Summary</h2>
     <div class="summary">${esc(ai.summary)}</div>
     <div class="meta">AI-drafted, anonymously peer-reviewed against this month's logged readings, then synthesized. Peer review attached as Appendix A. Verify treatment decisions with your water treatment vendor.</div></div>`

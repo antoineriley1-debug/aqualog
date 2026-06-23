@@ -61,7 +61,7 @@ export default function ShiftSchedulesPage() {
       <main className="flex-1 w-full min-w-0 p-4 md:p-8 pt-16 md:pt-8">
         <button onClick={() => router.back()} className="text-sm text-gray-500 hover:text-gray-900 mb-4 inline-flex items-center gap-1">← Back</button>
         <div className="mb-5">
-          <h1 className="text-2xl font-bold text-gray-900">⌚️ Shift Schedules</h1>
+          <h1 className="text-2xl font-bold text-gray-900">️ Shift Schedules</h1>
           <p className="text-gray-500 text-sm mt-1">Set each facility's shift hours and timezone. Readings not logged by a shift's end become missed-reading alerts.</p>
         </div>
 

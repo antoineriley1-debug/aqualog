@@ -48,7 +48,7 @@ export default function ContractPage() {
             <div style={{fontWeight:800,fontSize:18,marginBottom:2}}>One-Year Service Agreement</div>
             <div style={{fontSize:12,color:'#bae6fd'}}>Fill in the client details, then Print → Save as PDF to send.</div>
           </div>
-          <button onClick={() => window.print()} style={{background:'#0891b2',color:'#fff',border:'none',borderRadius:10,padding:'12px 22px',fontWeight:700,cursor:'pointer'}}>⎙ Print / Save PDF</button>
+          <button onClick={() => window.print()} style={{background:'#0891b2',color:'#fff',border:'none',borderRadius:10,padding:'12px 22px',fontWeight:700,cursor:'pointer'}}>Print Print / Save PDF</button>
         </div>
         <div style={{maxWidth:900,margin:'14px auto 0',display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10}}>
           {[['client','Client legal name'],['clientAddress','Client address'],['signer','Client signer name'],['signerTitle','Signer title'],['facilities','# Facilities'],['users','# Users'],['annualFee','Annual fee (e.g. $12,000)'],['startDate','Start date']].map(([k,label]) => (

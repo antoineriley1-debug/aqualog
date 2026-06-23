@@ -70,7 +70,7 @@ export default function DemoPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           <div className="bg-white p-6 rounded-lg border border-gray-200">
             <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center">
-              <span className="text-[#0891B2] text-xl mr-2">▦</span>
+              <span className="text-[#0891B2] text-xl mr-2"></span>
               Dashboard Overview
             </h3>
             <p className="text-gray-600 text-sm">
@@ -92,7 +92,7 @@ export default function DemoPage() {
 
           <div className="bg-white p-6 rounded-lg border border-gray-200">
             <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center">
-              <span className="text-[#0891B2] text-xl mr-2">◎</span>
+              <span className="text-[#0891B2] text-xl mr-2"></span>
               Chemistry Advisor AI
             </h3>
             <p className="text-gray-600 text-sm">
@@ -144,7 +144,7 @@ export default function DemoPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <h3 className="font-bold text-gray-900 mb-2 flex items-center">
-                <span className="text-[#0891B2] text-2xl mr-2">⚖️</span>
+                <span className="text-[#0891B2] text-2xl mr-2">️</span>
                 Regulatory Compliance
               </h3>
               <p className="text-gray-700 text-sm">

@@ -80,7 +80,7 @@ export default function ShiftTimers() {
   return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
-        <h2 className="text-sm font-bold text-gray-700">⌚️ Shift Reading Status — today</h2>
+        <h2 className="text-sm font-bold text-gray-700">️ Shift Reading Status — today</h2>
         {totalMissed > 0
           ? <span className="text-xs font-bold text-red-700 bg-red-50 border border-red-200 rounded-full px-3 py-1">● {totalMissed} missed reading{totalMissed!==1?'s':''}</span>
           : <span className="text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-full px-3 py-1">✓ All caught up</span>}

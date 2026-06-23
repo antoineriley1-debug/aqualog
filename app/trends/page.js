@@ -108,7 +108,7 @@ export default function TrendsPage() {
           for (const c of custom) {
             if (!c || !c.key) continue;
             systems.push(c.key);
-            SYSTEM_META[c.key] = { label: c.label || c.key, icon: c.icon || '⚙' };
+            SYSTEM_META[c.key] = { label: c.label || c.key, icon: c.icon || '' };
             // custom params: [{key,label,min,max}] — fall back to a generic value param
             mergedCfg[c.key] = Array.isArray(c.params) && c.params.length
               ? c.params.map(p => ({ key: p.key, label: p.label || p.key, min: p.min ?? 0, max: p.max ?? 0 }))
@@ -239,7 +239,7 @@ export default function TrendsPage() {
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0072CE]"
           >
             {availableSystems.map((sys) => (
-              <option key={sys} value={sys}>{(SYSTEM_META[sys]?.icon || '⚙')} {(SYSTEM_META[sys]?.label || sys)}</option>
+              <option key={sys} value={sys}>{(SYSTEM_META[sys]?.icon || '')} {(SYSTEM_META[sys]?.label || sys)}</option>
             ))}
           </select>
           <select

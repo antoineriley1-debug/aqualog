@@ -24,7 +24,7 @@ const GROUPS = [
           'Filter by facility, system, or date to narrow the list.',
           'Open Trends to see the same data as charts over time.',
         ] },
-      { icon: '⚗', q: 'What is the Chemistry Advisor?',
+      { icon: '', q: 'What is the Chemistry Advisor?',
         steps: [
           'The Advisor reviews a reading and explains what it means in plain language.',
           'Use it when a value looks off and you want guidance on likely cause and corrective action.',
@@ -34,19 +34,19 @@ const GROUPS = [
   {
     heading: 'For administrators',
     items: [
-      { icon: '⌁', q: 'How do alerts work, and how do I clear them?',
+      { icon: '', q: 'How do alerts work, and how do I clear them?',
         steps: [
           'Open Alerts. Two kinds appear: out-of-range (a reading outside its limits) and missed-shift (a required reading was not logged).',
           'Tap Acknowledge on an alert once it has been handled. It is recorded and removed from the unacknowledged list.',
           'The red number on the Alerts menu item is the count still waiting to be acknowledged.',
         ] },
-      { icon: '▦', q: 'How do I run a report?',
+      { icon: '', q: 'How do I run a report?',
         steps: [
           'Open Reports and choose the facility and date range.',
           'A compliance summary is produced that you can save or print as a PDF.',
           'End-of-day and weekly summaries are also sent automatically by email when enabled.',
         ] },
-      { icon: '⌚️', q: 'Shift schedules, equipment, and alert rules',
+      { icon: '️', q: 'Shift schedules, equipment, and alert rules',
         steps: [
           'Shift Schedules sets which shifts each facility runs, so missed-shift alerts fire at the right times.',
           'Facility Equipment controls which systems each facility tracks.',
