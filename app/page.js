@@ -99,7 +99,7 @@ export default function LandingPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-[#F0F9FF] rounded-2xl p-7 border border-blue-100">
-              <div className="text-3xl mb-3">✍️</div>
+              <div className="text-3xl mb-3">️</div>
               <div className="text-xs font-bold text-[#0072CE] mb-1">STAGE 1 · DRAFT</div>
               <h3 className="font-bold text-gray-900 text-lg mb-2">Drafted from your data</h3>
               <p className="text-gray-500 text-sm leading-relaxed">An executive summary is written using only the readings and exceedances on record for the month — no invented numbers.</p>

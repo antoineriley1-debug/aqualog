@@ -28,7 +28,7 @@ const ALL_SYSTEMS = [
   { id: 'domestic', label: 'Domestic Water', icon: '[WATER]', desc: 'Potable water systems' },
   { id: 'legionella', label: 'Legionella / WMP', icon: '', desc: 'Water management program' },
   { id: 'st108', label: 'ST108 / Reprocessing', icon: '', desc: 'Medical device reprocessing water' },
-  { id: 'steam', label: 'Steam Distribution', icon: '♨️', desc: 'Steam condensate & distribution' },
+  { id: 'steam', label: 'Steam Distribution', icon: 'Steam️', desc: 'Steam condensate & distribution' },
   { id: 'glycol', label: 'Glycol Systems', icon: '[FREEZE]', desc: 'Closed loop glycol systems' },
   { id: 'softener', label: 'Water Softeners', icon: '', desc: 'Ion exchange softening' },
   { id: 'ro', label: 'RO / DI Systems', icon: '[WAVE]', desc: 'Reverse osmosis & deionization' },
