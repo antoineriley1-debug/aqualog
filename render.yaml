@@ -11,6 +11,17 @@ services:
         value: 3000
       - key: CRON_SECRET
         value: crn_93814fe4db8388e5f95a0eaa80149aaa
+      # AI advisor + council review — must be set in Render dashboard (sync:false = secret)
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      # Auth persistence across container restarts (ephemeral filesystem wipes data/users.json)
+      # Set this to the full users array JSON in Render dashboard
+      - key: AUTH_USERS_JSON
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_USERNAME
+        value: ariley
 
   - type: cron
     name: aqualog-check-day-shift

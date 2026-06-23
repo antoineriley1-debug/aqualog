@@ -77,7 +77,7 @@ export default function Sidebar() {
           { href: '/compliance', label: '📈 Compliance', shortLabel: 'Compliance' },
           { href: '/compare', label: '📊 Compare Facilities', shortLabel: 'Compare' },
           { href: '/audit', label: '🔍 Audit Log', shortLabel: 'Audit' },
-          { href: '/notifications', label: '🔔 Alert Rules', shortLabel: 'Alerts' },
+          { href: '/notifications', label: '🔔 Alert Rules', shortLabel: 'Alert Rules' },
           { href: '/settings/notifications', label: '⚙️ Notification Settings', shortLabel: 'Notif Settings' },
           { href: '/users', label: '👥 Users', shortLabel: 'Users' },
           { href: '/directory', label: '📞 Directory', shortLabel: 'Directory' },

@@ -105,7 +105,7 @@ async function councilSummary(hospitalName, month, digest) {
   try {
     const { default: Anthropic } = await import('@anthropic-ai/sdk');
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-    const MODEL = 'claude-sonnet-4-20250514';
+    const MODEL = 'claude-sonnet-4-6';
     const ask = (system, content, max_tokens) =>
       client.messages
         .create({ model: MODEL, max_tokens, system, messages: [{ role: 'user', content }] })

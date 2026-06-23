@@ -9,6 +9,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { getUserFromRequest, SUPER_ADMIN_ID } from '@/lib/auth';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const TIERS_FILE = path.join(DATA_DIR, 'tiers.json');
@@ -74,15 +75,12 @@ function saveTiers(tiers) {
   }
 }
 
-// TODO: Add proper auth check - verify user is super admin
-function verifyAdminAccess(request) {
-  // In production: Check JWT token and verify user is super admin
-  // For now: Return true (add auth later)
-  return true;
-}
-
 export async function GET(request) {
   try {
+    const user = await getUserFromRequest(request);
+    if (!user || user.role !== 'admin') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const tiers = getTiers();
     return NextResponse.json({ tiers });
   } catch (err) {
@@ -96,10 +94,10 @@ export async function GET(request) {
 
 export async function PATCH(request) {
   try {
-    // TODO: Uncomment after adding auth
-    // if (!verifyAdminAccess(request)) {
-    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
-    // }
+    const user = await getUserFromRequest(request);
+    if (!user || user.id !== SUPER_ADMIN_ID) {
+      return NextResponse.json({ error: 'Forbidden — super admin only' }, { status: 403 });
+    }
 
     const body = await request.json();
     const { tierId, enabled, price } = body;
