@@ -1,6 +1,6 @@
-'use client';
+﻿'use client';
 /**
- * ShiftTimers — live, per-facility shift status on the dashboard.
+ * ShiftTimers â€” live, per-facility shift status on the dashboard.
  * For each facility it checks ONLY the systems that facility actually has
  * (from its equipment profile). A shift is "logged" only when every system
  * the facility has was logged for that shift; otherwise open (countdown) or missed.
@@ -80,17 +80,17 @@ export default function ShiftTimers() {
   return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
-        <h2 className="text-sm font-bold text-gray-700">️ Shift Reading Status — today</h2>
+        <h2 className="text-sm font-bold text-gray-700">ï¸ Shift Reading Status â€” today</h2>
         {totalMissed > 0
-          ? <span className="text-xs font-bold text-red-700 bg-red-50 border border-red-200 rounded-full px-3 py-1">● {totalMissed} missed reading{totalMissed!==1?'s':''}</span>
-          : <span className="text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-full px-3 py-1">✓ All caught up</span>}
+          ? <span className="text-xs font-bold text-red-700 bg-red-50 border border-red-200 rounded-full px-3 py-1">â— {totalMissed} missed reading{totalMissed!==1?'s':''}</span>
+          : <span className="text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-full px-3 py-1">âœ“ All caught up</span>}
       </div>
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm divide-y divide-gray-50">
         {rows.map(({f, shiftCells, anyMissed, facSystems}) => (
           <div key={f.id} className={`px-4 py-3 flex items-center gap-3 flex-wrap ${anyMissed?'bg-red-50/40':''}`}>
             <div className="w-48 flex-shrink-0 min-w-0">
               <div className="text-sm font-semibold text-gray-900 truncate">{f.name}</div>
-              <div className="text-xs text-gray-400">{facSystems.map(s=>SYSTEM_META[s]?.icon||'').join(' ')}</div>
+              <div className="text-xs text-gray-400">{facSystems.map(s=>SYSTEM_META[s]?.label||s).join(' · ')}</div>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
               {shiftCells.length === 0 && <span className="text-xs text-gray-400">No shifts configured</span>}
@@ -106,3 +106,4 @@ export default function ShiftTimers() {
     </div>
   );
 }
+
