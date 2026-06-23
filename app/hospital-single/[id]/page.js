@@ -5,7 +5,9 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { HOSPITALS } from '@/lib/hospitals';
-import { BOILER_TESTS, CHILLED_TESTS } from '@/lib/testGuide';
+import { BOILER_TESTS, CHILLED_TESTS, TESTS_BY_SYSTEM } from '@/lib/testGuide';
+import { SYSTEM_META, SYSTEM_ORDER } from '@/lib/systemFields';
+import { HealthGauge, RangePosition, TrendChart, FalsificationBadge, RANGES } from '@/components/OperatorVisuals';
 
 // CRITICAL: Ensure HOSPITALS is properly imported. If not, we have a serious issue.
 if (!Array.isArray(HOSPITALS) || HOSPITALS.length === 0) {
@@ -34,10 +36,13 @@ export default function HospitalSinglePage() {
   const [entries, setEntries] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [testTab, setTestTab] = useState('boiler');
+  const [facilitySystems, setFacilitySystems] = useState(SYSTEM_ORDER);
+  const [customEquip, setCustomEquip] = useState([]); // [{key,label,icon,ranges:{param:{min,max,unit,label}}}] — Enterprise only
   const [showDropdown, setShowDropdown] = useState(false);
   const [showTestGuide, setShowTestGuide] = useState(false);
   const [loading, setLoading] = useState(true);
   const [hydrated, setHydrated] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   // Mark as hydrated on mount (client-side)
   useEffect(() => {
@@ -88,6 +93,33 @@ export default function HospitalSinglePage() {
       setLoading(false);
     }).catch(() => setLoading(false));
   }, [hospital]);
+
+  // Which systems does THIS facility have? (defaults to all five). Runs on id; safe before any early return.
+  useEffect(() => {
+    if (!id) return;
+    fetch('/api/equipment-profile', { credentials: 'include' })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (!d) return;
+        const fac = (d.facilities || []).find(f => f.id === id);
+        if (fac && fac.profile) {
+          const has = SYSTEM_ORDER.filter(k => fac.profile[k]);
+          if (has.length) { setFacilitySystems(has); setTestTab(prev => has.includes(prev) ? prev : has[0]); }
+          // Enterprise custom equipment — build a ranges object per item for the visuals.
+          if (d.customEquipmentEnabled && Array.isArray(fac.profile.custom) && fac.profile.custom.length) {
+            const items = fac.profile.custom.map(c => {
+              const params = Array.isArray(c.params) ? c.params : [];
+              const ranges = {};
+              for (const pr of params) ranges[pr.key] = { min: pr.min, max: pr.max, unit: pr.unit, label: pr.label };
+              return { key: c.key, label: c.label || c.key, icon: c.icon || '🔧', ranges };
+            }).filter(it => Object.keys(it.ranges).length);
+            setCustomEquip(items);
+          } else {
+            setCustomEquip([]); // feature off or none selected → hide entirely (downgrade behavior)
+          }
+        }
+      }).catch(() => {});
+  }, [id]);
 
   // Don't render error until hydrated (useParams won't work during SSR)
   if (!hydrated || !id) {
@@ -171,13 +203,21 @@ export default function HospitalSinglePage() {
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
         {/* Hospital Image */}
-        <div className="mb-8 bg-white rounded-xl overflow-hidden shadow-md border border-gray-100 relative">
+        <div className="mb-8 bg-gradient-to-br from-slate-100 to-blue-50 rounded-xl overflow-hidden shadow-md border border-gray-100 relative min-h-[18rem]">
           <img 
-            src={`/hospitals/${id}.jpg`}
+            src={`/hospitals_optimized/${id}.jpg`}
             alt={hospital.name}
-            className="w-full h-72 object-cover"
+            decoding="async"
+            fetchPriority="high"
+            width="1600" height="1067"
+            onLoad={() => setImgLoaded(true)}
+            className={`w-full h-72 object-cover transition-opacity duration-500 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
             onError={(e) => {
+              // fall back to the original full-size file if an optimized one is missing, then to a placeholder
+              if (!e.target.dataset.fallback) { e.target.dataset.fallback = '1'; e.target.src = `/hospitals/${id}.jpg`; return; }
+              e.target.onerror = null;
               e.target.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 300%22%3E%3Crect fill=%22%23e5f0f7%22 width=%22800%22 height=%22300%22/%3E%3Ctext x=%22400%22 y=%22150%22 font-size=%2280%22 text-anchor=%22middle%22 fill=%22%238b9dae%22%3E🏥%3C/text%3E%3C/svg%3E';
+              setImgLoaded(true);
             }}
           />
           {/* Hospital Name Overlay */}
@@ -221,6 +261,80 @@ export default function HospitalSinglePage() {
           </div>
         </div>
 
+        {/* ===== LIVE VISUAL COMMAND STRIP ===== */}
+        <div className="mb-8 bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+          <div className="bg-gradient-to-r from-[#0072CE] to-cyan-500 px-6 py-4 flex items-center justify-between">
+            <h2 className="text-lg font-bold text-white">⚡ Live System Health</h2>
+            <span className="text-xs text-cyan-50">animated · last readings</span>
+          </div>
+          <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {facilitySystems.filter(sys => RANGES[sys]).map((sys) => {
+              const sysEntries = entries.filter(e => e.system === sys);
+              const latest = sysEntries[0];
+              const sysRanges = RANGES[sys] || {};
+              const allKeys = Object.keys(sysRanges);
+              const keyFields = allKeys.slice(0, 4);
+              const trendField = sysRanges.ph ? 'ph' : allKeys[0];           // softener has no pH → use its first param
+              const trendLabel = sysRanges[trendField]?.label || trendField;
+              return (
+                <div key={sys} className="flex flex-col">
+                  <div className="flex items-center gap-6">
+                    <HealthGauge entries={entries} system={sys} />
+                    <div className="flex-1 space-y-3">
+                      {keyFields.map(f => (
+                        sysRanges[f] ? <RangePosition key={f} value={latest?.values?.[f]} range={sysRanges[f]} /> : null
+                      ))}
+                    </div>
+                  </div>
+                  <div className="mt-5 pt-4 border-t border-gray-100">
+                    <div className="text-xs font-semibold text-gray-500 mb-2">{(SYSTEM_META[sys]?.icon||'')} {(SYSTEM_META[sys]?.label||sys)} {trendLabel} trend · last 30</div>
+                    <TrendChart entries={entries} system={sys} field={trendField} />
+                  </div>
+                  <FalsificationBadge entries={entries} system={sys} />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ===== ADDITIONAL EQUIPMENT (Enterprise custom equipment) ===== */}
+        {customEquip.length > 0 && (
+          <div className="mb-8 bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+            <div className="bg-gradient-to-r from-[#0891B2] to-teal-500 px-6 py-4 flex items-center justify-between">
+              <h2 className="text-lg font-bold text-white">➕ Additional Equipment</h2>
+              <span className="text-xs text-teal-50">specialized · last readings</span>
+            </div>
+            <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {customEquip.map((eq) => {
+                const eqEntries = entries.filter(e => e.system === eq.key);
+                const latest = eqEntries[0];
+                const allKeys = Object.keys(eq.ranges);
+                const keyFields = allKeys.slice(0, 4);
+                const trendField = allKeys[0];
+                const trendLabel = eq.ranges[trendField]?.label || trendField;
+                return (
+                  <div key={eq.key} className="flex flex-col">
+                    <div className="flex items-center gap-6">
+                      <HealthGauge entries={entries} system={eq.key} ranges={eq.ranges} />
+                      <div className="flex-1 space-y-3">
+                        {keyFields.map(f => (
+                          eq.ranges[f] ? <RangePosition key={f} value={latest?.values?.[f]} range={eq.ranges[f]} /> : null
+                        ))}
+                      </div>
+                    </div>
+                    <div className="mt-5 pt-4 border-t border-gray-100">
+                      <div className="text-xs font-semibold text-gray-500 mb-2">{eq.icon} {eq.label} · {trendLabel} trend · last 30</div>
+                      {trendField
+                        ? <TrendChart entries={entries} system={eq.key} field={trendField} ranges={eq.ranges} />
+                        : <div className="text-xs text-gray-400 py-8 text-center">No parameters configured</div>}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* 2-Column Layout: Entries+Trends | Alerts+CollapsibleTestGuide */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
@@ -246,7 +360,7 @@ export default function HospitalSinglePage() {
                 entries.slice(0, 6).map((e) => (
                   <Link
                     key={e.id}
-                    href={`/entry/${e.id}`}
+                    href="/history"
                     className="px-6 py-3 hover:bg-gray-50 transition block cursor-pointer"
                   >
                     <div className="flex items-start justify-between gap-2 mb-2">
@@ -400,11 +514,8 @@ export default function HospitalSinglePage() {
               {showTestGuide && (
                 <div className="p-6">
                   {/* Test Tabs */}
-                  <div className="flex gap-2 border-b border-gray-200 mb-6">
-                    {[
-                      { id: 'boiler', label: '🔥 Boiler' },
-                      { id: 'chilled', label: '❄️ Chilled' },
-                    ].map((tab) => (
+                  <div className="flex gap-2 border-b border-gray-200 mb-6 flex-wrap">
+                    {facilitySystems.map((sysKey) => ({ id: sysKey, label: (SYSTEM_META[sysKey]?.icon||'') + ' ' + (SYSTEM_META[sysKey]?.label||sysKey) })).map((tab) => (
                       <button
                         key={tab.id}
                         onClick={() => setTestTab(tab.id)}
@@ -421,7 +532,7 @@ export default function HospitalSinglePage() {
 
                   {/* Tests List */}
                   <div className="space-y-4">
-                    {(testTab === 'boiler' ? BOILER_TESTS : CHILLED_TESTS).slice(0, 4).map((test, idx) => (
+                    {(TESTS_BY_SYSTEM[testTab] || []).slice(0, 6).map((test, idx) => (
                       <div key={idx} className="pb-4 border-b border-gray-100 last:border-0">
                         <div className="flex items-start gap-3">
                           <span className="text-xl flex-shrink-0">{test.icon}</span>

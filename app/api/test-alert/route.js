@@ -1,5 +1,5 @@
 /**
- * MedStar H2O — Test Alert API
+ * FacilityH2O — Test Alert API
  * Admin-only. Fires a real test email + SMS to verify notification delivery.
  * Author: Antoine Riley
  */
@@ -9,6 +9,7 @@ import { getUserFromRequest, SUPER_ADMIN_ID } from '@/lib/auth';
 import { logAudit } from '@/lib/store';
 import fs from 'fs';
 import path from 'path';
+import { BRAND } from '@/lib/branding';
 
 function getNotificationContacts(hospitalId, level) {
   try {
@@ -41,7 +42,7 @@ async function sendEmail({ to, subject, text, html }) {
   try {
     const { Resend } = await import('resend');
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const from = process.env.ALERT_EMAIL_FROM || 'alerts@medstarh20log.com';
+    const from = process.env.ALERT_EMAIL_FROM || BRAND.fromEmail;
     const result = await resend.emails.send({ from, to: allTo, subject, text, html });
     return { ok: true, recipients: allTo, messageId: result?.id };
   } catch (err) {
@@ -91,12 +92,12 @@ export async function POST(request) {
   // Collect SMS numbers from rule contacts
   const smsNumbers = ruleContacts.map(c => c.sms).filter(Boolean);
 
-  const subject = `✅ TEST ALERT — MedStar H2O Notification System | ${ts}`;
-  const text = `TEST ALERT — MedStar H2O\n\nThis is a test notification triggered by ${user.name} (${user.username}) to verify the alert system is working correctly.\n\nTimestamp: ${ts}\nTriggered by: ${user.name}\nRole: ${user.role}\n\nIf you received this message, email alerts are working correctly.\n\n— MedStar H2O Alert System`;
+  const subject = `✅ TEST ALERT — ${BRAND.name} Notification System | ${ts}`;
+  const text = `TEST ALERT — ${BRAND.name}\n\nThis is a test notification triggered by ${user.name} (${user.username}) to verify the alert system is working correctly.\n\nTimestamp: ${ts}\nTriggered by: ${user.name}\nRole: ${user.role}\n\nIf you received this message, email alerts are working correctly.\n\n— ${BRAND.name} Alert System`;
   const html = `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
       <div style="background:#0072CE;color:white;padding:20px;border-radius:8px 8px 0 0">
-        <h2 style="margin:0">✅ TEST ALERT — MedStar H2O</h2>
+        <h2 style="margin:0">✅ TEST ALERT — ${BRAND.name}</h2>
         <p style="margin:6px 0 0;opacity:0.8;font-size:14px">Notification system verification</p>
       </div>
       <div style="border:1px solid #e0e0e0;border-top:none;padding:24px;border-radius:0 0 8px 8px;background:#fff">
@@ -104,16 +105,16 @@ export async function POST(request) {
         <table style="width:100%;border-collapse:collapse;margin:16px 0">
           <tr style="background:#F0F9FF"><td style="padding:8px 12px;font-weight:bold;color:#003366;width:40%">Triggered By</td><td style="padding:8px 12px">${user.name} (${user.username})</td></tr>
           <tr><td style="padding:8px 12px;font-weight:bold;color:#003366">Timestamp</td><td style="padding:8px 12px">${ts}</td></tr>
-          <tr style="background:#F0F9FF"><td style="padding:8px 12px;font-weight:bold;color:#003366">System</td><td style="padding:8px 12px">MedStar H2O Alert System</td></tr>
+          <tr style="background:#F0F9FF"><td style="padding:8px 12px;font-weight:bold;color:#003366">System</td><td style="padding:8px 12px">${BRAND.name} Alert System</td></tr>
           <tr><td style="padding:8px 12px;font-weight:bold;color:#003366">Status</td><td style="padding:8px 12px"><span style="color:#00C85A;font-weight:bold">✅ DELIVERY CONFIRMED</span></td></tr>
         </table>
         <p style="color:#666;font-size:13px">If you received this email, your notification system is configured correctly. No action required.</p>
         <hr style="border:none;border-top:1px solid #eee;margin:16px 0"/>
-        <p style="color:#999;font-size:11px">MedStar H2O Log · MedStar H2O · Triggered by ${user.name}</p>
+        <p style="color:#999;font-size:11px">${BRAND.name} · Triggered by ${user.name}</p>
       </div>
     </div>`;
 
-  const smsText = `TEST ALERT - MedStar H2O\nTriggered by ${user.name} at ${ts}.\nIf you received this, SMS alerts are working. No action needed.`;
+  const smsText = `TEST ALERT - ${BRAND.name}\nTriggered by ${user.name} at ${ts}.\nIf you received this, SMS alerts are working. No action needed.`;
 
   // Fire both in parallel
   const [emailResult, smsResult] = await Promise.all([

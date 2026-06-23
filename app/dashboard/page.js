@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 import { HOSPITALS } from '@/lib/hospitals';
+import ShiftTimers from '@/components/ShiftTimers';
 
 function getUser() {
   if (typeof document === 'undefined') return null;
@@ -121,7 +122,6 @@ export default function DashboardPage() {
   const [entries, setEntries] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const u = getUser();
     setUser(u);
@@ -201,6 +201,9 @@ export default function DashboardPage() {
               <div className="text-sm text-gray-500 mt-1">Open Alerts</div>
             </div>
           </div>
+
+          {/* Live shift reading status */}
+          <ShiftTimers />
 
           {/* Hospital grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">

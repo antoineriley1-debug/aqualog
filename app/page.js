@@ -13,9 +13,9 @@ export default function LandingPage() {
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
             <a href="#features" className="hover:text-[#0072CE] transition">Features</a>
+            <a href="#reports" className="hover:text-[#0072CE] transition">Reports</a>
             <a href="#compliance" className="hover:text-[#0072CE] transition">Compliance</a>
-            <a href="#pricing" className="hover:text-[#0072CE] transition">Pricing</a>
-            <a href="#demo" className="hover:text-[#0072CE] transition">Request Demo</a>
+            <a href="/demo.html" className="hover:text-[#0072CE] transition">Request Demo</a>
           </div>
           <Link
             href="/login"
@@ -39,7 +39,7 @@ export default function LandingPage() {
             <Link href="/login" className="bg-white text-[#003366] font-bold px-8 py-3.5 rounded-xl hover:bg-blue-50 transition shadow-lg text-base">
               Sign In to Your Portal →
             </Link>
-            <a href="#demo" className="border border-white/40 text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-white/10 transition text-base">
+            <a href="/demo.html" className="border border-white/40 text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-white/10 transition text-base">
               Request a Demo
             </a>
           </div>
@@ -49,7 +49,7 @@ export default function LandingPage() {
       {/* TRUST STRIP */}
       <section className="bg-[#0072CE] text-white py-4 px-6">
         <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-6 text-sm font-medium text-blue-100">
-          {['✓ ASHRAE 188 Compliant', '✓ Joint Commission Ready', '✓ CMS QSO17-30', '✓ ANSI/AAMI ST108', '✓ Shift-Based Logging', '✓ Audit Trail Built-In', '✓ Multi-Facility Dashboard'].map(item => (
+          {['✓ ASHRAE 188 Compliant', '✓ Joint Commission Ready', '✓ CMS QSO17-30', '✓ ANSI/AAMI ST108', '✓ Shift-Based Logging', '✓ Audit Trail Built-In', '✓ Multi-Facility Dashboard', '✓ AI-Reviewed Reports'].map(item => (
             <span key={item}>{item}</span>
           ))}
         </div>
@@ -64,15 +64,18 @@ export default function LandingPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { icon: '📋', title: 'Shift-Based Logging', desc: 'Log boiler and chilled water readings by shift — day, evening, night. Every reading timestamped with operator name, time, and system.' },
-              { icon: '📈', title: 'Trend Analysis', desc: 'Interactive charts for any parameter over any time range. Spot drift early before it becomes a compliance failure or equipment issue.' },
+              { icon: '📋', title: 'Shift-Based Logging', desc: 'Log readings by shift — 1st, 2nd, 3rd. Every reading timestamped with operator name, time, and system. Set each facility\'s shift hours and timezone.' },
+              { icon: '🛠️', title: 'Five Systems, Not Just Two', desc: 'Track boiler, chilled water, cooling tower, condensate, and softener — each with its own parameters and safe ranges. Turn on only the systems a facility runs.' },
+              { icon: '📈', title: 'Live Trends & System Health', desc: 'Animated health gauges and interactive charts for any parameter over any time range. Spot drift early — before it becomes a compliance failure.' },
               { icon: '🔔', title: 'Instant Out-of-Range Alerts', desc: 'When a reading falls outside acceptable limits, your team is notified immediately. Every alert tracked with an acknowledge workflow.' },
+              { icon: '⏱️', title: 'Missed-Reading Detection', desc: 'When a shift ends without a logged reading, it automatically becomes an alert — so a skipped round never slips through unnoticed.' },
+              { icon: '⚑', title: 'Reading Consistency Check', desc: 'An advisory signal flags shifts whose readings look suspiciously identical compared to other shifts — a prompt to spot-verify before an auditor does.' },
               { icon: '🏢', title: 'Multi-Facility Dashboard', desc: 'Manage all your buildings from one screen. Each facility isolated — operators see only their site, admins see everything.' },
               { icon: '✅', title: 'ST108 Compliance Tracking', desc: 'Built-in ST108 water log compliance with audit trail and one-click compliance reports. Joint Commission inspection ready.' },
               { icon: '🧫', title: 'Legionella Program Tracking', desc: 'Log and track your Legionella water management program entries. Full audit history for regulatory submissions.' },
+              { icon: '🧪', title: 'Chain-of-Custody Forms', desc: 'Generate chain-of-custody forms for lab samples in one click. Print and send with your sample containers — no separate paperwork.' },
               { icon: '🔍', title: 'Tamper-Evident Audit Log', desc: 'Every login, every entry, every change is permanently logged with timestamp, user, and IP. SHA-256 sealed — immutable chain of custody.' },
               { icon: '👥', title: 'Role-Based Access', desc: 'Admin accounts see all facilities and reports. Operator accounts are scoped to their assigned building only. No configuration needed.' },
-              { icon: '🎨', title: 'Custom Branding', desc: 'Set your color scheme, dark/light mode, and site-wide theme. Make FacilityH2O look like it belongs to your organization.' },
             ].map(f => (
               <div key={f.title} className="bg-[#F0F9FF] rounded-2xl p-6 border border-blue-100 hover:shadow-md transition">
                 <div className="text-3xl mb-4">{f.icon}</div>
@@ -81,6 +84,42 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* AI REPORT REVIEW */}
+      <section id="reports" className="py-24 px-6 bg-white">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-14">
+            <div className="inline-block text-xs font-bold text-[#0891B2] uppercase tracking-widest bg-cyan-50 px-4 py-1.5 rounded-full mb-4">Audit-Ready Reporting</div>
+            <h2 className="text-3xl font-bold text-gray-900">Every report is reviewed before it reaches you</h2>
+            <p className="text-gray-500 mt-3 text-lg max-w-2xl mx-auto">
+              Your monthly compliance summaries don't come from a single pass. Each one runs through a three-stage AI review — drafted, independently critiqued against your actual data, then finalized — so the numbers hold up under scrutiny.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-[#F0F9FF] rounded-2xl p-7 border border-blue-100">
+              <div className="text-3xl mb-3">✍️</div>
+              <div className="text-xs font-bold text-[#0072CE] mb-1">STAGE 1 · DRAFT</div>
+              <h3 className="font-bold text-gray-900 text-lg mb-2">Drafted from your data</h3>
+              <p className="text-gray-500 text-sm leading-relaxed">An executive summary is written using only the readings and exceedances on record for the month — no invented numbers.</p>
+            </div>
+            <div className="bg-[#F0F9FF] rounded-2xl p-7 border border-blue-100">
+              <div className="text-3xl mb-3">🔎</div>
+              <div className="text-xs font-bold text-[#0072CE] mb-1">STAGE 2 · REVIEW</div>
+              <h3 className="font-bold text-gray-900 text-lg mb-2">Independently critiqued</h3>
+              <p className="text-gray-500 text-sm leading-relaxed">A separate reviewer pass verifies every figure against your data, flags anything unsupported, and confirms treatment changes are deferred to your vendor.</p>
+            </div>
+            <div className="bg-[#F0F9FF] rounded-2xl p-7 border border-blue-100">
+              <div className="text-3xl mb-3">✅</div>
+              <div className="text-xs font-bold text-[#0072CE] mb-1">STAGE 3 · FINALIZE</div>
+              <h3 className="font-bold text-gray-900 text-lg mb-2">Corrected & finalized</h3>
+              <p className="text-gray-500 text-sm leading-relaxed">A final pass folds in every valid correction and produces the clean, professional summary you hand to leadership or an inspector.</p>
+            </div>
+          </div>
+          <p className="text-center text-xs text-gray-400 mt-8 max-w-2xl mx-auto">
+            The review checks internal consistency and grounding against your logged data. It does not replace professional judgment or your water-treatment vendor's recommendations.
+          </p>
         </div>
       </section>
 
@@ -136,85 +175,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* PRICING */}
-      <section id="pricing" className="py-24 px-6 bg-white">
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-3">Simple, Transparent Pricing</h2>
-          <p className="text-gray-500 text-lg mb-12">Per-facility monthly lease. No long-term contracts. Cancel anytime.</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { name: 'Starter', price: '$250', per: '/facility/mo', features: ['Up to 2 facilities', 'Shift logging', 'Basic alerts', 'History & trends', 'Email support'], highlight: false },
-              { name: 'Professional', price: '$499', per: '/facility/mo', features: ['Unlimited facilities', 'ST108 compliance module', 'Legionella tracking', 'Audit log', 'Custom branding', 'Priority support'], highlight: true },
-              { name: 'Enterprise', price: 'Custom', per: '', features: ['Volume pricing', 'Dedicated onboarding', 'SLA guarantee', 'Custom integrations', 'HIPAA BAA available', 'Phone support'], highlight: false },
-            ].map(p => (
-              <div key={p.name} className={`rounded-2xl p-8 border-2 flex flex-col ${p.highlight ? 'border-[#0072CE] shadow-lg bg-[#F0F9FF]' : 'border-gray-200'}`}>
-                {p.highlight && <div className="text-xs font-bold text-[#0072CE] uppercase tracking-widest mb-2">Most Popular</div>}
-                <div className="text-2xl font-bold text-gray-900 mb-1">{p.name}</div>
-                <div className="mb-6">
-                  <span className="text-4xl font-extrabold text-[#003366]">{p.price}</span>
-                  <span className="text-gray-400 text-sm">{p.per}</span>
-                </div>
-                <ul className="space-y-3 text-sm text-gray-600 flex-1 mb-8">
-                  {p.features.map(f => <li key={f} className="flex items-center gap-2"><span className="text-green-500">✓</span>{f}</li>)}
-                </ul>
-                <Link href={p.name === 'Enterprise' ? '#demo' : '/login'} className={`block w-full text-center font-semibold py-3 rounded-xl transition ${p.highlight ? 'bg-[#0072CE] text-white hover:bg-[#005fa3]' : 'border border-gray-300 text-gray-700 hover:border-[#0072CE] hover:text-[#0072CE]'}`}>
-                  {p.name === 'Enterprise' ? 'Contact Us' : 'Get Started'}
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* DEMO / CTA */}
-      <section id="demo" className="py-24 px-6 bg-gradient-to-br from-[#003366] to-[#0072CE] text-white">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left: pitch */}
-          <div>
-            <div className="inline-block text-xs font-bold text-yellow-300 uppercase tracking-widest bg-white/10 px-4 py-1.5 rounded-full mb-6">Get Started</div>
-            <h2 className="text-3xl font-bold mb-4">Your Next Inspection Is Coming.<br />Be Ready.</h2>
-            <p className="text-blue-100 mb-6 leading-relaxed">
-              Don't wait for a citation to fix your water management program. Request a demo today and see how FacilityH2O transforms compliance from a liability into a competitive advantage.
-            </p>
-            <ul className="space-y-3 text-sm text-blue-100">
-              {[
-                '30-minute live walkthrough',
-                'Tailored to your hospital count and systems',
-                'No commitment required',
-              ].map(item => (
-                <li key={item} className="flex items-center gap-2"><span className="text-yellow-300 font-bold">✓</span>{item}</li>
-              ))}
-            </ul>
-          </div>
-          {/* Right: contact form */}
-          <div className="bg-white rounded-2xl p-8 shadow-xl">
-            <h3 className="text-[#003366] font-bold text-xl mb-6">Request a Demo</h3>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Full Name</label>
-                <input type="text" placeholder="Your Name" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 text-sm focus:outline-none focus:border-[#0072CE]" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Job Title</label>
-                <input type="text" placeholder="Facilities Director" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 text-sm focus:outline-none focus:border-[#0072CE]" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Organization</label>
-                <input type="text" placeholder="Your Organization" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 text-sm focus:outline-none focus:border-[#0072CE]" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Work Email</label>
-                <input type="email" placeholder="you@organization.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 text-sm focus:outline-none focus:border-[#0072CE]" />
-              </div>
-              <a href="mailto:info@facilityh2o.com?subject=Demo Request" className="block w-full text-center bg-[#0072CE] hover:bg-[#005fa3] text-white font-bold py-3 rounded-xl transition mt-2">
-                Send Demo Request →
-              </a>
-              <p className="text-xs text-gray-400 text-center">Or email directly: <a href="mailto:info@facilityh2o.com" className="text-[#0072CE]">info@facilityh2o.com</a></p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* FOOTER */}
       <footer className="bg-gray-900 text-gray-400 py-12 px-6 text-center text-sm">
         <div className="flex items-center justify-center gap-2 text-white font-bold text-lg mb-3">
@@ -223,7 +183,6 @@ export default function LandingPage() {
         <p className="text-gray-500 mb-1">Water Chemistry Compliance. Built for Facilities.</p>
         <div className="flex items-center justify-center gap-6 flex-wrap mb-4">
           <Link href="/login" className="hover:text-white transition">Sign In</Link>
-          <a href="#demo" className="hover:text-white transition">Request Demo</a>
           <Link href="/terms" className="hover:text-white transition">Terms of Service</Link>
           <Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link>
           <a href="mailto:info@facilityh2o.com" className="hover:text-white transition">info@facilityh2o.com</a>

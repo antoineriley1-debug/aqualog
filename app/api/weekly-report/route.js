@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getAllEntries, getAllAlerts } from '@/lib/store';
 import { HOSPITALS } from '@/lib/hospitals';
 import { calcComplianceScore } from '@/lib/compliance';
+import { BRAND } from '@/lib/branding';
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -82,15 +83,15 @@ export async function GET(request) {
     const htmlEmail = `
 <!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"><title>MedStar H2O Weekly Report</title></head>
+<head><meta charset="utf-8"><title>${BRAND.name} Weekly Report</title></head>
 <body style="font-family:Arial,sans-serif;background:#f9fafb;margin:0;padding:20px">
   <div style="max-width:700px;margin:0 auto;background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1)">
-    <div style="background:#003366;padding:24px 32px">
-      <h1 style="color:white;margin:0;font-size:22px">💧 MedStar H2O Weekly Report</h1>
+    <div style="background:${BRAND.headerColor};padding:24px 32px">
+      <h1 style="color:white;margin:0;font-size:22px">💧 ${BRAND.name} Weekly Report</h1>
       <p style="color:#93c5fd;margin:6px 0 0">Week of ${weekDateLabel}</p>
     </div>
     <div style="padding:24px 32px">
-      <p style="color:#374151;margin-bottom:20px">Compliance summary for all MedStar H2O facilities — month-to-date scores with weekly activity.</p>
+      <p style="color:#374151;margin-bottom:20px">Compliance summary for all ${BRAND.name} facilities — month-to-date scores with weekly activity.</p>
 
       <table style="width:100%;border-collapse:collapse;font-size:14px">
         <thead>
@@ -123,7 +124,7 @@ export async function GET(request) {
       `}
     </div>
     <div style="padding:16px 32px;background:#f9fafb;border-top:1px solid #e5e7eb;font-size:12px;color:#9ca3af">
-      <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://aqualog-k0xm.onrender.com'}" style="color:#0072CE">View MedStar H2O Portal</a> · Generated ${new Date().toLocaleString()} · MedStar Health · MedStar H2O
+      <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://facilityh2o.com'}" style="color:#0072CE">View ${BRAND.name} Portal</a> · Generated ${new Date().toLocaleString()} · ${BRAND.name}
     </div>
   </div>
 </body>
@@ -136,9 +137,9 @@ export async function GET(request) {
         const { Resend } = await import('resend');
         const resend = new Resend(process.env.RESEND_API_KEY);
         await resend.emails.send({
-          from: process.env.ALERT_EMAIL_FROM || 'aqualog@MedStar H2O.com',
+          from: process.env.ALERT_EMAIL_FROM || BRAND.fromEmail,
           to: process.env.ALERT_EMAIL_TO,
-          subject: `MedStar H2O Weekly Report — Week of ${weekDateLabel}`,
+          subject: `${BRAND.name} Weekly Report — Week of ${weekDateLabel}`,
           html: htmlEmail,
         });
         emailSent = true;

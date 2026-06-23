@@ -9,7 +9,7 @@
 
 import { NextResponse } from 'next/server';
 import { validateUser } from '@/lib/auth';
-import { logAudit } from '@/lib/store';
+import { logAudit, resolveAccess } from '@/lib/store';
 
 export async function POST(request) {
   const ip        = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
@@ -40,6 +40,20 @@ export async function POST(request) {
         timestamp,
       });
       return NextResponse.json({ error: 'Invalid username or password.' }, { status: 401 });
+    }
+
+    // Enforce organization license status (owner + legacy accounts always allowed)
+    const access = resolveAccess(user);
+    if (!access.allowed) {
+      logAudit({
+        type: 'auth', action: 'login_blocked', userId: user.id, username: user.username,
+        detail: `Login blocked — subscription ${access.status}`, outcome: 'BLOCKED',
+        ip, userAgent, timestamp,
+      });
+      return NextResponse.json({
+        error: access.reason + ' Please contact your administrator to reactivate access.',
+        code: 'SUBSCRIPTION_INACTIVE', status: access.status,
+      }, { status: 403 });
     }
 
     // Log SUCCESSFUL login

@@ -20,9 +20,6 @@ export default function Navbar() {
             <a href="/#features" className="text-sm font-medium text-gray-600 hover:text-cyan-700 transition-colors">
               Features
             </a>
-            <Link href="/pricing" className="text-sm font-medium text-gray-600 hover:text-cyan-700 transition-colors">
-              Pricing
-            </Link>
           </div>
 
           {/* Right buttons */}
@@ -32,12 +29,6 @@ export default function Navbar() {
               className="text-sm font-medium text-gray-700 hover:text-cyan-700 px-4 py-2 rounded-lg transition-colors"
             >
               Log In
-            </Link>
-            <Link
-              href="/signup"
-              className="bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors"
-            >
-              Start Free Trial
             </Link>
           </div>
 
@@ -61,11 +52,7 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 px-4 py-4 space-y-3">
           <a href="/#features" className="block text-sm font-medium text-gray-700 py-2">Features</a>
-          <Link href="/pricing" className="block text-sm font-medium text-gray-700 py-2">Pricing</Link>
           <Link href="/login" className="block text-sm font-medium text-gray-700 py-2">Log In</Link>
-          <Link href="/signup" className="block w-full text-center bg-cyan-600 text-white text-sm font-semibold px-5 py-2.5 rounded-lg">
-            Start Free Trial
-          </Link>
         </div>
       )}
     </nav>

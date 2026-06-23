@@ -12,7 +12,6 @@ export default function Sidebar() {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    // Sync toggle state with current theme
     setIsDark(document.documentElement.classList.contains('dark'));
   }, []);
 
@@ -53,7 +52,6 @@ export default function Sidebar() {
     }
   }, [user]);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
@@ -72,7 +70,9 @@ export default function Sidebar() {
     ...(user?.role === 'admin'
       ? [
           { href: '/alerts', label: '🔔 Alerts', shortLabel: 'Alerts', badge: alertCount },
-          ...(user?.id === 'usr_ariley' ? [{ href: '/settings', label: '🎨 Site Settings', shortLabel: 'Settings' }] : []),
+          { href: '/shift-schedules', label: '⏱️ Shift Schedules', shortLabel: 'Shifts' },
+          { href: '/equipment', label: '🛠️ Facility Equipment', shortLabel: 'Equipment' },
+          ...((user?.id === 'usr_ariley' || user?.username === 'ariley') ? [{ href: '/settings', label: '🎨 Site Settings', shortLabel: 'Settings' }, { href: '/licensing', label: '💰 Licensing & Sales', shortLabel: 'Sales' }, { href: '/contract', label: '📄 New Contract', shortLabel: 'Contract' }, { href: '/pricing', label: '🏷️ Pricing Page', shortLabel: 'Pricing' }] : []),
           { href: '/reports', label: '📊 Reports', shortLabel: 'Reports' },
           { href: '/compliance', label: '📈 Compliance', shortLabel: 'Compliance' },
           { href: '/compare', label: '📊 Compare Facilities', shortLabel: 'Compare' },
@@ -81,31 +81,17 @@ export default function Sidebar() {
           { href: '/settings/notifications', label: '⚙️ Notification Settings', shortLabel: 'Notif Settings' },
           { href: '/users', label: '👥 Users', shortLabel: 'Users' },
           { href: '/directory', label: '📞 Directory', shortLabel: 'Directory' },
-          // ── AAMI ST108 Section ──
           { href: '/st108', label: '💧 ST108 Water Log', shortLabel: 'ST108' },
           { href: '/st108/report', label: '📋 ST108 Report', shortLabel: 'ST108 Report' },
           { href: '/st108/audit', label: '✅ ST108 Self-Audit', shortLabel: 'ST108 Audit' },
-          // ── Legionella / WMP ──
           { href: '/legionella', label: '🦠 Legionella / WMP', shortLabel: 'Legionella' },
-          // ── Lab Chain of Custody ──
           { href: '/coc', label: '🧪 Chain of Custody', shortLabel: 'COC' },
         ]
       : []),
+    { href: '/help', label: '❓ Help & Guide', shortLabel: 'Help' },
     { href: '/legal', label: '📋 Legal & Policies', shortLabel: 'Legal' },
   ];
 
-  const HOSPITALS = [
-    { id: 'whc', name: 'MedStar Washington Hospital Center' },
-    { id: 'somd', name: 'MedStar Southern Maryland Hospital Center' },
-    { id: 'harbor', name: 'MedStar Harbor Hospital' },
-    { id: 'mont', name: 'MedStar Montgomery Medical Center' },
-    { id: 'geo', name: 'MedStar Georgetown University Hospital' },
-    { id: 'frank', name: 'MedStar Franklin Square Medical Center' },
-    { id: 'gs', name: 'MedStar Good Samaritan Hospital' },
-    { id: 'union', name: 'MedStar Union Memorial Hospital' },
-    { id: 'stm', name: 'MedStar St. Mary\'s Hospital' },
-    { id: 'nrh', name: 'MedStar National Rehabilitation Hospital' },
-  ];
 
   const hospitalNames = {
     whc: 'Washington Hospital Center',
@@ -144,15 +130,12 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* ── DESKTOP SIDEBAR (hidden on mobile) ── */}
       <aside className="hidden md:flex w-64 min-h-screen bg-[#003366] text-white flex-col flex-shrink-0">
-        {/* Logo */}
         <div className="px-6 py-5 border-b border-blue-800">
           <div className="text-2xl font-bold">💧 FacilityH2O</div>
           <div className="text-xs text-blue-300 mt-1">FacilityH2O Inc.</div>
         </div>
 
-        {/* User Info */}
         {user && (
           <div className="px-6 py-4 border-b border-blue-800 bg-blue-900/30">
             <div className="text-sm font-semibold">{user.name}</div>
@@ -166,31 +149,22 @@ export default function Sidebar() {
           </div>
         )}
 
-        {/* Nav */}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+          {pathname !== '/dashboard' && (
+            <button
+              onClick={() => router.back()}
+              className="flex items-center gap-2 w-full px-3 py-2.5 mb-1 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-800/50 hover:text-white transition-colors"
+            >
+              ← Back
+            </button>
+          )}
           {navItems.map(({ href, label, badge }) => (
             <NavLink key={href} href={href} label={label} badge={badge} />
           ))}
-          
-          {/* Hospital Test Guides */}
-          {user?.role === 'admin' && (
-            <div className="mt-6 pt-4 border-t border-blue-800">
-              <div className="px-3 py-2 text-xs font-semibold text-blue-300 uppercase tracking-wide">Test Guides</div>
-              <div className="space-y-1">
-                {HOSPITALS.map((h) => (
-                  <NavLink key={h.id} href={`/hospital/${h.id}`} label={`🧪 ${h.name.split(' ')[1]}`} />
-                ))}
-              </div>
-            </div>
-          )}
         </nav>
 
-        {/* Theme + Logout */}
         <div className="px-3 py-4 border-t border-blue-800 space-y-1">
-          <button
-            onClick={toggleTheme}
-            className="theme-toggle"
-          >
+          <button onClick={toggleTheme} className="theme-toggle">
             {isDark ? '☀️ Day Mode' : '🌙 Night Mode'}
           </button>
           <button
@@ -202,9 +176,19 @@ export default function Sidebar() {
         </div>
       </aside>
 
-      {/* ── MOBILE TOP BAR ── */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-[#003366] text-white flex items-center justify-between px-4 py-3 shadow-lg">
         <div className="flex items-center gap-3">
+          {pathname !== '/dashboard' && (
+            <button
+              onClick={() => router.back()}
+              className="p-1.5 rounded-lg hover:bg-blue-800/50 transition"
+              aria-label="Back"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+          )}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="p-1.5 rounded-lg hover:bg-blue-800/50 transition"
@@ -234,15 +218,12 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* ── MOBILE SLIDE-OUT DRAWER ── */}
       {mobileOpen && (
         <>
-          {/* Backdrop */}
           <div
             className="md:hidden fixed inset-0 z-40 bg-black/50"
             onClick={() => setMobileOpen(false)}
           />
-          {/* Drawer */}
           <div className="md:hidden fixed top-0 left-0 bottom-0 z-50 w-72 bg-[#003366] text-white flex flex-col shadow-2xl">
             <div className="px-6 py-5 border-b border-blue-800 flex items-center justify-between">
               <div>
@@ -269,24 +250,10 @@ export default function Sidebar() {
               {navItems.map(({ href, label, badge }) => (
                 <NavLink key={href} href={href} label={label} badge={badge} onClick={() => setMobileOpen(false)} />
               ))}
-              
-              {user?.role === 'admin' && (
-                <div className="mt-6 pt-4 border-t border-blue-800">
-                  <div className="px-3 py-2 text-xs font-semibold text-blue-300 uppercase tracking-wide">Test Guides</div>
-                  <div className="space-y-1">
-                    {HOSPITALS.map((h) => (
-                      <NavLink key={h.id} href={`/hospital/${h.id}`} label={`🧪 ${h.name.split(' ')[1]}`} onClick={() => setMobileOpen(false)} />
-                    ))}
-                  </div>
-                </div>
-              )}
             </nav>
 
             <div className="px-3 py-4 border-t border-blue-800 space-y-1">
-              <button
-                onClick={toggleTheme}
-                className="theme-toggle"
-              >
+              <button onClick={toggleTheme} className="theme-toggle">
                 {isDark ? '☀️ Day Mode' : '🌙 Night Mode'}
               </button>
               <button
@@ -300,7 +267,6 @@ export default function Sidebar() {
         </>
       )}
 
-      {/* ── MOBILE SPACER (pushes content below top bar) ── */}
       <div className="md:hidden h-14 flex-shrink-0" />
     </>
   );

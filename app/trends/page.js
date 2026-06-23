@@ -30,7 +30,36 @@ const PARAM_CONFIG = {
     { key: 'molybdate', label: 'Molybdate', min: 5, max: 30 },
     { key: 'bacteria', label: 'Bacteria', min: 0, max: 1000 },
   ],
+  cooling_tower: [
+    { key: 'ph', label: 'pH', min: 8.0, max: 9.0 },
+    { key: 'conductivity', label: 'Conductivity', min: 1000, max: 3000 },
+    { key: 'free_chlorine', label: 'Free Cl', min: 0.2, max: 1.0 },
+    { key: 'inhibitor', label: 'Inhibitor', min: 8, max: 12 },
+    { key: 'hardness', label: 'Hardness', min: 0, max: 400 },
+    { key: 'bacteria', label: 'Bacteria', min: 0, max: 10000 },
+  ],
+  condensate: [
+    { key: 'ph', label: 'pH', min: 7.5, max: 9.0 },
+    { key: 'iron', label: 'Iron', min: 0, max: 1.0 },
+    { key: 'hardness', label: 'Hardness', min: 0, max: 0 },
+    { key: 'conductivity', label: 'Conductivity', min: 0, max: 100 },
+    { key: 'amine', label: 'Amine', min: 0, max: 10 },
+  ],
+  softener: [
+    { key: 'hardness', label: 'Hardness', min: 0, max: 0 },
+    { key: 'conductivity', label: 'Conductivity', min: 0, max: 1500 },
+  ],
 };
+
+// Display label + icon for every system, including custom Enterprise equipment (filled in at runtime).
+const SYSTEM_META = {
+  boiler:        { label: 'Boiler Water',  icon: '🔥' },
+  chilled:       { label: 'Chilled Water', icon: '❄️' },
+  cooling_tower: { label: 'Cooling Tower', icon: '🌫️' },
+  condensate:    { label: 'Condensate',    icon: '💧' },
+  softener:      { label: 'Softener',      icon: '🧂' },
+};
+const BUILTIN_SYSTEMS = ['boiler','chilled','cooling_tower','condensate','softener'];
 
 function getUser() {
   if (typeof document === 'undefined') return null;
@@ -54,6 +83,8 @@ export default function TrendsPage() {
   const [system, setSystem] = useState('boiler');
   const [param, setParam] = useState('ph');
   const [range, setRange] = useState('1095'); // Default: full 3 years
+  const [facilityProfiles, setFacilityProfiles] = useState({}); // { hid: { systems:[...], custom:[{key,label,icon,params}] } }
+  const [paramConfig, setParamConfig] = useState(PARAM_CONFIG); // merged with any custom-equipment params
 
   useEffect(() => {
     const u = getUser();
@@ -62,9 +93,50 @@ export default function TrendsPage() {
     fetch('/api/entries')
       .then((r) => r.json())
       .then((d) => { setEntries(d.entries || []); setLoading(false); });
+    // Load equipment profiles so the System dropdown shows only what each facility actually has,
+    // plus any Enterprise custom equipment (forward-compatible: appears automatically once enabled).
+    fetch('/api/equipment-profile', { credentials: 'include' })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (!d || !d.facilities) return;
+        const profiles = {};
+        const mergedCfg = { ...PARAM_CONFIG };
+        for (const f of d.facilities) {
+          const prof = f.profile || {};
+          const systems = BUILTIN_SYSTEMS.filter(k => prof[k]);
+          const custom = Array.isArray(prof.custom) ? prof.custom : [];
+          for (const c of custom) {
+            if (!c || !c.key) continue;
+            systems.push(c.key);
+            SYSTEM_META[c.key] = { label: c.label || c.key, icon: c.icon || '🔧' };
+            // custom params: [{key,label,min,max}] — fall back to a generic value param
+            mergedCfg[c.key] = Array.isArray(c.params) && c.params.length
+              ? c.params.map(p => ({ key: p.key, label: p.label || p.key, min: p.min ?? 0, max: p.max ?? 0 }))
+              : [{ key: 'value', label: 'Value', min: 0, max: 0 }];
+          }
+          profiles[f.id] = { systems: systems.length ? systems : BUILTIN_SYSTEMS, custom };
+        }
+        setFacilityProfiles(profiles);
+        setParamConfig(mergedCfg);
+      }).catch(() => {});
   }, []);
 
-  const params = PARAM_CONFIG[system] || [];
+  // Which systems can be charted for the currently-selected facility?
+  const availableSystems = (facilityProfiles[hospital]?.systems) || BUILTIN_SYSTEMS;
+
+  // If the selected system isn't available for this facility, snap to the first available one.
+  useEffect(() => {
+    if (!availableSystems.includes(system)) {
+      const next = availableSystems[0];
+      if (next) {
+        setSystem(next);
+        const firstParam = (paramConfig[next] || [])[0];
+        if (firstParam) setParam(firstParam.key);
+      }
+    }
+  }, [hospital, availableSystems, system, paramConfig]);
+
+  const params = paramConfig[system] || [];
   const currentParam = params.find((p) => p.key === param) || params[0];
 
   const chartData = useMemo(() => {
@@ -163,11 +235,12 @@ export default function TrendsPage() {
           )}
           <select
             value={system}
-            onChange={(e) => { setSystem(e.target.value); setParam(PARAM_CONFIG[e.target.value][0].key); }}
+            onChange={(e) => { const sys = e.target.value; setSystem(sys); const fp = (paramConfig[sys] || [])[0]; if (fp) setParam(fp.key); }}
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0072CE]"
           >
-            <option value="boiler">🔥 Boiler Water</option>
-            <option value="chilled">❄️ Chilled Water</option>
+            {availableSystems.map((sys) => (
+              <option key={sys} value={sys}>{(SYSTEM_META[sys]?.icon || '🔧')} {(SYSTEM_META[sys]?.label || sys)}</option>
+            ))}
           </select>
           <select
             value={param}
@@ -203,91 +276,61 @@ export default function TrendsPage() {
             </div>
           ) : (
             <>
-              <div className="font-semibold text-gray-800 mb-4">
-                {currentParam?.label} — {HOSPITALS.find((h) => h.id === hospital)?.name}
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="font-semibold text-gray-800">
+                  {currentParam?.label} — {HOSPITALS.find((h) => h.id === hospital)?.name}
+                </h2>
+                <span className="text-xs text-gray-400">{chartData.length} readings</span>
               </div>
               <ResponsiveContainer width="100%" height={320}>
-                <LineChart data={chartData} margin={{ top: 10, right: 30, bottom: 10, left: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                  <XAxis dataKey="date" tick={{ fontSize: 11 }} />
-                  <YAxis tick={{ fontSize: 11 }} />
+                <LineChart data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                  <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#94a3b8' }} />
+                  <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} domain={['auto', 'auto']} />
                   <Tooltip content={<CustomTooltip />} />
-                  {currentParam && (
+                  {currentParam && currentParam.min !== currentParam.max && (
                     <>
-                      <ReferenceLine y={currentParam.min} stroke="#ef4444" strokeDasharray="5 5" label={{ value: `Min ${currentParam.min}`, fill: '#ef4444', fontSize: 11 }} />
-                      <ReferenceLine y={currentParam.max} stroke="#ef4444" strokeDasharray="5 5" label={{ value: `Max ${currentParam.max}`, fill: '#ef4444', fontSize: 11 }} />
+                      <ReferenceLine y={currentParam.min} stroke="#f59e0b" strokeDasharray="4 4" label={{ value: `min ${currentParam.min}`, fontSize: 10, fill: '#f59e0b', position: 'insideBottomLeft' }} />
+                      <ReferenceLine y={currentParam.max} stroke="#f59e0b" strokeDasharray="4 4" label={{ value: `max ${currentParam.max}`, fontSize: 10, fill: '#f59e0b', position: 'insideTopLeft' }} />
                     </>
                   )}
-                  <Line
-                    type="monotone"
-                    dataKey="value"
-                    stroke="#0072CE"
-                    strokeWidth={2}
-                    dot={(props) => {
-                      const { cx, cy, payload } = props;
-                      const inRange = currentParam && payload.value >= currentParam.min && payload.value <= currentParam.max;
-                      return <circle key={`dot-${cx}-${cy}`} cx={cx} cy={cy} r={4} fill={inRange ? '#16a34a' : '#dc2626'} stroke="white" strokeWidth={2} />;
-                    }}
-                    name={currentParam?.label}
-                  />
+                  <Line type="monotone" dataKey="value" stroke="#0072CE" strokeWidth={2.5} dot={{ r: 3, fill: '#0072CE' }} activeDot={{ r: 5 }} />
                 </LineChart>
               </ResponsiveContainer>
             </>
           )}
         </div>
 
-        {/* Stats — 3-year analysis */}
+        {/* Stats */}
         {stats && (
-          <div className="space-y-4">
-            {/* Primary stats row */}
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
-              {[
-                { label: 'Readings',     value: stats.count,       sub: `over ${stats.rangeDays === '1095' ? '3 years' : stats.rangeDays + ' days'}` },
-                { label: 'Average',      value: stats.avg,         sub: currentParam?.label },
-                { label: 'Median',       value: stats.median,      sub: 'middle value' },
-                { label: 'Std Dev',      value: stats.stddev,      sub: 'variability' },
-                { label: 'Min Recorded', value: stats.min,         sub: '', highlight: parseFloat(stats.min) < (currentParam?.min || 0) },
-                { label: 'Max Recorded', value: stats.max,         sub: '', highlight: parseFloat(stats.max) > (currentParam?.max || Infinity) },
-                { label: '% Compliant',  value: `${stats.compliance}%`, sub: `${stats.oor} OOR`, highlight: parseFloat(stats.compliance) < 90 },
-              ].map((s) => (
-                <div key={s.label} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 text-center">
-                  <div className="text-xs text-gray-500 mb-1">{s.label}</div>
-                  <div className={`text-lg font-bold ${s.highlight ? 'text-red-600' : 'text-gray-800'}`}>{s.value}</div>
-                  {s.sub && <div className="text-xs text-gray-400 mt-0.5">{s.sub}</div>}
-                </div>
-              ))}
-            </div>
-
-            {/* Trend direction + long-term shift */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-              <div className="flex items-center justify-between flex-wrap gap-4">
-                <div>
-                  <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">Overall Trend Direction</div>
-                  <div className={`text-2xl font-black ${stats.dirColor}`}>{stats.direction}</div>
-                  <div className="text-xs text-gray-400 mt-1">Slope: {stats.slope} per reading (linear regression over {stats.count} data points)</div>
-                </div>
-                {stats.longTermShift !== null && (
-                  <div className="text-center">
-                    <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">Long-Term Shift</div>
-                    <div className={`text-2xl font-bold ${Math.abs(stats.longTermShift) > 0.5 ? 'text-orange-600' : 'text-green-600'}`}>
-                      {stats.longTermShift > 0 ? '+' : ''}{stats.longTermShift}
-                    </div>
-                    <div className="text-xs text-gray-400">early vs recent period avg</div>
-                  </div>
-                )}
-                <div className="text-center">
-                  <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">Regulatory Assessment</div>
-                  <div className={`text-sm font-bold px-3 py-1.5 rounded-lg ${
-                    parseFloat(stats.compliance) >= 98 ? 'bg-green-100 text-green-700' :
-                    parseFloat(stats.compliance) >= 90 ? 'bg-yellow-100 text-yellow-700' :
-                    'bg-red-100 text-red-700'
-                  }`}>
-                    {parseFloat(stats.compliance) >= 98 ? '✅ Excellent' :
-                     parseFloat(stats.compliance) >= 90 ? '⚠️ Acceptable' :
-                     '❌ Below Target'}
-                  </div>
-                  <div className="text-xs text-gray-400 mt-1">Target: ≥ 98% in-range</div>
-                </div>
+              <div className="text-xs text-gray-400 mb-1">Average</div>
+              <div className="text-2xl font-bold text-gray-900">{stats.avg}</div>
+              <div className="text-xs text-gray-400 mt-1">Median {stats.median}</div>
+            </div>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+              <div className="text-xs text-gray-400 mb-1">Range</div>
+              <div className="text-2xl font-bold text-gray-900">{stats.min}–{stats.max}</div>
+              <div className="text-xs text-gray-400 mt-1">σ {stats.stddev}</div>
+            </div>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+              <div className="text-xs text-gray-400 mb-1">Direction</div>
+              <div className={`text-lg font-bold ${stats.dirColor}`}>{stats.direction}</div>
+              <div className="text-xs text-gray-400 mt-1">
+                {stats.longTermShift != null ? `Δ ${stats.longTermShift > 0 ? '+' : ''}${stats.longTermShift} over period` : 'slope ' + stats.slope}
+              </div>
+            </div>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+              <div className="text-xs text-gray-400 mb-1">Compliance</div>
+              <div className={`text-2xl font-bold ${
+                parseFloat(stats.compliance) >= 95 ? 'text-green-600' :
+                parseFloat(stats.compliance) >= 90 ? 'text-amber-600' : 'text-red-600'
+              }`}>{stats.compliance}%</div>
+              <div className="text-xs text-gray-400 mt-1">
+                {parseFloat(stats.compliance) >= 95 ? '✅ Excellent' :
+                 parseFloat(stats.compliance) >= 90 ? '⚠️ Acceptable' : '🔴 Needs attention'}
+                {' '}· {stats.oor} OOR
               </div>
             </div>
           </div>

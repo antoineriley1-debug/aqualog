@@ -8,7 +8,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
-import TierGate from '@/components/TierGate';
 import { HOSPITALS } from '@/lib/hospitals';
 import { ST108_WATER_TYPES, ST108_PARAMETERS, ST108_POINTS_OF_USE, evaluateST108Entry, getCorrectionLevel } from '@/lib/st108';
 
@@ -82,8 +81,7 @@ export default function ST108EntryPage() {
   };
 
   return (
-    <TierGate requiredTier="professional" user={user}>
-      <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
       <main className="flex-1 w-full min-w-0 p-4 md:p-8 pt-16 md:pt-8">
 
@@ -314,6 +312,5 @@ export default function ST108EntryPage() {
         </form>
       </main>
     </div>
-    </TierGate>
   );
 }

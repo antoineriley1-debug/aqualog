@@ -1,80 +1,101 @@
+/**
+ * FacilityH2O — Self-Signup
+ * Creates an organization, an auto-TRIAL license for it, a default facility,
+ * and the company's admin user — all linked by orgId. The admin is then logged in.
+ * Built on the real auth store (users.json) the login system reads.
+ */
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
-import { getOrgs, saveOrg, saveUser, generateId, getFacilities, saveFacility } from '@/lib/store';
-import { createSessionToken } from '@/lib/auth';
+import {
+  getUsers, saveUser, saveOrg, makeId, saveFacility, addLicense, getOrgs,
+} from '@/lib/store';
 
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { orgName, industry, facilityCount, name, email, password, plan } = body;
+    const { orgName, industry, facilityCount, name, email, password } = body;
 
     if (!orgName || !email || !password || !name) {
-      return NextResponse.json({ error: 'All required fields must be filled' }, { status: 400 });
+      return NextResponse.json({ error: 'All required fields must be filled.' }, { status: 400 });
+    }
+    if (String(password).length < 6) {
+      return NextResponse.json({ error: 'Password must be at least 6 characters.' }, { status: 400 });
     }
 
-    // Check email uniqueness
-    const { getUsers } = await import('@/lib/store');
-    const existing = getUsers().find(u => u.email === email || u.username === email);
+    const emailNorm = email.trim().toLowerCase();
+
+    // Email/username uniqueness
+    const existing = getUsers().find(
+      (u) => (u.email || '').toLowerCase() === emailNorm || (u.username || '').toLowerCase() === emailNorm
+    );
     if (existing) {
-      return NextResponse.json({ error: 'An account with this email already exists' }, { status: 409 });
+      return NextResponse.json({ error: 'An account with this email already exists.' }, { status: 409 });
     }
 
-    // Create org
-    const trialEnds = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
+    // 1) Organization
     const org = {
-      id: generateId('org'),
+      id: makeId('org'),
       name: orgName.trim(),
       industry: industry || 'other',
-      plan: plan || 'starter',
-      trialEnds,
-      stripeCustomerId: null,
-      stripeSubscriptionId: null,
+      facilityCount: facilityCount || '1',
       active: true,
       createdAt: new Date().toISOString(),
     };
     saveOrg(org);
 
-    // Create default facility
-    const facility = {
-      id: generateId('fac'),
+    // 2) Auto-TRIAL license tied to this org (14-day trial)
+    const trialEnds = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    addLicense({
       orgId: org.id,
-      name: orgName.trim() + ' Main',
-      address: '',
+      company: org.name,
+      contactName: name.trim(),
+      contactEmail: emailNorm,
+      plan: 'trial',
+      status: 'trial',
+      seats: 5,
+      facilities: 1,
+      features: ['boiler', 'chilled', 'reports', 'advisor'],
+      monthlyValue: 0,
+      renewalDate: trialEnds,
+      notes: 'Auto-created on self-signup. 14-day trial.',
+    });
+
+    // 3) Default facility for the org
+    saveFacility({
+      id: makeId('fac'),
+      orgId: org.id,
+      name: org.name + ' — Main',
       code: 'MAIN',
       active: true,
       createdAt: new Date().toISOString(),
-    };
-    saveFacility(facility);
+    });
 
-    // Create admin user
+    // 4) Company admin user — linked to org, lives in users.json so login finds it
     const user = {
-      id: generateId('usr'),
+      id: makeId('usr'),
       orgId: org.id,
-      username: email.trim().toLowerCase(),
-      password: password, // plain text for prototype
+      username: emailNorm,
+      password: password, // matches existing plaintext-compare login (rotate to hashing later)
       role: 'admin',
+      hospital: null,
       name: name.trim(),
-      email: email.trim().toLowerCase(),
-      facilities: null,
+      email: emailNorm,
       active: true,
       createdAt: new Date().toISOString(),
     };
     saveUser(user);
 
-    // Create session
-    const token = createSessionToken(user);
-    const cookieStore = cookies();
-    cookieStore.set('MedStar H2O_session', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7,
+    // 5) Log them in with the SAME cookie the login route sets
+    const { password: _pw, ...safeUser } = user;
+    const res = NextResponse.json({ ok: true, orgId: org.id });
+    res.cookies.set('FacilityH2O_user', JSON.stringify(safeUser), {
+      httpOnly: false,
       path: '/',
+      maxAge: 60 * 60 * 24 * 7,
+      sameSite: 'lax',
     });
-
-    return NextResponse.json({ ok: true, orgId: org.id });
+    return res;
   } catch (err) {
     console.error('[signup] Error:', err);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
   }
 }
