@@ -64,7 +64,7 @@ export default function NotificationSettingsPage() {
   const [activeTab, setActiveTab] = useState('contacts');
 
   // Contact form state
-  const [newContact, setNewContact] = useState({ name: '', email: '', sms: '', emailEnabled: true, smsEnabled: true });
+  const [newContact, setNewContact] = useState({ name: '', email: '', emailEnabled: true });
   const [contactError, setContactError] = useState('');
 
   // Quiet hours
@@ -157,16 +157,11 @@ export default function NotificationSettingsPage() {
   const addContact = () => {
     setContactError('');
     if (!newContact.name.trim()) { setContactError('Name is required'); return; }
-    if (!newContact.email.trim() && !newContact.sms.trim()) { setContactError('Email or SMS number required'); return; }
-    if (newContact.sms.trim() && !E164_REGEX.test(newContact.sms.trim())) {
-      setContactError('SMS must be E.164 format: +1XXXXXXXXXX');
-      return;
-    }
+    if (!newContact.email.trim()) { setContactError('Email address required'); return; }
 
     const contact = {
       name: newContact.name.trim(),
       email: newContact.emailEnabled && newContact.email.trim() ? newContact.email.trim() : undefined,
-      sms: newContact.smsEnabled && newContact.sms.trim() ? newContact.sms.trim() : undefined,
     };
 
     // Add to all levels
@@ -181,7 +176,7 @@ export default function NotificationSettingsPage() {
       if (!exists) updated.global.levels[lvl].contacts.push({ ...contact });
     }
     setRules(updated);
-    setNewContact({ name: '', email: '', sms: '', emailEnabled: true, smsEnabled: true });
+    setNewContact({ name: '', email: '', emailEnabled: true });
   };
 
   const removeContact = (email, sms) => {
@@ -304,25 +299,6 @@ export default function NotificationSettingsPage() {
                     value={newContact.email}
                     onChange={e => setNewContact({ ...newContact, email: e.target.value })}
                     placeholder="john@hospital.org"
-                    className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#0072CE] focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">
-                    SMS
-                    <input
-                      type="checkbox"
-                      checked={newContact.smsEnabled}
-                      onChange={e => setNewContact({ ...newContact, smsEnabled: e.target.checked })}
-                      className="ml-2"
-                    />
-                    <span className="text-gray-400 ml-1">enabled</span>
-                  </label>
-                  <input
-                    type="tel"
-                    value={newContact.sms}
-                    onChange={e => setNewContact({ ...newContact, sms: e.target.value })}
-                    placeholder="+14845551234"
                     className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#0072CE] focus:outline-none"
                   />
                 </div>
