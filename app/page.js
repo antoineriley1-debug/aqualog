@@ -15,6 +15,7 @@ export default function LandingPage() {
             <a href="#features" className="hover:text-[#0072CE] transition">Features</a>
             <a href="#reports" className="hover:text-[#0072CE] transition">Reports</a>
             <a href="#compliance" className="hover:text-[#0072CE] transition">Compliance</a>
+            <a href="#security" className="hover:text-[#0072CE] transition">Security</a>
             <a href="/demo.html" className="hover:text-[#0072CE] transition">Request Demo</a>
           </div>
           <Link
@@ -58,72 +59,75 @@ export default function LandingPage() {
       {/* FEATURES */}
       <section id="features" className="py-24 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900">Everything Your Team Needs</h2>
-            <p className="text-gray-500 mt-3 text-lg">From shift logging to ST108 compliance — one platform, zero paperwork.</p>
+          <div className="text-center mb-14">
+            <div className="inline-block text-xs font-bold text-[#0072CE] uppercase tracking-widest bg-blue-50 px-4 py-1.5 rounded-full mb-4">Features</div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">Everything You Need, Nothing You Don't.</h2>
+            <p className="text-gray-500 text-lg max-w-2xl mx-auto">
+              FacilityH2O has every feature healthcare facilities need to implement a water management program while staying lean and focused.
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { icon: '≡', title: 'Shift-Based Logging', desc: 'Log readings by shift — 1st, 2nd, 3rd. Every reading timestamped with operator name, time, and system. Set each facility\'s shift hours and timezone.' },
-              { icon: '', title: 'Five Systems, Not Just Two', desc: 'Track boiler, chilled water, cooling tower, condensate, and softener — each with its own parameters and safe ranges. Turn on only the systems a facility runs.' },
-              { icon: '↗', title: 'Live Trends & System Health', desc: 'Animated health gauges and interactive charts for any parameter over any time range. Spot drift early — before it becomes a compliance failure.' },
-              { icon: '', title: 'Instant Out-of-Range Alerts', desc: 'When a reading falls outside acceptable limits, your team is notified immediately. Every alert tracked with an acknowledge workflow.' },
-              { icon: '️', title: 'Missed-Reading Detection', desc: 'When a shift ends without a logged reading, it automatically becomes an alert — so a skipped round never slips through unnoticed.' },
-              { icon: '', title: 'Reading Consistency Check', desc: 'An advisory signal flags shifts whose readings look suspiciously identical compared to other shifts — a prompt to spot-verify before an auditor does.' },
-              { icon: '[ORG]', title: 'Multi-Facility Dashboard', desc: 'Manage all your buildings from one screen. Each facility isolated — operators see only their site, admins see everything.' },
-              { icon: '✓', title: 'ST108 Compliance Tracking', desc: 'Built-in ST108 water log compliance with audit trail and one-click compliance reports. Joint Commission inspection ready.' },
-              { icon: '', title: 'Legionella Program Tracking', desc: 'Log and track your Legionella water management program entries. Full audit history for regulatory submissions.' },
-              { icon: '', title: 'Chain-of-Custody Forms', desc: 'Generate chain-of-custody forms for lab samples in one click. Print and send with your sample containers — no separate paperwork.' },
-              { icon: '', title: 'Tamper-Evident Audit Log', desc: 'Every login, every entry, every change is permanently logged with timestamp, user, and IP. SHA-256 sealed — immutable chain of custody.' },
-              { icon: '○○', title: 'Role-Based Access', desc: 'Admin accounts see all facilities and reports. Operator accounts are scoped to their assigned building only. No configuration needed.' },
+              { icon: '[FORM]', title: 'Shift-Based Logging', desc: 'Easy data entry templates for each shift, area, and test type — organized by round.' },
+              { icon: '[BELL]', title: 'Real-Time Alerts', desc: 'Instant notifications when a reading is out of spec, right on your phone. No more spreadsheets to babysit.' },
+              { icon: '[CHART]', title: 'Trend Analysis', desc: 'Visualize your chemistry data over time to spot issues early and optimize your program.' },
+              { icon: '[CLOCK]', title: 'Automatic Retention', desc: 'Set your data retention policy and FacilityH2O enforces it — readings auto-purge on schedule, audit-ready.' },
+              { icon: '[LOCK]', title: 'Audit-Ready Security', desc: 'Tamper-evident record sealing, least-privilege access, and a complete chain of custody for every data point.' },
+              { icon: '[GRAPH]', title: 'AI-Assisted Insights', desc: 'Predictive alerts, intelligent diagnostics, and compliance forecasts — your data, made smarter.' },
             ].map(f => (
-              <div key={f.title} className="bg-[#F0F9FF] rounded-2xl p-6 border border-blue-100 hover:shadow-md transition">
-                <div className="text-3xl mb-4">{f.icon}</div>
-                <h3 className="font-bold text-gray-900 text-lg mb-2">{f.title}</h3>
+              <div key={f.title} className="bg-white border border-gray-100 rounded-2xl shadow-sm p-8">
+                <div className="text-3xl text-[#0072CE] mb-4">{f.icon}</div>
+                <h3 className="text-xl text-gray-900 font-bold mb-3">{f.title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{f.desc}</p>
-              </div>
+              </div>  
             ))}
           </div>
         </div>
       </section>
 
-      {/* AI REPORT REVIEW */}
+      {/* REPORTS */}
       <section id="reports" className="py-24 px-6 bg-white">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
-            <div className="inline-block text-xs font-bold text-[#0891B2] uppercase tracking-widest bg-cyan-50 px-4 py-1.5 rounded-full mb-4">Audit-Ready Reporting</div>
-            <h2 className="text-3xl font-bold text-gray-900">Every report is reviewed before it reaches you</h2>
-            <p className="text-gray-500 mt-3 text-lg max-w-2xl mx-auto">
-              Your monthly compliance summaries don't come from a single pass. Each one runs through a three-stage AI review — drafted, independently critiqued against your actual data, then finalized — so the numbers hold up under scrutiny.
+            <div className="inline-block text-xs font-bold text-[#0072CE] uppercase tracking-widest bg-blue-50 px-4 py-1.5 rounded-full mb-4">Reports</div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">All Your Compliance Docs, Auto-Generated</h2>
+            <p className="text-gray-500 text-lg max-w-2xl mx-auto">
+              Stop spending hours formatting compliance reports. FacilityH2O creates them for you, always inspection-ready.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-[#F0F9FF] rounded-2xl p-7 border border-blue-100">
-              <div className="text-3xl mb-3">️</div>
-              <div className="text-xs font-bold text-[#0072CE] mb-1">STAGE 1 · DRAFT</div>
-              <h3 className="font-bold text-gray-900 text-lg mb-2">Drafted from your data</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">An executive summary is written using only the readings and exceedances on record for the month — no invented numbers.</p>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div className="flex flex-col items-center text-center">
+              <div className="rounded-full bg-[#0072CE] text-white w-16 h-16 flex items-center justify-center text-3xl mb-6">
+                [DOC]  
+              </div>
+              <h3 className="text-2xl text-gray-900 font-bold mb-4">ASHRAE 188 Report</h3>
+              <p className="text-gray-500 text-base mx-auto max-w-sm">
+                Covers every element ASHRAE requires for your water management program documentation.  
+              </p>
             </div>
-            <div className="bg-[#F0F9FF] rounded-2xl p-7 border border-blue-100">
-              <div className="text-3xl mb-3"></div>
-              <div className="text-xs font-bold text-[#0072CE] mb-1">STAGE 2 · REVIEW</div>
-              <h3 className="font-bold text-gray-900 text-lg mb-2">Independently critiqued</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">A separate reviewer pass verifies every figure against your data, flags anything unsupported, and confirms treatment changes are deferred to your vendor.</p>
+            <div className="flex flex-col items-center text-center">
+              <div className="rounded-full bg-[#0072CE] text-white w-16 h-16 flex items-center justify-center text-3xl mb-6">
+                [DOC]
+              </div>
+              <h3 className="text-2xl text-gray-900 font-bold mb-4">Legionella Compliance</h3>
+              <p className="text-gray-500 text-base mx-auto max-w-sm">
+                Automatically assembles your Legionella control data into a survey-ready package.
+              </p>
             </div>
-            <div className="bg-[#F0F9FF] rounded-2xl p-7 border border-blue-100">
-              <div className="text-3xl mb-3">✓</div>
-              <div className="text-xs font-bold text-[#0072CE] mb-1">STAGE 3 · FINALIZE</div>
-              <h3 className="font-bold text-gray-900 text-lg mb-2">Corrected & finalized</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">A final pass folds in every valid correction and produces the clean, professional summary you hand to leadership or an inspector.</p>
+            <div className="flex flex-col items-center text-center">
+              <div className="rounded-full bg-[#0072CE] text-white w-16 h-16 flex items-center justify-center text-3xl mb-6">
+                [DOC]  
+              </div>
+              <h3 className="text-2xl text-gray-900 font-bold mb-4">CMS 1135 Waivers</h3>
+              <p className="text-gray-500 text-base mx-auto max-w-sm">
+                Creates the documentation CMS requires when you need to request a 1135 waiver.
+              </p>
             </div>
           </div>
-          <p className="text-center text-xs text-gray-400 mt-8 max-w-2xl mx-auto">
-            The review checks internal consistency and grounding against your logged data. It does not replace professional judgment or your water-treatment vendor's recommendations.
-          </p>
         </div>
       </section>
 
-      {/* COMPLIANCE / REGULATORY COVERAGE */}
+      {/* COMPLIANCE */}
       <section id="compliance" className="py-24 px-6 bg-[#003366] text-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
@@ -138,9 +142,9 @@ export default function LandingPage() {
               { badge: 'TJC', title: 'The Joint Commission', desc: 'EC.02.05.02 — Water management plan requirement. TJC can cite you on the spot for missing documentation. FacilityH2O keeps it current, accessible, and audit-ready at all times.' },
               { badge: 'AAMI', title: 'ANSI/AAMI ST108:2023', desc: 'Water quality standards for medical device reprocessing. Our compliance module tracks every required parameter — conductivity, endotoxin, bacterial levels, and more.' },
               { badge: 'ASHRAE', title: 'ASHRAE 188-2018', desc: 'Legionella risk management for building water systems. Full Water Management Program logging, biological testing tracking, and corrective action documentation.' },
-              { badge: 'CMS', title: 'CMS QSO17-30', desc: 'Centers for Medicare & Medicaid Services water management program requirements. Stay compliant and reimbursable — one missed requirement shouldn\'t cost you CMS status.' },
+              { badge: 'CMS', title: 'CMS QSO17-30', desc: 'Centers for Medicare & Medicaid Services water management program requirements. Stay compliant and reimbursable — one missed requirement shouldn't cost you CMS status.' },
               { badge: 'DOH', title: 'State DOH Requirements', desc: 'Department of Health water quality and Legionella regulations vary by state. Our flexible logging system captures what your state requires with customizable parameters.' },
-              { badge: '+', title: 'Always Up To Date', desc: 'Regulations change. We track them so you don\'t have to. When standards update, FacilityH2O updates — your workflow stays the same, your compliance stays current.' },
+              { badge: '+', title: 'Always Up To Date', desc: 'Regulations change. We track them so you don't have to. When standards update, FacilityH2O updates — your workflow stays the same, your compliance stays current.' },
             ].map(c => (
               <div key={c.badge} className="bg-white/10 rounded-2xl p-7">
                 <div className="inline-block bg-[#F6C90E] text-[#003366] text-xs font-bold px-3 py-1 rounded-full mb-4">{c.badge}</div>
@@ -152,43 +156,33 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* WHO IT'S FOR */}
-      <section className="py-24 px-6 bg-gray-50">
+      {/* SECURITY & DATA INTEGRITY */}
+      <section id="security" className="py-24 px-6 bg-gray-900 text-white">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900">Built for Every Facility Type</h2>
-            <p className="text-gray-500 mt-3 text-lg">From a single hospital campus to a multi-state health system.</p>
+          <div className="text-center mb-14">
+            <div className="inline-block text-xs font-bold text-emerald-300 uppercase tracking-widest bg-white/10 px-4 py-1.5 rounded-full mb-4">Security &amp; Data Integrity</div>
+            <h2 className="text-3xl font-bold mb-3">Records a Surveyor Can Trust.</h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              Compliance data is only as good as its integrity. FacilityH2O treats every reading like evidence — because during a survey, it is.
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { icon: '[SITE]', title: 'Hospitals & Healthcare', desc: 'Meet Joint Commission water management plan requirements. Track Legionella prevention program data automatically. Purpose-built for healthcare facilities.' },
-              { icon: '[HOTEL]', title: 'Hotels & Hospitality', desc: 'Keep cooling towers, boilers, and domestic water systems in spec. Protect guests and staff from waterborne pathogens with shift-by-shift documentation.' },
-              { icon: '[ORG]', title: 'Commercial Buildings', desc: 'ASHRAE 188 compliance made simple. Document your water treatment program with the same rigor as a major health system — at any scale.' },
-            ].map(w => (
-              <div key={w.title} className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-center">
-                <div className="text-5xl mb-4">{w.icon}</div>
-                <h3 className="font-bold text-gray-900 text-xl mb-3">{w.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{w.desc}</p>
+              { icon: '[SEAL]', title: 'Tamper-Evident Records', desc: 'Every reading is cryptographically sealed with a SHA-256 integrity hash the moment it\'s logged. If a value is altered after the fact, the seal breaks and the system flags it. Your logs prove they haven\'t been touched.' },
+              { icon: '[ROLE]', title: 'Least-Privilege Access', desc: 'Operators see their facility — nothing else. Scoped admins manage their sites without visibility into credentials. Access follows the job, not the org chart.' },
+              { icon: '[RETAIN]', title: 'Retention Discipline', desc: 'A built-in retention policy keeps records for the full survey window automatically — no manual housekeeping, no accidental gaps in your compliance history.' },
+              { icon: '[DOMAIN]', title: 'Your Brand, Your Domain', desc: 'Client organizations run on their own assigned domain — their name, their bookmark, their portal — while the platform stays independent. Clean separation between your program and the software behind it.' },
+              { icon: '[LEAN]', title: 'Lean Attack Surface', desc: 'No SMS brokers, no ad trackers, no data resellers. Alerts flow through a single vetted email provider. Fewer third parties touching your data means fewer places it can leak.' },
+              { icon: '[AUDIT]', title: 'Audit-Ready by Default', desc: 'Corrective actions, shift records, and integrity checks live in one exportable trail. When TJC asks, the answer is a report — not a scramble.' },
+            ].map(s => (
+              <div key={s.title} className="bg-white/5 border border-white/10 rounded-2xl p-7">
+                <div className="inline-block bg-emerald-400/20 text-emerald-300 text-xs font-bold px-3 py-1 rounded-full mb-4">{s.icon}</div>
+                <h3 className="font-bold text-white text-lg mb-2">{s.title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-gray-900 text-gray-400 py-12 px-6 text-center text-sm">
-        <div className="flex items-center justify-center gap-2 text-white font-bold text-lg mb-3">
-          <span className="text-xl">[WATER]</span> FacilityH2O
-        </div>
-        <p className="text-gray-500 mb-1">Water Chemistry Compliance. Built for Facilities.</p>
-        <div className="flex items-center justify-center gap-6 flex-wrap mb-4">
-          <Link href="/login" className="hover:text-white transition">Sign In</Link>
-          <Link href="/terms" className="hover:text-white transition">Terms of Service</Link>
-          <Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link>
-          <a href="mailto:info@facilityh2o.com" className="hover:text-white transition">info@facilityh2o.com</a>
-        </div>
-        <p className="text-gray-600">© 2026 FacilityH2O. All rights reserved.</p>
-      </footer>
-    </div>
-  );
-}
+      {/* WHO IT
