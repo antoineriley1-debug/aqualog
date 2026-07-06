@@ -28,22 +28,8 @@ async function sendEmail({ to, subject, text, html }) {
 }
 
 async function sendSMS(numbers, message) {
-  if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN || !process.env.TWILIO_FROM_NUMBER) return;
-  if (!numbers?.length) return;
-  try {
-    const twilio = require('twilio');
-    const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-    for (const num of numbers) {
-      if (!num) continue;
-      await client.messages.create({
-        body: message,
-        from: process.env.TWILIO_FROM_NUMBER,
-        to: num,
-      });
-    }
-  } catch (err) {
-    console.warn('[digest-sms] Failed:', err.message);
-  }
+  // SMS retired platform-wide (Twilio removed; 10DLC never cleared). Email is the alert channel.
+  return { ok: false, skipped: true, disabled: true, error: 'SMS is not offered — email alerts only', recipients: (numbers || []).filter(Boolean) };
 }
 
 export async function GET(request) {
