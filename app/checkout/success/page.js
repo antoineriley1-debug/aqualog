@@ -262,15 +262,15 @@ function SuccessContent() {
           <div className="space-y-3">
             <div>
               <p className="text-sm text-gray-600">Email</p>
-              <a href="mailto:support@medstarh2o.com" className="text-[#0891B2] hover:underline font-medium">
-                support@medstarh2o.com
+              <a href="mailto:support@facilityh2o.com" className="text-[#0891B2] hover:underline font-medium">
+                support@facilityh2o.com
               </a>
             </div>
 
             <div>
               <p className="text-sm text-gray-600">Sales Inquiry</p>
-              <a href="mailto:sales@medstarh2o.com" className="text-[#0891B2] hover:underline font-medium">
-                sales@medstarh2o.com
+              <a href="mailto:sales@facilityh2o.com" className="text-[#0891B2] hover:underline font-medium">
+                sales@facilityh2o.com
               </a>
             </div>
           </div>
