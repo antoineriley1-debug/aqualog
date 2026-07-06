@@ -37,51 +37,7 @@ async function sendEmail({ to, subject, text }) {
 }
 
 async function sendSMS(numbers, message) {
-  console.log('[DEBUG] sendSMS called with:', { numbers, message });
-  
-  if (!process.env.TWILIO_ACCOUNT_SID) {
-    console.error('[DEBUG] TWILIO_ACCOUNT_SID not set');
-    return { ok: false, error: 'TWILIO_ACCOUNT_SID not configured' };
-  }
-  if (!process.env.TWILIO_AUTH_TOKEN) {
-    console.error('[DEBUG] TWILIO_AUTH_TOKEN not set');
-    return { ok: false, error: 'TWILIO_AUTH_TOKEN not configured' };
-  }
-  if (!process.env.TWILIO_FROM_NUMBER) {
-    console.error('[DEBUG] TWILIO_FROM_NUMBER not set');
-    return { ok: false, error: 'TWILIO_FROM_NUMBER not configured' };
-  }
-
-  console.log('[DEBUG] Twilio credentials present');
-
-  if (!numbers?.length) {
-    console.error('[DEBUG] No SMS numbers');
-    return { ok: false, error: 'No SMS numbers' };
-  }
-
-  try {
-    const twilio = require('twilio');
-    const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-    
-    console.log('[DEBUG] Sending SMS from:', process.env.TWILIO_FROM_NUMBER, 'to:', numbers);
-    const sent = [];
-    
-    for (const num of numbers) {
-      if (!num) continue;
-      const result = await client.messages.create({
-        body: message,
-        from: process.env.TWILIO_FROM_NUMBER,
-        to: num,
-      });
-      console.log('[DEBUG] SMS sent to', num, ':', result.sid);
-      sent.push(num);
-    }
-    
-    return { ok: true, sent };
-  } catch (err) {
-    console.error('[DEBUG] SMS error:', err);
-    return { ok: false, error: err.message };
-  }
+  return { ok: false, skipped: true, disabled: true, error: 'SMS retired — email only', recipients: (numbers||[]).filter(Boolean) };
 }
 
 export async function GET(request) {
