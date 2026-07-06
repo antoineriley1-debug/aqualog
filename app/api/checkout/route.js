@@ -104,7 +104,7 @@ export async function POST(request) {
 
     // TODO: In production:
     // - For starter/pro: Process payment with Stripe
-    // - For custom: Send inquiry email to sales@medstarh2o.com
+    // - For custom: Send inquiry email to sales@facilityh2o.com
 
     // Send confirmation email (simulated)
     if (tier === 'custom') {
