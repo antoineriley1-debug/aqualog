@@ -5,9 +5,17 @@
  * Unauthorized access, copying, or distribution of this code is prohibited.
  */
 import { NextResponse } from 'next/server';
+import { tenantForHost } from './lib/tenants';
 
 export function middleware(request) {
   const { pathname } = request.nextUrl;
+
+  // Client-assigned domains (e.g. medstarh20log.com) are portals, not the
+  // product's marketing home — the root goes straight to their login.
+  const tenant = tenantForHost(request.headers.get('host'));
+  if (tenant && pathname === '/') {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
 
   // Public routes
   if (
