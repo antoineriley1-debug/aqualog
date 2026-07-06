@@ -36,33 +36,8 @@ async function sendEmail({ to, subject, text }) {
 }
 
 async function sendSMS(numbers, message) {
-  if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN || !process.env.TWILIO_FROM_NUMBER) {
-    return { ok: false, error: 'Twilio not configured' };
-  }
-
-  if (!numbers?.length) return { ok: false, error: 'No numbers' };
-
-  try {
-    const twilio = require('twilio');
-    const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-    
-    const sent = [];
-    for (const num of numbers) {
-      if (!num) continue;
-      const result = await client.messages.create({
-        body: message,
-        from: process.env.TWILIO_FROM_NUMBER,
-        to: num,
-      });
-      sent.push(num);
-      console.log('[sms] Sent to', num, result.sid);
-    }
-    
-    return { ok: true, sent };
-  } catch (err) {
-    console.error('[sms]', err.message);
-    return { ok: false, error: err.message };
-  }
+  // SMS retired platform-wide (Twilio removed; 10DLC never cleared). Email is the alert channel.
+  return { ok: false, skipped: true, disabled: true, error: 'SMS is not offered — email alerts only', recipients: (numbers || []).filter(Boolean) };
 }
 
 function getContacts() {
