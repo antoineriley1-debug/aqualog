@@ -94,7 +94,7 @@ export async function POST(request) {
       // Don't fail the inquiry submission if email fails
     }
 
-    // Notify admin (in production, send to sales@medstarh2o.com)
+    // Notify admin (in production, send to sales@facilityh2o.com)
     console.log(`[INQUIRIES] New custom inquiry: ${contactName} (${email}) - ${hospitalsNeeded || '?'} hospitals needed`);
 
     return NextResponse.json({
@@ -216,7 +216,7 @@ async function sendAutoReplyEmail(inquiry) {
       <p style="font-size: 12px; color: #666; margin-top: 20px;">
         <strong>MedStar H2O</strong><br>
         Water Chemistry Compliance for Hospital Networks<br>
-        <a href="mailto:support@medstarh2o.com" style="color: #0891B2; text-decoration: none;">support@medstarh2o.com</a>
+        <a href="mailto:support@facilityh2o.com" style="color: #0891B2; text-decoration: none;">support@facilityh2o.com</a>
       </p>
       
       <p style="font-size: 12px; color: #999; margin-top: 10px;">
@@ -233,7 +233,7 @@ async function sendAutoReplyEmail(inquiry) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'support@medstarh2o.com',
+        from: process.env.RESEND_FROM || 'FacilityH2O <alerts@medstarh20log.com>', // verified sender; display brand is FacilityH2O
         to: inquiry.email,
         subject: 'Thank You for Your MedStar H2O Inquiry',
         html: emailHtml,
