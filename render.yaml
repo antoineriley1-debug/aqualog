@@ -10,7 +10,7 @@ services:
       - key: PORT
         value: 3000
       - key: CRON_SECRET
-        value: crn_93814fe4db8388e5f95a0eaa80149aaa
+        sync: false   # SECRET — set in the Render dashboard. The previously committed value is burned; rotate it.
       # AI advisor + council review — must be set in Render dashboard (sync:false = secret)
       - key: ANTHROPIC_API_KEY
         sync: false
@@ -33,7 +33,7 @@ services:
       - key: NEXT_PUBLIC_APP_URL
         value: https://medstarh20log.com
       - key: CRON_SECRET
-        value: crn_93814fe4db8388e5f95a0eaa80149aaa
+        sync: false   # SECRET — set in the Render dashboard. The previously committed value is burned; rotate it.
 
   - type: cron
     name: aqualog-check-evening-shift
@@ -45,7 +45,7 @@ services:
       - key: NEXT_PUBLIC_APP_URL
         value: https://medstarh20log.com
       - key: CRON_SECRET
-        value: crn_93814fe4db8388e5f95a0eaa80149aaa
+        sync: false   # SECRET — set in the Render dashboard. The previously committed value is burned; rotate it.
 
   - type: cron
     name: aqualog-check-night-shift
@@ -57,7 +57,7 @@ services:
       - key: NEXT_PUBLIC_APP_URL
         value: https://medstarh20log.com
       - key: CRON_SECRET
-        value: crn_93814fe4db8388e5f95a0eaa80149aaa
+        sync: false   # SECRET — set in the Render dashboard. The previously committed value is burned; rotate it.
 
   # End-of-day report: full prior day (missed + out-of-range), 6:00 AM ET daily.
   - type: cron
@@ -70,4 +70,4 @@ services:
       - key: NEXT_PUBLIC_APP_URL
         value: https://medstarh20log.com
       - key: CRON_SECRET
-        value: crn_93814fe4db8388e5f95a0eaa80149aaa
+        sync: false   # SECRET — set in the Render dashboard. The previously committed value is burned; rotate it.
